@@ -1,4 +1,4 @@
-from caesar import caesar
+from algorithms.caesar import caesar
 from flask import Flask, request
 from flask.templating import render_template
 
