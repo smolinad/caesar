@@ -1,4 +1,4 @@
-from algorithms.caesar import caesar
+from algorithms.caesar import encryptCaesar
 
 from algorithms.goodies import processInput
 from flask import Flask, request
@@ -21,9 +21,9 @@ def home():
         match cypher_mode:
             case "caesar":
                 if input_key != '':
-                    output_text = caesar(input_text, input_key)
+                    output_text = encryptCaesar(input_text, input_key)
                 else:
-                    output_text = caesar(input_text)
+                    output_text = encryptCaesar(input_text)
 
     else:
         return render_template('index.html')

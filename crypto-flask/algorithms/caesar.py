@@ -1,9 +1,10 @@
 from algorithms.goodies import ALPHABET
 import random
 
+
 def encryptCaesar(text:str, key=None):
   if key is None:
-    key = random.randint(0, len(ALPHABET))
+    key = random.randint(1, len(ALPHABET)-1)
   elif key.isdigit():
     key = int(key)
   if isinstance(key, int):
@@ -14,7 +15,7 @@ def encryptCaesar(text:str, key=None):
   else:
     print("keyError")
 
-def bruteForceCaesar(text:str):
+def decryptCaesar(text:str):
   for i in range(len(ALPHABET)):
     decode = ""
     for c in text:
