@@ -1,8 +1,5 @@
-import string
-import unicodedata
+from algorithms.goodies import ALPHABET
 import random
-
-ALPHABET = string.ascii_uppercase
 
 def encryptCaesar(text:str, key=None):
   if key is None:
@@ -10,12 +7,9 @@ def encryptCaesar(text:str, key=None):
   elif key.isdigit():
     key = int(key)
   if isinstance(key, int):
-    cypher = ""
-    normalized = ''.join(c for c in unicodedata.normalize('NFD', text) if unicodedata.category(c) != 'Mn')
-    lowercase = normalized.upper().strip()
-    for c in lowercase:
-        if c != " ":
-          cypher += ALPHABET[(ALPHABET.index(c) + key) % len(ALPHABET)]
+    cypher = ''
+    for c in text:
+      cypher += ALPHABET[(ALPHABET.index(c) + key) % len(ALPHABET)]
     return cypher
   else:
     print("keyError")

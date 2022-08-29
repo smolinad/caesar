@@ -1,4 +1,6 @@
 from algorithms.caesar import caesar
+
+from algorithms.goodies import processInput
 from flask import Flask, request
 from flask.templating import render_template
 
@@ -13,7 +15,7 @@ def home():
     if request.method == 'POST':
         # cypher_mode = request.form.get('cypher_mode')
         cypher_mode = "caesar"
-        input_text = request.form.get('input_text')
+        input_text = processInput(request.form.get('input_text'))
         input_key = request.form.get('input_key')
 
         match cypher_mode:
