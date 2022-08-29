@@ -14,8 +14,8 @@ app = Flask(__name__,
 def home():
     if request.method == 'POST':
         # cypher_mode = request.form.get('cypher_mode')
-        print(request.form.get('caesar'))
-        cypher_mode = "vigenere"
+        print(request.form.get('caesar')) 
+        cypher_mode = "caesar" #FUNCINAAAA
         input_text = request.form.get('input_text')
         input_key = request.form.get('input_key')
 
