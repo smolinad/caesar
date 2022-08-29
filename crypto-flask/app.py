@@ -16,6 +16,7 @@ def home():
         # cypher_mode = request.form.get('cypher_mode')
         cypher_mode = "caesar"
         input_text = processInput(request.form.get('input_text'))
+        input_text = request.form.get('input_text')
         input_key = request.form.get('input_key')
 
         match cypher_mode:
