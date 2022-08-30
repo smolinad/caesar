@@ -1,3 +1,4 @@
+import random
 import string
 
 abecedario = list(string.ascii_uppercase)
@@ -9,7 +10,7 @@ def only_uppercase_letters(s):
             return False
     return True
 
-def no_duplicates(s):
+def no_duplicates(s: list):
     for i in abecedario:
         x: int = s.count(i)
         if(x > 1):
@@ -20,33 +21,53 @@ def no_duplicates(s):
 
     return True
 
-def is_permutation(s):
-    if(len(s)>30):
+def is_permutation(s: list):
+    if(len(s)>30 or len(s)<15):
         raise Exception("key must contain every letter just once")
         return False
     if(only_uppercase_letters(s) == False): return False
     if(no_duplicates(s) == False): return False
     return True
 
-def subtitutionEncrypt(t:str, k:str):
+def randomKey():
+    s = abecedario.copy()
+    random.shuffle(s)
+    return s
 
-    text = list(t)
-    key = list(k)
+def subtitutionEncrypt(t:str, k = " "):
     encrypted_text = ""
-    if(is_permutation(key)==False or only_uppercase_letters(text)==False):
-        print("invalid key")
+    text = list(t)
+
+    if k  == " ":
+        key = randomKey()
+        print("key:", "".join(key))
+    else:
+        key = list(k)
+
+    if(is_permutation(key)==False):
+        print("invalida key")
+    if(only_uppercase_letters(text)==False):
+        print("invalid text")
         return
+
     for i in text:
         place: int = ord(i)-ord('A')
         b = key[place]
         encrypted_text += key[place]
     return str(encrypted_text)
 
-def substitutionDecrypt(t:str, k:str):
-    text = list(t)
-    key = list(k)
+def substitutionDecrypt(t:str, k=" "):
     decrypted_text = ""
-    if(is_permutation(key)==False):
+    text = list(t)
+
+    if k == " ":
+        key = abecedario.copy()
+        random.shuffle(key)
+        print("key:", key)
+    else:
+        key = list(k)
+
+    if(is_permutation(key)==False or only_uppercase_letters(text)==False):
         return
 
     for i in text:
@@ -55,5 +76,6 @@ def substitutionDecrypt(t:str, k:str):
     return str(decrypted_text)
 
 a = subtitutionEncrypt("XUA","VKWBXLYFZMDNOCPHGERISATJUQ")
-print(a)
-print(substitutionDecrypt(a,"VKWBXLYFZMDNOCPHGERISATJUQ"))
+b = subtitutionEncrypt("XA")
+
+ax = substitutionDecrypt(a,"VKWBXLYFZMDNOCPHGERISATJUQ")
