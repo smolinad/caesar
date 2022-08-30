@@ -75,7 +75,21 @@ def substitutionDecrypt(t:str, k=" "):
         decrypted_text += chr(place +ord('A'))
     return str(decrypted_text)
 
-a = subtitutionEncrypt("XUA","VKWBXLYFZMDNOCPHGERISATJUQ")
-b = subtitutionEncrypt("XA")
+def count(i, t:str): return t.count(i)
 
-ax = substitutionDecrypt(a,"VKWBXLYFZMDNOCPHGERISATJUQ")
+def numberOfTimesALetterAppears(t: str):
+    s = []
+    for i in abecedario:
+        s.append(t.count(i))
+    return zip(t,s)
+
+def mostCommon(t: str): pass
+
+def substitutionCryptoanalysis(text: str):
+    numberOfTimesALetterAppears(text)
+    mostCommon(text)
+
+#a = subtitutionEncrypt("XUA","VKWBXLYFZMDNOCPHGERISATJUQ")
+#b = subtitutionEncrypt("XA")
+#ax = substitutionDecrypt(a,"VKWBXLYFZMDNOCPHGERISATJUQ")
+substitutionCryptoanalysis("XADSFA")
