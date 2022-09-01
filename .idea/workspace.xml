@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1dacd15f-8165-410a-a776-e3c1f75aeed9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/crypto-flask/algorithms/Permutation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crypto-flask/algorithms/Permutation.py" beforeDir="false" afterPath="$PROJECT_DIR$/crypto-flask/algorithms/Permutation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/crypto-flask/algorithms/substitution.py" beforeDir="false" afterPath="$PROJECT_DIR$/crypto-flask/algorithms/substitution.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

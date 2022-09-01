@@ -1,12 +1,39 @@
 #Find inverse np.argsort(permutation)
 
+def toNumbersList(s:list):
+    n = []
+    for i in s:
+        if(ord(i)< 48 or 57 < ord(i)):
+            raise Exception("key must only have numbers")
+        n.append(int(i))
+    return n
+
+def everyNumberJustOnce(s: list):
+    for i in range(1,len(s)+1):
+        x: int = s.count(i)
+        if(x > 1):
+            raise Exception("duplicated '"+str(i)+"' in key")
+            return False
+        elif(x < 1):
+            raise Exception("'"+str(i)+"' is missing from the key")
+
+    return True
+
+def isNumberPermutation(s: list):
+    if len(s) >= 50:
+        raise Exception("Key is too long")
+    if(not everyNumberJustOnce(s)):
+        return False
+    return True
+
 def PermutationEncrypt(t: str, k = None ):
 
-    #key solo num
-    #key permutation
-    #len(k)/len(t)?
     text = list(t)
-    key = list(k)
+    key = toNumbersList(k)
+
+    if(not isNumberPermutation(key)): return
+    #len(k)/len(t)?
+
     total = len(text)
     period = len(key)
 

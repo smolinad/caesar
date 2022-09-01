@@ -1,16 +1,16 @@
 import random
 import string
 
-abecedario = list(string.ascii_uppercase)
+abecedario = list(string.asciiUppercase)
 
-def only_uppercase_letters(s):
+def onlyUppercase_letters(s):
     for i in s:
         if (ord(i)<65 or 91 <ord(i)):
             raise Exception("key and text must contain only uppercase letters")
             return False
     return True
 
-def no_duplicates(s: list):
+def everyElementJustOnce(s: list):
     for i in abecedario:
         x: int = s.count(i)
         if(x > 1):
@@ -21,12 +21,12 @@ def no_duplicates(s: list):
 
     return True
 
-def is_permutation(s: list):
+def isPermutation(s: list):
     if(len(s)>30 or len(s)<15):
         raise Exception("key must contain every letter just once")
         return False
-    if(only_uppercase_letters(s) == False): return False
-    if(no_duplicates(s) == False): return False
+    if(not onlyUppercase_letters(s)): return False
+    if(not everyElementJustOnce(s)): return False
     return True
 
 def randomKey():
@@ -44,9 +44,9 @@ def subtitutionEncrypt(t:str, k = " "):
     else:
         key = list(k)
 
-    if(is_permutation(key)==False):
+    if(not isPermutation(key)):
         print("invalida key")
-    if(only_uppercase_letters(text)==False):
+    if(not onlyUppercase_letters(text)):
         print("invalid text")
         return
 
@@ -67,7 +67,7 @@ def substitutionDecrypt(t:str, k=" "):
     else:
         key = list(k)
 
-    if(is_permutation(key)==False or only_uppercase_letters(text)==False):
+    if(not isPermutation(key) or not onlyUppercase_letters(text)):
         return
 
     for i in text:
