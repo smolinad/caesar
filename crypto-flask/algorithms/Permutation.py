@@ -1,4 +1,6 @@
 #Find inverse np.argsort(permutation)
+import random
+
 
 def toNumbersList(s:list):
     n = []
@@ -20,16 +22,27 @@ def everyNumberJustOnce(s: list):
     return True
 
 def isNumberPermutation(s: list):
-    if len(s) >= 50:
+    if len(s) >= 10: #No reconoce '10' sino '1' y '0'
         raise Exception("Key is too long")
     if(not everyNumberJustOnce(s)):
         return False
     return True
 
+def randomKeyPermutation():
+    x = random.randint(4, 10)
+    s = list(range(1,x))
+    random.shuffle(s)
+    random.shuffle(s)
+    return s
+
 def PermutationEncrypt(t: str, k = None ):
 
     text = list(t)
-    key = toNumbersList(k)
+    if k  == None:
+        key = randomKeyPermutation()
+        print("key:", key) #Presentar más compacto
+    else:
+        key = toNumbersList(k)
 
     if(not isNumberPermutation(key)): return
     #len(k)/len(t)?
@@ -49,4 +62,10 @@ def PermutationEncrypt(t: str, k = None ):
 
     return encrypted_text
 
-print(PermutationEncrypt("1234123412341234","2431"))
+def PermutationDecrypt(): pass
+
+a = PermutationEncrypt("1234123412341234","2431")
+print(a)
+
+b = PermutationEncrypt("123456789")
+print(b)

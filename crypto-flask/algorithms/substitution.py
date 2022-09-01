@@ -1,7 +1,7 @@
 import random
 import string
 
-abecedario = list(string.asciiUppercase)
+abecedario = list(string.ascii_uppercase)
 
 def onlyUppercase_letters(s):
     for i in s:
@@ -34,11 +34,11 @@ def randomKey():
     random.shuffle(s)
     return s
 
-def subtitutionEncrypt(t:str, k = " "):
+def subtitutionEncrypt(t:str, k = None):
     encrypted_text = ""
     text = list(t)
 
-    if k  == " ":
+    if k  == None:
         key = randomKey()
         print("key:", "".join(key))
     else:
@@ -89,7 +89,10 @@ def substitutionCryptoanalysis(text: str):
     numberOfTimesALetterAppears(text)
     mostCommon(text)
 
-#a = subtitutionEncrypt("XUA","VKWBXLYFZMDNOCPHGERISATJUQ")
-#b = subtitutionEncrypt("XA")
-#ax = substitutionDecrypt(a,"VKWBXLYFZMDNOCPHGERISATJUQ")
+a = subtitutionEncrypt("XUA","VKWBXLYFZMDNOCPHGERISATJUQ")
+ax = substitutionDecrypt(a,"VKWBXLYFZMDNOCPHGERISATJUQ")
+print(a, ax) #ax ==XUA
+
+b = subtitutionEncrypt("XA")
+print(b)
 substitutionCryptoanalysis("XADSFA")
