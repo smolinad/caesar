@@ -1,115 +1,48 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Caesar - Encrypt your text easily!</title>
-        <script src="https://kit.fontawesome.com/281213501c.js" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
-        <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.svg')}}">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
-    </head>
-    
+{% extends "base.html" %}
 
-    <body>
+{% block head %} 
 
-        <div class="navbar">
-            <nav>
-                <a class="navbar-item">
-                    <img src="img/logo.svg" width="200" height="100">
-                    <ul>
-                        <li><a>Docs</a></li>
-                    </ul>
-                </a>
-            </nav>
-        </div>
+{% endblock %}
 
-        <div>
-            <form method="POST" action="/" class="grid">
+{% block body %}
 
-                <div class="dropdown" name="choose">
-                    <div class="select">
-                        <span class="selected">Caesar cypher</span>  
-                    </div>
-                    <div class="caret"></div> 
-                    <ul class="menu" name="mode">
-                        <li name="rsa">RSA</li>
-                        <li name="subs">Substitution cypher</li>
-                        <li class="active" name="caesar">Caesar cypher</li>
-                        <li name="affine">Affine cypher</li>
-                        <li name="vigenere">Vigenere cypher</li>
-                    </ul>
+    <div>
+        <form method="POST" action="/" class="grid" novalidate>
+            {{ form.csrf_token }}
+            {{ form.hidden_tag() }}
+            <!-- <div class="dropdown" name="choose">
+                <div class="select">
+                    <span class="selected">Caesar cypher</span>  
                 </div>
+                <ul class="menu" name="mode">
+                    <li name="caesar">Caesar cypher</li>
+                    <li name="substitution">Substitution cypher</li>
+                    <li name="permutation">Permutation cypher</li>
+                    <li name="affine">Affine cypher</li>
+                    <li name="vigenere">Vigenere cypher</li>
+                </ul>
+            </div> -->
+            <div>
+                {{ form.cypher_mode }}
+            </div>
 
-                <div class="input">
-                    <textarea class="textarea" name="input_text" placeholder="Input your text here...">{{input_text}}</textarea>
-                </div>
-                <div class="input">
-                    <textarea class="textarea key" name="input_key" placeholder="Input your key 🗝️ (optional)">{{input_key}}</textarea>
-                </div>
-                <button class="text-btn encrypt" >
+            <div class="input">
+                {{ form.input_text(placeholder="Input your text here...") }}
+            </div>
+            <div class="input">
+                {{ form.input_key(placeholder="Input your key 🗝️ here (optional)", class_="key") }}
+            </div>
+
+            <div class="buttons">
+                <button class="text-btn encrypt" name="encrypt" value="encrypt">
                     <i class="fa-solid fa-lock"></i> Encrypt
                 </button>
-            </form>     
-        </div>
-
-        <div class="grid">
-            <div class="input">
-                <form>
-                    <textarea class="textarea" name="output_text" placeholder="Input your text here...">{{output_text}}</textarea>
-                </form>
+                <button class="text-btn decrypt" name="decrypt" value="decrypt">
+                    <i class="fa-solid fa-lock-open"></i> Decrypt
+                </button>
             </div>
-            <button class="text-btn decrypt">
-                <i class="fa-solid fa-lock-open"></i> Decrypt</button>
-        </div>
-         
-        <footer>
-            <div class="footer-content">
-                <p><strong>Caesar</strong> by <a>Paulina Castillo</a>, <a>María Sol Botello</a> and <a>Sebastian Molina</a>. </p>
-            </div>
-            <div class="footer-bottom">
-                <p><span id="year"></span> © Caesar</p>
-            </div>
-        </footer>        
-
-        <script>
-            function getCurrentYear() {
-              return new Date().getFullYear();
-            };
-          
-            document.getElementById("year").innerHTML = getCurrentYear(); 
-        </script>
-
-        <script>
-            const dropdowns = document.querySelectorAll('.dropdown');
-            dropdowns.forEach(dropdown =>{
-                const select = dropdown.querySelector('.select');
-                // const caret = dropdown.querySelector('.caret');
-                const menu = dropdown.querySelector('.menu');
-                const options = dropdown.querySelectorAll('.menu li');
-                const selected = dropdown.querySelector('.selected');
-
-                select.addEventListener('click', () => {
-                    select.classList.toggle('select-clicked');
-                    //caret.classList.toggle('caret-rotate');
-                    menu.classList.toggle('menu-open');
-                });
-
-                options.forEach(option => {
-                    option.addEventListener('click', () => {
-                        select.innerText = option.innerText;
-                        select.classList.remove('select-clicked');
-                        //caret.classList.remove('caret-rotate');
-                        menu.classList.remove('menu-open');
-                        options.forEach(option => {
-                            option.classList.remove('active');
-                        });
-                        option.classList.add('active');
-                    });
-                });
-            });
-        </script>
-    </body>
-
+            
+        </form>     
+    </div>
     
-</html>
+{% endblock %}

@@ -3,14 +3,14 @@ import random
 
 
 def encryptCaesar(text:str, key=None):
-  if key is None:
+  if key == None:
     key = random.randint(1, len(ALPHABET)-1)
   elif key.isdigit():
     key = int(key)
   if isinstance(key, int):
     cypher = ''
     for c in text:
-      cypher += ALPHABET[(ALPHABET.index(c) + key) % len(ALPHABET)]
+      cypher += ALPHABET[(ALPHABET.find(c) + key) % len(ALPHABET)]
     return cypher
   else:
     print("keyError")

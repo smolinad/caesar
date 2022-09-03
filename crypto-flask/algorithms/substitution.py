@@ -34,7 +34,7 @@ def randomKey():
     random.shuffle(s)
     return s
 
-def subtitutionEncrypt(t:str, k = None):
+def substitutionEncrypt(t:str, k = None):
     encrypted_text = ""
     text = list(t)
 
@@ -89,10 +89,10 @@ def substitutionCryptoanalysis(text: str):
     numberOfTimesALetterAppears(text)
     mostCommon(text)
 
-a = subtitutionEncrypt("XUA","VKWBXLYFZMDNOCPHGERISATJUQ")
-ax = substitutionDecrypt(a,"VKWBXLYFZMDNOCPHGERISATJUQ")
-print(a, ax) #ax ==XUA
+# a = subtitutionEncrypt("XUA","VKWBXLYFZMDNOCPHGERISATJUQ")
+# ax = substitutionDecrypt(a,"VKWBXLYFZMDNOCPHGERISATJUQ")
+# print(a, ax) #ax ==XUA
 
-b = subtitutionEncrypt("XA")
-print(b)
-substitutionCryptoanalysis("XADSFA")
+# b = subtitutionEncrypt("XA")
+# print(b)
+# substitutionCryptoanalysis("XADSFA")
