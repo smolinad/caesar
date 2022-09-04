@@ -35,6 +35,14 @@ def randomKey():
     return s
 
 def substitutionEncrypt(t:str, k = None):
+    #Recibe texto t de solo letras mayúsculas
+    #e.g. HOLAMUNDO
+
+    #Recibe clave k permutación del abecedario en mayúsculas
+    #e.g. BACDEFGHIJKLMNOPQRSTUVWXYZ
+
+    #Devuelve texto encriptado
+    #e.g. HOLBMUNDO
     encrypted_text = ""
     text = list(t)
 
@@ -45,7 +53,7 @@ def substitutionEncrypt(t:str, k = None):
         key = list(k)
 
     if(not isPermutation(key)):
-        print("invalida key")
+        print("invalid key")
     if(not onlyUppercase_letters(text)):
         print("invalid text")
         return
@@ -57,6 +65,13 @@ def substitutionEncrypt(t:str, k = None):
     return str(encrypted_text)
 
 def substitutionDecrypt(t:str, k=" "):
+    #Recibe texto t de solo letras mayúsculas
+    #e.g. HOLBMUNDO
+    #Recibe clave k permutación del abecedario en mayúsculas
+    #e.g. BACDEFGHIJKLMNOPQRSTUVWXYZ
+
+    #Devuelve texto encriptado
+    #e.g. HOLAMUNDO
     decrypted_text = ""
     text = list(t)
 
@@ -86,6 +101,7 @@ def numberOfTimesALetterAppears(t: str):
 def mostCommon(t: str): pass
 
 def substitutionCryptoanalysis(text: str):
+    #To be implemented
     numberOfTimesALetterAppears(text)
     mostCommon(text)
 

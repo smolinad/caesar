@@ -1,4 +1,5 @@
 #Find inverse np.argsort(permutation)
+#Falta decrypt y analysis
 import random
 
 
@@ -36,6 +37,16 @@ def randomKeyPermutation():
     return s
 
 def PermutationEncrypt(t: str, k = None ):
+    #Recibe texto t cualquiera
+    #e.g. HOLAMUNDOLUNES
+
+    #Recibe clave k, permutación de range(1,n)
+    #Para Sebas: te parece así o mejor recibir con comas?
+    #Con eso se podrían hacer permutaciones de más de 9 elementos
+    #e.g. 3142
+
+    #Retorna texto encriptado de longitud múltiplo de n
+    #e.g. LHAONMDUUONL (ES no)
 
     text = list(t)
     if k  == None:
@@ -62,7 +73,16 @@ def PermutationEncrypt(t: str, k = None ):
 
     return encrypted_text
 
-def PermutationDecrypt(): pass
+def PermutationDecrypt():
+    #Recibe texto t cualquiera
+    #e.g. LHAONMDUUONL
+
+    #Recibe clave k, permutación de range(1,n)
+    #e.g. 3142
+
+    #Retorna texto desencriptado
+    #e.g. HOLAMUNDOLUN
+    pass
 
 a = PermutationEncrypt("1234123412341234","2431")
 print(a)
