@@ -1,39 +1,52 @@
 {% extends "base.html" %}
 
+
+{% block title %}
+    <title>Caesar - Encrypt your text easily!</title>
+{% endblock %}
+
 {% block head %} 
 
 {% endblock %}
 
 {% block body %}
 
-    <div>
+    <div class="h-100 d-flex align-items-center justify-content-center">
         <form method="POST" action="/" class="grid" novalidate>
             {{ form.csrf_token }}
             {{ form.hidden_tag() }}
-            <!-- <div class="dropdown" name="choose">
-                <div class="select">
-                    <span class="selected">Caesar cypher</span>  
-                </div>
-                <ul class="menu" name="mode">
-                    <li name="caesar">Caesar cypher</li>
-                    <li name="substitution">Substitution cypher</li>
-                    <li name="permutation">Permutation cypher</li>
-                    <li name="affine">Affine cypher</li>
-                    <li name="vigenere">Vigenere cypher</li>
-                </ul>
-            </div> -->
-            <div>
-                {{ form.cypher_mode }}
-            </div>
 
-            <div class="input">
+            <div>
+                <img class="mx-auto d-block" src="{{ url_for('static', filename='img/logo.svg') }}" width="300" height="100">
+            </div>
+            
+            {{ form.cypher_mode(class="form-select form-select-sm") }}
+
+            <div class="input" style="margin-top: 1rem;">
                 {{ form.input_text(placeholder="Input your text here...") }}
             </div>
+
             <div class="input">
                 {{ form.input_key(placeholder="Input your key 🗝️ here (optional)", class_="key") }}
             </div>
 
-            <div class="buttons">
+            
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <i class="fa-solid fa-triangle-exclamation"></i> {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+             {% endwith %}
+                <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button> -->
+
+            
+            <div class="d-flex justify-content-center">
                 <button class="text-btn encrypt" name="encrypt" value="encrypt">
                     <i class="fa-solid fa-lock"></i> Encrypt
                 </button>
@@ -44,5 +57,9 @@
             
         </form>     
     </div>
+
+    
+    
+
     
 {% endblock %}

@@ -1,97 +1,36 @@
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
 html, body{
     background-color: #111419;
-    height: 100vh;
-    font-family: "Roboto Mono";
-    font-size: 20px;
-    overflow: hidden
+    height: 100%;
+    font-family: "Azeret Mono";
+    font-size: 16px;
+    color:#EFF1F3;
+    padding-top: 70px;
 }
 
-.navbar{
-    background-color: #0e1116;
-    height: 100px;
-    width: 100%;
-}
-
-nav{
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding-left: 10%;
-}
-
-nav ul li{
-    list-style-type: none;
-    display: inline-block;
-    padding: auto;
-}
-
-nav ul li a{
+.navbar ul li a{
     color: #EFF1F3;
     font-weight: bold;
 }
 
-nav ul li a:hover{
+.navbar ul li a:hover{
     color: #f24236;
     transition: 0.35s;
-}
-
-footer{
-    background: #0e1116;
-    height: auto;
-    width: 100vw;
-    padding-top: 1%;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    font-size: 0.5rem;
-    color: #EFF1F3;
-    position: absolute;
-}
-
-.footer-content{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding-bottom: 1%;
-}
-
-.footer-bottom{
-    background: #000000;
-    width: 100vw;
-    padding: 0.5% 0;
-    text-align: center;
 }
 
 .text-btn{
     border: none;
     background-color: inherit;
     padding: 14px 28px;
-    font-size: 16px;
     cursor: pointer;
     display: inline-block;
-    font-family: "Roboto Mono";
+    /* font-family: "Roboto Mono"; */
     font-weight: bold;
-    font-size: 0.8rem;
+    font-size: 1rem;
     transition: 0.2s;
 }
   
 .text-btn:hover{
     transition: 0.4s;
-}
-
-.cypher{
-    color: #EFF1F380;
-}
-
-.cypher:hover{
-    color: #EFF1F3;
 }
 
 .encrypt{
@@ -110,18 +49,13 @@ footer{
     color: #4062BB;
 }
 
-.grid{
-    display: grid;
-    place-items: center;
-}
-
 textarea {
     background-color: #1c2129;
     padding: 0.6rem 0.6rem 0.6rem 0.6rem;
     border: 2px solid transparent;
     border-radius: 10px;
     color: #EFF1F3;
-    font-family: "Roboto Mono";
+    font-size: 0.8rem;
     resize: none;
     width: 50vw;
     height: 30vh;
@@ -129,12 +63,22 @@ textarea {
 }
 
 .key{
-    padding: 0.45rem 0.45rem 0.45rem 0.45rem;
+    padding: 0.6rem 0.6rem 0.6rem 0.6rem;
     width: 50vw;
-    height: 2rem;
+    height: 2.75rem;
 }
 
 textarea:focus {
-        outline: none !important;
-        border: 2px solid #EDFFAB;
+    outline: none !important;
+    border: 3px solid #EDFFAB80;
+}
+
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+.form-select {
+    background-color: #1c2129;
+    color: #EFF1F3;
 }

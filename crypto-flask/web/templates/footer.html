@@ -1,0 +1,18 @@
+<div class="container">
+    <footer class="py-3 my-4">
+        <div class="footer-content">
+            <p><strong>Caesar</strong> by <a>Paulina Castillo</a>, <a>María Sol Botello</a> and <a>Sebastian Molina</a>. </p>
+        </div>
+        <div class="footer-bottom">
+            <p><span id="year"></span> © Caesar</p>
+        </div>
+    </footer>
+
+    <script>
+        function getCurrentYear() {
+        return new Date().getFullYear();
+        };
+    
+        document.getElementById("year").innerHTML = getCurrentYear(); 
+    </script>
+</div>
