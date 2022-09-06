@@ -122,13 +122,21 @@ def randomKey():
 # --------------------------->
 # Funciones de criptoanalisis
 
-def numberOfTimesALetterAppears(t: str):
+def mostCommon(d:dict):
+    newD = {}
+    for key, value in d.items():
+        if value > 1:
+            newD[key] = value
+    return newD
+
+
+def frequencyOfLetters(t: str):
     dict = {}
-    for i in abecedario:
-        if dict.get(digraph) == None:
-            dict[digraph] = 1
+    for i in t:
+        if dict.get(i) == None:
+            dict[i] = 1
         else:
-            dict[digraph] += 1
+            dict[i] += 1
     return dict
 
 
@@ -149,5 +157,5 @@ def frequencyOfDigraphs(t: str):
 # a = substitutionEncrypt("XUA", "VKWBXLYFZMDNOCPHGERISATJUQ")
 # b = subtitutionEncrypt("XA")
 # ax = substitutionDecrypt(a[0], a[1])
-# ay = substitutionCryptoanalysis("DTNNBUBXNJ")
+#ay = substitutionCryptoanalysis("AAACBABA")
 
