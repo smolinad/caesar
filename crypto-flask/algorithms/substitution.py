@@ -20,6 +20,7 @@ def substitutionEncrypt(t: str, k=None):
 
     Puede recibir clave k permutación del abecedario en mayúsculas
     e.g. BACDEFGHIJKLMNOPQRSTUVWXYZ
+         ABCDEFGHIJKLMNOPQRSTUVWXYZ
 
     Devuelve lista de texto encriptado y clave
     [texto,clave]
