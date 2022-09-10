@@ -11,7 +11,7 @@
 
 {% block body %}
 
-    <div class="h-100 d-flex align-items-center justify-content-center">
+    <div class="h-100 d-flex align-items-center justify-content-center container">
         <form method="POST" action="/" class="grid" novalidate>
             {{ form.csrf_token }}
             {{ form.hidden_tag() }}
