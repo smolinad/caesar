@@ -152,7 +152,7 @@ a = hillEncrypt(t, k)
 ax = hillDecrypt(a[0], a[1])
 
 b = hillEncrypt(t)
-bx = hillDecrypt(a[0], a[1])
+bx = hillDecrypt(b[0], b[1])
 
 "Example invertible 3x3 matrix mod 26 fxampjtqo"
 p_t = ["FXA", "MPJ", "TQOV"]
