@@ -1,6 +1,13 @@
 # Falta analysis
+<<<<<<< HEAD:crypto-flask/algorithms/permutation.py
 import random
 from algorithms.goodies import InputKeyError
+=======
+import random, itertools
+
+from goodies import ALPHABET, InputKeyError
+
+>>>>>>> 547e3bb3702b65b3421ef8f4b0fc4c0fbff7536c:crypto-flask/algorithms/Permutation.py
 
 """
 Tanto Encrypt como Decrypt 
@@ -9,11 +16,9 @@ retornan [texto, clave]
 """
 
 
-def permutationEncrypt(t: str, k=None):
-    """
-    Recibe texto t cualquiera
-    e.g. "HOLAMUNDOLUNES"
+def permutationEncrypt(t: str, key=None):
 
+<<<<<<< HEAD:crypto-flask/algorithms/permutation.py
     Recibe clave k, permutación de range(1,n) separada por espacios
     e.g. "3 1 4 2"
 
@@ -24,44 +29,63 @@ def permutationEncrypt(t: str, k=None):
     if k == None:
         k = randomKeyPermutation()
 
+=======
+    if key == None:
+        key = randomKeyPermutation()
+    k = key
+>>>>>>> 547e3bb3702b65b3421ef8f4b0fc4c0fbff7536c:crypto-flask/algorithms/Permutation.py
     text = t
-    key = [int(x) for x in k.split(" ")]
+    if not "".join(key.split()).isdigit():
+        raise InputKeyError("Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #InputKeyError
 
+<<<<<<< HEAD:crypto-flask/algorithms/permutation.py
     if not isNumberPermutation(key):
         raise InputKeyError("The key must be a permutation of the numbers from 1 to n.")
+=======
+    else:
+            
+      key = [int(x) for x in k.split(" ")]
+>>>>>>> 547e3bb3702b65b3421ef8f4b0fc4c0fbff7536c:crypto-flask/algorithms/Permutation.py
 
-    text = completeWithAs(text, len(key))
-    encrypted_text = performPermutation(text, key)
+      if not isNumberPermutation(key):
+          return
 
+<<<<<<< HEAD:crypto-flask/algorithms/permutation.py
     return (encrypted_text, k)
+=======
+      text = completeWithAs(text, len(key))
+      encrypted_text = performPermutation(text, key)
+>>>>>>> 547e3bb3702b65b3421ef8f4b0fc4c0fbff7536c:crypto-flask/algorithms/Permutation.py
 
+      return [encrypted_text, k]
 
-def permutationDecrypt(t: str, k: str):
-    """
-    Recibe texto t cualquiera
-    e.g. "LHAONMDUUONL"
-
-    Recibe clave k, texto separado por espacios permutación de range(1,n)
-    e.g. "3 1 4 2"
-
-    lista de texto desencriptado y clave
-    e.g. ["HOLAMUNDOLUN","3 1 2 4"]
-    """
+def permutationDecryptKey(t: str, key: str):
 
     text = t
-    key = [int(x) for x in k.split(" ")]
+    k = key
+    if "".join(key.split()).isdigit():
+      key = [int(x) for x in k.split()]
 
+<<<<<<< HEAD:crypto-flask/algorithms/permutation.py
     if not isNumberPermutation(key):
         InputKeyError("The key must be a permutation of the numbers from 1 to n.")
     if not len(text)%len(key) == 0:
         raise InputKeyError("Length of key must divide length of text.")
+=======
+      if not isNumberPermutation(key):
+          return
+      if not len(text)%len(key) == 0:
+          raise InputKeyError("Length of key must divide length of text") #InputKeyError
+          return
+>>>>>>> 547e3bb3702b65b3421ef8f4b0fc4c0fbff7536c:crypto-flask/algorithms/Permutation.py
 
-    inverse_key = inversePermutation(key)
-    encrypted_text = performPermutation(text,inverse_key)
-    k = " ".join([str(x) for x in inverse_key])
+      inverse_key = inversePermutation(key)
+      encrypted_text = performPermutation(text,inverse_key)
+      k = " ".join([str(x) for x in inverse_key])
 
-    return [encrypted_text,k]
-
+      return [encrypted_text,k]
+    else:
+      raise InputKeyError("ERROR : Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #InputKeyError
 
 # --------------------------->
 # Funciones de Encrypt y Decrypt
@@ -71,9 +95,9 @@ def everyNumberJustOnce(s: list):
     for i in range(1, len(s) + 1):
         x: int = s.count(i)
         if 1 < x:
-            raise InputKeyError("duplicated '" + str(i) + "' in key")
+             raise InputKeyError("ERROR : Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #raise
         elif x < 1:
-            raise InputKeyError("'" + str(i) + "' is missing from the key")
+             raise InputKeyError("ERROR : Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #raise + cambiar print  por InputKeyError
 
     return True
 
@@ -123,6 +147,7 @@ def inversePermutation(key:list):
         inverse_key[value-1] = i+1
     return inverse_key
 
+<<<<<<< HEAD:crypto-flask/algorithms/permutation.py
 # a = permutationEncrypt("XYZ", "2 4 3 1 5")
 # ax = permutationDecrypt("YAZXA", "2 4 3 1 5")
 # print(a)
@@ -130,3 +155,75 @@ def inversePermutation(key:list):
 
 # b = permutationEncrypt("123456789")
 # print(b)
+=======
+
+#--------------- DESENCRIPTADO --------------
+
+#Retorna una lista de listas con los posibles mensjes y su respectiva clave:
+# [['posibleMensaje1, clave1],['posibleMensaje2, clave2]]
+
+
+
+subCadenas = ['TH','HE','IN','ER']
+def frecuenciaSubString(cadena):
+  frecuencias = {}
+  for sub in subCadenas:
+    frecuencias[sub] = ( cadena.count(sub) * 100 ) / ( len(cadena)/2 )
+  return frecuencias
+
+
+def permutationDecrypt(textoCifrado, key=None):
+
+  divisores = []
+
+  if key == None:
+
+    for num in [4,5,6]:
+      if len(textoCifrado) % num == 0:
+        divisores.append(num)
+
+
+
+    if len(divisores) == 0:
+      raise KeyError("ERROR: Text lenght is not valid, must be 4,5 or 6 multiply") #cambiar print  por InputKeyError
+
+    else:
+       if not "".join(key.split()).isdigit():
+            raise InputKeyError("ERROR : Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #cambiar print  por InputKeyError
+       
+       else:
+            rangeDivisores =[]
+
+            for i in divisores:
+                rangeDivisores.append(list(range(i)))
+
+            permutaciones = []
+            permutacionesStr = []
+
+            for lista in rangeDivisores:
+                permutaciones.append(list(itertools.permutations(lista)))
+
+            for divisor in permutaciones:
+                for permutacion in divisor:
+                    llave = ''
+                    for numero in permutacion:
+                        llave += str(numero +1 ) + ' '
+            
+                permutacionesStr.append(llave.rstrip(llave[-1])) #Todas las posibles permutaciones
+                
+            posiblesTextosDecifrados = []
+
+            for posibleClave in permutacionesStr:
+                t = permutationDecryptKey(textoCifrado, posibleClave)
+                f = frecuenciaSubString(t[0])
+            
+                if (f['TH'] + f['HE'] + f['IN'] + f['ER'] ) >= 10  :
+                    posiblesTextosDecifrados.append(t)
+
+            return(posiblesTextosDecifrados)
+  else:
+    raise permutationDecryptKey(textoCifrado,key)
+
+
+
+>>>>>>> 547e3bb3702b65b3421ef8f4b0fc4c0fbff7536c:crypto-flask/algorithms/Permutation.py
