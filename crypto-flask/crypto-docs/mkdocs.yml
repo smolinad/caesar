@@ -1,7 +1,9 @@
 site_name: Caesar
 nav:
     - Home: index.md
+    - Encryptation sistems: types.md
     - About: about.md
+
 
 theme:
   name: material

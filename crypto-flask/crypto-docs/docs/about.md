@@ -1,6 +1,7 @@
 # About
 
-This page was created for subject Introduction to Cryptography at September 2022. We wanted to create some page elegant and functional, and here is result of that
+This page was created for subject Introduction to Cryptography at September 2022. 
+We wanted to create some page elegant and functional, and here is result of that.
 
 ## Authors
 
