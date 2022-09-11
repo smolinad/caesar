@@ -1,5 +1,6 @@
 # Welcome to Caesar Documentation
 
+
 ## General idea 
 
 The purpose of this website is to encrypt and decrypt text with different encryption methods.
@@ -127,3 +128,4 @@ key :
 
 Method :
 
+>>>>>>> e283c61bdc75753a850e309676bf4e29786af336

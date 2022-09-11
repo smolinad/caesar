@@ -1,6 +1,6 @@
 import random
 import string
-from goodies import InputKeyError
+from algorithms.goodies import InputKeyError
 
 abecedario = list(string.ascii_uppercase)
 
@@ -31,21 +31,21 @@ def substitutionEncrypt(t: str, k=None):
 
     if k is None:
         key = randomKey()
-        print("key:", "".join(key))
+        # print("key:", "".join(key))
     else:
         key = list(k)
 
     if not isPermutation(key):
-        print("invalid key")
+        raise InputKeyError("The key must be a permutation of the 26-letters latin alphabet.")
+
     if not onlyUppercase_letters(text):
-        print("invalid text")
-        return
+        InputKeyError("The key must be all in caps.")
 
     for i in text:
         place: int = ord(i) - ord('A')
         b = key[place]
         encrypted_text += key[place]
-    return [str(encrypted_text), key]
+    return (str(encrypted_text), key)
 
 
 def substitutionDecrypt(t: str, k=" "):
@@ -88,7 +88,7 @@ def substitutionCryptoanalysis(text: str):
 def onlyUppercase_letters(s):
     for i in s:
         if (ord(i) < 65 or 91 < ord(i)):
-            raise InputKeyError("key and text must contain only uppercase letters")
+            raise InputKeyError("The key and text must contain only uppercase letters")
             return False
     return True
 
@@ -97,18 +97,18 @@ def everyElementJustOnce(s: list):
     for i in abecedario:
         x: int = s.count(i)
         if (x > 1):
-            raise InputKeyError("duplicated '" + i + "' in key")
+            raise InputKeyError("There's a duplicated '" + i + "' in key")
             return False
         elif (x < 1):
-            raise InputKeyError("letter '" + i + "' is missing from key")
+            raise InputKeyError("The letter '" + i + "' is missing from key")
 
     return True
 
 
 def isPermutation(s: list):
     if len(s) != 26:
-        raise InputKeyError("key must contain every letter just once")
-        return False
+        raise InputKeyError("The key must contain every letter just once")
+        # return False
     if onlyUppercase_letters(s) and everyElementJustOnce(s):
         return True
     return False

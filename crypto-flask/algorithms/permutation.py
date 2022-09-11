@@ -1,8 +1,13 @@
 # Falta analysis
+<<<<<<< HEAD:crypto-flask/algorithms/permutation.py
+import random
+from algorithms.goodies import InputKeyError
+=======
 import random, itertools
 
 from goodies import ALPHABET, InputKeyError
 
+>>>>>>> 547e3bb3702b65b3421ef8f4b0fc4c0fbff7536c:crypto-flask/algorithms/Permutation.py
 
 """
 Tanto Encrypt como Decrypt 
@@ -13,22 +18,44 @@ retornan [texto, clave]
 
 def permutationEncrypt(t: str, key=None):
 
+<<<<<<< HEAD:crypto-flask/algorithms/permutation.py
+    Recibe clave k, permutación de range(1,n) separada por espacios
+    e.g. "3 1 4 2"
+
+    Retorna texto encriptado de longitud múltiplo de n
+    e.g. ["LHAONMDUUONL","3 1 4 2"]
+    """
+
+    if k == None:
+        k = randomKeyPermutation()
+
+=======
     if key == None:
         key = randomKeyPermutation()
     k = key
+>>>>>>> 547e3bb3702b65b3421ef8f4b0fc4c0fbff7536c:crypto-flask/algorithms/Permutation.py
     text = t
     if not "".join(key.split()).isdigit():
         raise InputKeyError("Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #InputKeyError
 
+<<<<<<< HEAD:crypto-flask/algorithms/permutation.py
+    if not isNumberPermutation(key):
+        raise InputKeyError("The key must be a permutation of the numbers from 1 to n.")
+=======
     else:
             
       key = [int(x) for x in k.split(" ")]
+>>>>>>> 547e3bb3702b65b3421ef8f4b0fc4c0fbff7536c:crypto-flask/algorithms/Permutation.py
 
       if not isNumberPermutation(key):
           return
 
+<<<<<<< HEAD:crypto-flask/algorithms/permutation.py
+    return (encrypted_text, k)
+=======
       text = completeWithAs(text, len(key))
       encrypted_text = performPermutation(text, key)
+>>>>>>> 547e3bb3702b65b3421ef8f4b0fc4c0fbff7536c:crypto-flask/algorithms/Permutation.py
 
       return [encrypted_text, k]
 
@@ -39,11 +66,18 @@ def permutationDecryptKey(t: str, key: str):
     if "".join(key.split()).isdigit():
       key = [int(x) for x in k.split()]
 
+<<<<<<< HEAD:crypto-flask/algorithms/permutation.py
+    if not isNumberPermutation(key):
+        InputKeyError("The key must be a permutation of the numbers from 1 to n.")
+    if not len(text)%len(key) == 0:
+        raise InputKeyError("Length of key must divide length of text.")
+=======
       if not isNumberPermutation(key):
           return
       if not len(text)%len(key) == 0:
           raise InputKeyError("Length of key must divide length of text") #InputKeyError
           return
+>>>>>>> 547e3bb3702b65b3421ef8f4b0fc4c0fbff7536c:crypto-flask/algorithms/Permutation.py
 
       inverse_key = inversePermutation(key)
       encrypted_text = performPermutation(text,inverse_key)
@@ -113,6 +147,15 @@ def inversePermutation(key:list):
         inverse_key[value-1] = i+1
     return inverse_key
 
+<<<<<<< HEAD:crypto-flask/algorithms/permutation.py
+# a = permutationEncrypt("XYZ", "2 4 3 1 5")
+# ax = permutationDecrypt("YAZXA", "2 4 3 1 5")
+# print(a)
+# print(ax)
+
+# b = permutationEncrypt("123456789")
+# print(b)
+=======
 
 #--------------- DESENCRIPTADO --------------
 
@@ -183,3 +226,4 @@ def permutationDecrypt(textoCifrado, key=None):
 
 
 
+>>>>>>> 547e3bb3702b65b3421ef8f4b0fc4c0fbff7536c:crypto-flask/algorithms/Permutation.py

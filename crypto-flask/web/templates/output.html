@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %} 
-    <title>Caesar - Your text has been encrypted!</title>
+    <title>Caesar - Your text has been {{ encrypted_or_decrypted }}!</title>
 {% endblock %}
 
 {% block body %}
@@ -9,7 +9,7 @@
     <div class="h-100 d-flex align-items-center justify-content-center">
         
         <div>
-            <h3>Your text has been encrypted succesfully!</h3>
+            <h3>Your text has been {{ encrypted_or_decrypted }} succesfully!</h3>
             <h5 style="margin-top:1rem;">This is your text:</h5>
             <textarea class="textarea" name="output_text" style="margin-top: 0.25rem;" readonly>{{ output_text }}</textarea>
             <h5 style="margin-top:1rem;">This is your key. Please keep it safe!</h5>

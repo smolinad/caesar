@@ -1,7 +1,7 @@
 html, body{
     background-color: #111419;
     height: 100%;
-    font-family: "Azeret Mono";
+    font-family: "Spline Sans Mono";
     font-size: 16px;
     color:#EFF1F3;
     padding-top: 70px;
@@ -81,4 +81,13 @@ table {
 .form-select {
     background-color: #1c2129;
     color: #EFF1F3;
+}
+
+footer{
+    font-size: 0.6rem;
+}
+
+table td {
+    word-wrap: break-word;         /* All browsers since IE 5.5+ */
+    overflow-wrap: break-word;     /* Renamed property in CSS3 draft spec */
 }
