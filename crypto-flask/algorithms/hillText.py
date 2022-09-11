@@ -2,7 +2,7 @@
 
 import math
 import sympy
-from goodies import InputKeyError
+from algorithms.goodies import InputKeyError
 """
 Encrypt y Decrypt reciben (size: int, text: str, key: str)
  donde size es la dimensión de las matrices
@@ -17,8 +17,8 @@ Cada una debe constar de size palabras, de las cuales solo se toma en cuenta las
 Devuelve clave
 """
 
-def hillEncrypt(size: int, text: str, key = ""):
-    if key == "":
+def hillEncrypt(size: int, text: str, key = None):
+    if key == None:
         keyMatrix = randomKeyMatrix(size)
     else:
         checkInput(text, key, size)

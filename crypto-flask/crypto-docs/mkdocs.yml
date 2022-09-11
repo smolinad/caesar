@@ -1,9 +1,12 @@
-site_name: Caesar
+site_name: Docs
 nav:
     - Home: index.md
     - About: about.md
 
 theme:
+  logo: assets/logo.svg
+  favicon: assets/favicon.svg
+
   name: material
 
   font:

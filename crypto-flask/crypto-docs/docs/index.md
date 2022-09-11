@@ -4,33 +4,32 @@
 ## General idea 
 
 The purpose of this website is to encrypt and decrypt text with different encryption methods.
- 
-On the main page there is a thin rectangle where you can choose the encryption method,
+On the main page, there is a selection box where you can choose the encryption method.
 
 
 ![Recuadro metodo de cifrado](\images\ImgMetodo.svg)
 
  below this it is the rectangle where text is placed,
 
- ![Recuadro texto](\images\Imgtexto.svg)
+![Recuadro texto](\images\Imgtexto.svg)
  
-  below it is the rectangle where you could put a key to encrypt (or decrypt).
+below it is the rectangle where you could put a key to encrypt (or decrypt).
 
-  ![Recuadro metodo de cifrado](\images\Imgclavenometodo.svg)
+![Recuadro metodo de cifrado](\images\Imgclavenometodo.svg)
 
-  and finally buttons for choose if you want to encrypt or decrypt.
+and finally buttons for choose if you want to encrypt or decrypt.
 
-  ![Recuadro metodo de cifrado](\images\ImgEncriptarDesencriptar.svg)
+![Recuadro metodo de cifrado](\images\ImgEncriptarDesencriptar.svg)
 
- If the key is not valid a warning message will be returned 
+If the key is not valid a warning message will be returned 
  
- ![Recuadro Alerta](\images\ImgMensajeError.svg)
+![Recuadro Alerta](\images\ImgMensajeError.svg)
  
- and if you do not give the key, the system is going to create an aleatory key for the encryption method. This key, aleatory or not wil be show to the user with encrypt message.
+and if you do not give the key, the system is going to create an aleatory key for the encryption method. This key, aleatory or not wil be show to the user with encrypt message.
 
 ## Types of encryption and their keys
 
-In the first instance we assume  we are working in English language, so the dictionary has 26 letters and they areare numbered as follows
+In the first instance we assume  we are working in English language, so the dictionary has 26 letters and they are numbered as follows
 
     A : 0  B : 1  C : 2  D : 3 E : 4 F : 5 G : 6 H : 7 I : 8 J : 9 K : 10 L : 11 M : 12 N : 13 
  

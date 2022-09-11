@@ -3,6 +3,7 @@ from algorithms.vigenere import vigenereEncrypt, vigenereDecrypt
 from algorithms.affine import affineEncrypt, affineDecrypt
 from algorithms.substitution import substitutionEncrypt
 from algorithms.permutation import permutationEncrypt
+from algorithms.hillText import hillEncrypt, hillDecrypt
 from algorithms.goodies import processInput, InputKeyError
 
 from flask import Flask, redirect, url_for, session, flash
@@ -47,6 +48,8 @@ def home():
                             session["output_text"], session["output_key"] = substitutionEncrypt(input_text, input_key)
                         case "Permutation cipher":
                             session["output_text"], session["output_key"] = permutationEncrypt(input_text, input_key)
+                        case "Hill (Text) cipher":
+                            session["output_text"], session["output_key"] = hillEncrypt(input_text, input_key)
                    
                     return redirect(url_for('outputTextAndKey')) 
 
@@ -65,6 +68,8 @@ def home():
                         session["output_text"], session["output_key"] = substitutionEncrypt(input_text)
                     case "Permutation cipher":
                         session["output_text"], session["output_key"] = permutationEncrypt(input_text)
+                    case "Hill (Text) cipher":
+                        session["output_text"], session["output_key"] = hillEncrypt(input_text)
 
                 return redirect(url_for('outputTextAndKey')) 
                 
