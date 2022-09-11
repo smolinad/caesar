@@ -1,6 +1,8 @@
 #Cryptoanalysis de una sola palabra larga?
 
 import math
+import random
+
 import sympy
 from goodies import InputKeyError
 """
@@ -17,10 +19,12 @@ Cada una debe constar de size palabras, de las cuales solo se toma en cuenta las
 Devuelve clave
 """
 
-def hillEncrypt(size: int, text: str, key = ""):
+def hillEncrypt( text: str, key = ""):
     if key == "":
+        size = random.randint(2,5)
         keyMatrix = randomKeyMatrix(size)
     else:
+        size = int(math.sqrt(len(key)))
         checkInput(text, key, size)
         keyMatrix = getMatrix(key, size)
         isInvertibleMod(keyMatrix, 26, "key")
@@ -32,9 +36,9 @@ def hillEncrypt(size: int, text: str, key = ""):
     keyText = getText(keyMatrix)
     return ["".join(encriptedText), keyText]
 
-def hillDecrypt(size: int, text: str, key: str):
-
-    keyMatrix = getMatrix(key, size)
+def hillDecrypt( text: str, key: str):
+    size = int(math.sqrt(len(key)))
+    keyMatrix = getMatrix(key, size, True)
     textVector = getTextMatrix(text, size)
 
     isInvertibleMod(keyMatrix, 26, "key")
@@ -46,7 +50,8 @@ def hillDecrypt(size: int, text: str, key: str):
 
     return [decryptedText, inverseKey]
 
-def hillCryptoAnalysis(size: int, encryptedTexts: list, plainTexts: list):
+def hillCryptoAnalysis( encryptedTexts: list, plainTexts: list):
+    size = len(encryptedTexts)
     checkAnalysisInput(encryptedTexts, plainTexts, size)
 
     encrypted_list = []
@@ -120,7 +125,7 @@ def getMatrix(text: list, size: int, square=False):
         intList = [ord(j) % 65 for j in charList]
         matrix_num.append(intList)
 
-        if square and len(intList) != len(text_l):
+        if square and len(intList) != size:
             raise InputKeyError("There must be an equal amount of elements in every column and row")
 
     return sympy.Matrix(matrix_num)
@@ -143,16 +148,15 @@ def getText(keyMatrix: sympy.Matrix):
 
 t = "WORLDISFUNINNOS"
 k = "NINELETTE"
-a = hillEncrypt(3, t, k)
-ax = hillDecrypt(3, a[0], a[1])
+a = hillEncrypt(t, k)
+ax = hillDecrypt(a[0], a[1])
 
-b = hillEncrypt(3, t)
-bx = hillDecrypt(3, a[0], a[1])
+b = hillEncrypt(t)
+bx = hillDecrypt(a[0], a[1])
 
-"Example invertible matrix mod 26 fxampjtqo"
+"Example invertible 3x3 matrix mod 26 fxampjtqo"
 p_t = ["FXA", "MPJ", "TQOV"]
 e_t = ["BHB", "XQS", "FWD"]
 
-y = [hillEncrypt(3, i, k) for i in p_t]
-x = hillCryptoAnalysis(3, e_t, p_t) # Debe ser k= NINELETTE
-print(x)
+y = [hillEncrypt(i, k) for i in p_t]
+x = hillCryptoAnalysis(e_t, p_t) # Debe ser k= NINELETTE
