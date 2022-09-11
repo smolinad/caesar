@@ -24,11 +24,6 @@ def caesarDecrypt(text:str, key=None)->list:
 
   if key.isdigit():
     key = int(key)
-    return [
-      dict(
-        key=key,
-        message=''.join([ALPHABET[(ALPHABET.find(c) - key) % len(ALPHABET)] for c in text])
-        )
-    ]
+    return (''.join([ALPHABET[(ALPHABET.find(c) - key) % len(ALPHABET)] for c in text]), key)
   else:
     raise InputKeyError("Your key should be an integer between 0 and 25.")

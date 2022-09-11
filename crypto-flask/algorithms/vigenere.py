@@ -8,8 +8,10 @@ ALPHABET = list(string.ascii_uppercase)
 def vigenereEncrypt(frase:str, clave=None):
 
     if clave is None:
-        clave = ''.join(random.choices(ALPHABET, k=random.randint(2, len(input))))
-    elif "".join(clave.split()).isalpha():
+        l = random.randint(2, 6)
+        clave = ''.join(random.choices(ALPHABET, k=l))
+
+    if "".join(clave.split()).isalpha():
       clave_list = []
       for letra in clave.upper():
           clave_list.append(ALPHABET.index(letra))
@@ -21,7 +23,7 @@ def vigenereEncrypt(frase:str, clave=None):
           contador = (contador + 1) % len(clave)
       return (newFrase, clave) #retorna la tupla (Mensaje_Encriptado, clave)
     else:
-      raise InputKeyError("keyError: Must be a word or a phrase made up of letters")
+      raise InputKeyError("The key must be a word or a phrase made up of letters.")
   
   
   # --------- DECIFRADO --------------- 
@@ -45,9 +47,9 @@ def vigenereDecryptKey(frase:str, clave): # Esta función no te importa, la que 
           contador = (contador + 1) % len(clave)
           
 
-      return(newFrase) 
+      return (newFrase) 
     else:
-      return("keyError: Must be a word or a phrase made up of letters")
+      raise InputKeyError("The key must be a word or a phrase made up of letters.")
 
 def letrasMasfrecuentes(texto):
   letras = [0]*26
@@ -97,15 +99,15 @@ def vigenereDecrypt(text:str, key=None):
           posibles_claves.append(("".join(items)))
 
       for clave in posibles_claves:
-        posibles_mensajes.append((vigenereDecryptKey(text, clave),clave))
+        posibles_mensajes.append(dict(message=vigenereDecryptKey(text, clave), key=clave))
         
-    return(posibles_mensajes) #Retorna una lista con tuplas con el posible mensaje encriptado y la posible clave
+    return (posibles_mensajes) #Retorna una lista con tuplas con el posible mensaje encriptado y la posible clave
 # Ejmplo [("GRACIASPOR", "BETA"), ("AYUDARMEA", "OMEGA"),("APRENDER", "ALPHA")]
 
   elif "".join(key.split()).isalpha():
-    return(vigenereDecryptKey(text, key),key)  #Si la función recibe clave retorna una tupla con mensaje encriptado y la clave
+    return (vigenereDecryptKey(text, key), key)  #Si la función recibe clave retorna una tupla con mensaje encriptado y la clave
 # Ejmplo ("HOLAMUNDO", "ALPHA")
   else:
-    return("keyError: Must be a word or a phrase made up of letters")
+    raise InputKeyError("The key must be a word or a phrase made up of letters.")
   
   

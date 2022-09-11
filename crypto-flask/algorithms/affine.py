@@ -1,5 +1,5 @@
 import random # para los ejemplos
-from goodies import ALPHABET, InputKeyError
+from algorithms.goodies import ALPHABET, InputKeyError
 
 coprimos = [3, 5, 7, 9, 11, 15, 17, 19, 21, 23, 25]
 inversos = [9, 21, 15, 3, 19, 7, 23, 11, 5 , 17, 25 ]
@@ -49,11 +49,11 @@ def affineDecrypt(input:str, key=None):
       for letra in input:
         letra = ALPHABET[(a * (ALPHABET.index(letra) - b)) % 26]
         newPalabra = newPalabra + letra
-      return [dict(key=f"a={a1}, b={b}", message=newPalabra)] # retorna una tupla con el mensaje desencriptado y la clave que es otra tupla
+      return (newPalabra, f"a={a1}, b={b}") # retorna una tupla con el mensaje desencriptado y la clave que es otra tupla
     else:
       raise InputKeyError("Key must be pair of integers 'a b' separated by an space where 'a' is a positive integer coprime with 26 between 0 and 25")
   else:
     raise InputKeyError("Key must be pair of integers 'a b' separated by an space where 'a' is a positive integer coprime with 26 between 0 and 25")
 
 
-print(affineDecrypt("ZULEOMRNU","3 4a"))
+# print(affineDecrypt("ZULEOMRNU","3 4a"))

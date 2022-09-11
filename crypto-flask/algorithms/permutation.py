@@ -1,6 +1,6 @@
 # Falta analysis
 import random
-from goodies import InputKeyError
+from algorithms.goodies import InputKeyError
 
 """
 Tanto Encrypt como Decrypt 
@@ -23,16 +23,17 @@ def permutationEncrypt(t: str, k=None):
 
     if k == None:
         k = randomKeyPermutation()
+
     text = t
     key = [int(x) for x in k.split(" ")]
 
     if not isNumberPermutation(key):
-        return
+        raise InputKeyError("The key must be a permutation of the numbers from 1 to n.")
 
     text = completeWithAs(text, len(key))
     encrypted_text = performPermutation(text, key)
 
-    return [encrypted_text, k]
+    return (encrypted_text, k)
 
 
 def permutationDecrypt(t: str, k: str):
@@ -51,10 +52,9 @@ def permutationDecrypt(t: str, k: str):
     key = [int(x) for x in k.split(" ")]
 
     if not isNumberPermutation(key):
-        return
+        InputKeyError("The key must be a permutation of the numbers from 1 to n.")
     if not len(text)%len(key) == 0:
-        raise InputKeyError("Length of key must divide length of text")
-        return
+        raise InputKeyError("Length of key must divide length of text.")
 
     inverse_key = inversePermutation(key)
     encrypted_text = performPermutation(text,inverse_key)
@@ -123,10 +123,10 @@ def inversePermutation(key:list):
         inverse_key[value-1] = i+1
     return inverse_key
 
-a = permutationEncrypt("XYZ", "2 4 3 1 5")
-ax = permutationDecrypt("YAZXA", "2 4 3 1 5")
-print(a)
-print(ax)
+# a = permutationEncrypt("XYZ", "2 4 3 1 5")
+# ax = permutationDecrypt("YAZXA", "2 4 3 1 5")
+# print(a)
+# print(ax)
 
-b = permutationEncrypt("123456789")
-print(b)
+# b = permutationEncrypt("123456789")
+# print(b)
