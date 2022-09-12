@@ -39,17 +39,17 @@ def home():
                 try:
                     match cypher_mode:
                         case "Caesar cipher":
-                            session["output_text"], session["output_key"] = caesarEncrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = caesarEncrypt(input_text, input_key) #Ok
                         case "Vigenere cipher":
-                            session["output_text"], session["output_key"] = vigenereEncrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = vigenereEncrypt(input_text, input_key) #Ok
                         case "Affine cipher":
-                            session["output_text"], session["output_key"] = affineEncrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = affineEncrypt(input_text, input_key) #Ok 
                         case "Substitution cipher":
-                            session["output_text"], session["output_key"] = substitutionEncrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = substitutionEncrypt(input_text, input_key) #Ok
                         case "Permutation cipher":
-                            session["output_text"], session["output_key"] = permutationEncrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = permutationEncrypt(input_text, input_key) #Ok
                         case "Hill (Text) cipher":
-                            session["output_text"], session["output_key"] = hillEncrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = hillEncrypt(input_text, input_key) # Not working
                    
                     return redirect(url_for('outputTextAndKey')) 
 
@@ -59,17 +59,17 @@ def home():
             else:
                 match cypher_mode:
                     case "Caesar cipher":
-                        session["output_text"], session["output_key"] = caesarEncrypt(input_text)
+                        session["output_text"], session["output_key"] = caesarEncrypt(input_text) #Ok 
                     case "Vigenere cipher":
-                        session["output_text"], session["output_key"] = vigenereEncrypt(input_text)
+                        session["output_text"], session["output_key"] = vigenereEncrypt(input_text) #Ok
                     case "Affine cipher":
-                        session["output_text"], session["output_key"] = affineEncrypt(input_text)
+                        session["output_text"], session["output_key"] = affineEncrypt(input_text) #Ok
                     case "Substitution cipher":
-                        session["output_text"], session["output_key"] = substitutionEncrypt(input_text)
+                        session["output_text"], session["output_key"] = substitutionEncrypt(input_text) # Ok (I hope :s)
                     case "Permutation cipher":
-                        session["output_text"], session["output_key"] = permutationEncrypt(input_text)
+                        session["output_text"], session["output_key"] = permutationEncrypt(input_text) # Ok
                     case "Hill (Text) cipher":
-                        session["output_text"], session["output_key"] = hillEncrypt(input_text)
+                        session["output_text"], session["output_key"] = hillEncrypt(input_text) # Not working
 
                 return redirect(url_for('outputTextAndKey')) 
                 

@@ -18,7 +18,7 @@ def permutationEncrypt(t: str, key=None):
     k = key
     text = t
     if not "".join(key.split()).isdigit():
-        raise InputKeyError("Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #InputKeyError
+        raise InputKeyError("Key must be a permutation where numbers are separated by an space. Ex: '2 3 5 4 1'") #InputKeyError
 
     else:
             
@@ -51,7 +51,7 @@ def permutationDecryptKey(t: str, key: str):
 
       return [encrypted_text,k]
     else:
-      raise InputKeyError("ERROR : Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #InputKeyError
+      raise InputKeyError("The key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #InputKeyError
 
 # --------------------------->
 # Funciones de Encrypt y Decrypt
@@ -61,9 +61,9 @@ def everyNumberJustOnce(s: list):
     for i in range(1, len(s) + 1):
         x: int = s.count(i)
         if 1 < x:
-             raise InputKeyError("ERROR : Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #raise
+             raise InputKeyError("The key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #raise
         elif x < 1:
-             raise InputKeyError("ERROR : Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #raise + cambiar print  por InputKeyError
+             raise InputKeyError("The key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #raise + cambiar print  por InputKeyError
 
     return True
 
@@ -120,7 +120,6 @@ def inversePermutation(key:list):
 # [['posibleMensaje1, clave1],['posibleMensaje2, clave2]]
 
 
-
 subCadenas = ['TH','HE','IN','ER']
 def frecuenciaSubString(cadena):
   frecuencias = {}
@@ -130,23 +129,18 @@ def frecuenciaSubString(cadena):
 
 
 def permutationDecrypt(textoCifrado, key=None):
-
   divisores = []
-
   if key == None:
-
     for num in [4,5,6]:
       if len(textoCifrado) % num == 0:
         divisores.append(num)
 
-
-
     if len(divisores) == 0:
-      raise KeyError("ERROR: Text lenght is not valid, must be 4,5 or 6 multiply") #cambiar print  por InputKeyError
+      raise KeyError("Text lenght is not valid, must be 4,5 or 6 multiply") #cambiar print  por InputKeyError
 
     else:
        if not "".join(key.split()).isdigit():
-            raise InputKeyError("ERROR : Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #cambiar print  por InputKeyError
+            raise InputKeyError("The key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #cambiar print  por InputKeyError
        
        else:
             rangeDivisores =[]
@@ -179,7 +173,7 @@ def permutationDecrypt(textoCifrado, key=None):
 
             return(posiblesTextosDecifrados)
   else:
-    raise permutationDecryptKey(textoCifrado,key)
+    raise permutationDecryptKey(textoCifrado, key)
 
 
 

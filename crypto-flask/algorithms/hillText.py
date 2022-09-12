@@ -19,14 +19,9 @@ Cada una debe constar de size palabras, de las cuales solo se toma en cuenta las
 Devuelve clave
 """
 
-<<<<<<< HEAD
-def hillEncrypt(size: int, text: str, key = None):
-    if key == None:
-=======
 def hillEncrypt( text: str, key = ""):
     if key == "":
         size = random.randint(2,5)
->>>>>>> ffe22831bc543919686d404eb030a66330753406
         keyMatrix = randomKeyMatrix(size)
     else:
         size = int(math.sqrt(len(key)))
@@ -39,7 +34,7 @@ def hillEncrypt( text: str, key = ""):
 
     encriptedText = getText(encryptedMatrix)
     keyText = getText(keyMatrix)
-    return ["".join(encriptedText), keyText]
+    return ("".join(encriptedText), keyText)
 
 def hillDecrypt( text: str, key: str):
     size = int(math.sqrt(len(key)))
