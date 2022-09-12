@@ -15,8 +15,10 @@ def permutationEncrypt(t: str, key=None):
 
     if key == None:
         key = randomKeyPermutation()
+        
     k = key
     text = t
+    
     if not "".join(key.split()).isdigit():
         raise InputKeyError("Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #InputKeyError
 
@@ -25,7 +27,7 @@ def permutationEncrypt(t: str, key=None):
       key = [int(x) for x in k.split(" ")]
 
       if not isNumberPermutation(key):
-          return
+          raise InputKeyError("Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #InputKeyError
 
       text = completeWithAs(text, len(key))
       encrypted_text = performPermutation(text, key)
@@ -36,22 +38,23 @@ def permutationDecryptKey(t: str, key: str):
 
     text = t
     k = key
-    if "".join(key.split()).isdigit():
-      key = [int(x) for x in k.split()]
-
-      if not isNumberPermutation(key):
-          return
-      if not len(text)%len(key) == 0:
-          raise InputKeyError("Length of key must divide length of text") #InputKeyError
-          return
-
-      inverse_key = inversePermutation(key)
-      encrypted_text = performPermutation(text,inverse_key)
-      k = " ".join([str(x) for x in inverse_key])
-
-      return [encrypted_text,k]
-    else:
+    
+    if not "".join(key.split()).isdigit():
       raise InputKeyError("ERROR : Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #InputKeyError
+    else:
+        key = [int(x) for x in k.split()]
+
+        if not isNumberPermutation(key):
+            raise InputKeyError("Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #InputKeyError
+        if not len(text)%len(key) == 0:
+            raise InputKeyError("Length of key must divide length of text") 
+
+        inverse_key = inversePermutation(key)
+        encrypted_text = performPermutation(text,inverse_key)
+        k = " ".join([str(x) for x in inverse_key])
+
+        return [encrypted_text,k]
+      
 
 # --------------------------->
 # Funciones de Encrypt y Decrypt
@@ -175,6 +178,7 @@ def permutationDecrypt(textoCifrado, key=None):
 
                 return(posiblesTextosDecifrados)
     else:
-        permutationDecryptKey(textoCifrado,key)
+        return permutationDecryptKey(textoCifrado,key)
+
 
 
