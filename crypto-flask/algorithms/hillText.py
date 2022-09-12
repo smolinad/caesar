@@ -19,8 +19,8 @@ Cada una debe constar de size palabras, de las cuales solo se toma en cuenta las
 Devuelve clave
 """
 
-def hillEncrypt( text: str, key = ""):
-    if key == "":
+def hillEncrypt( text: str, key = None):
+    if key == None:
         size = random.randint(2, 4)
         keyMatrix = randomKeyMatrix(size) % 26
     else:
@@ -48,7 +48,7 @@ def hillDecrypt( text: str, key: str):
     inverseKey = getText(inverseKeyMatrix)
     decryptedText = getText(decipherMatrix)
 
-    return [decryptedText, inverseKey]
+    return (decryptedText, inverseKey)
 
 def hillCryptoAnalysis( encryptedTexts: list, plainTexts: list):
     size = len(encryptedTexts)
@@ -107,12 +107,12 @@ def checkInput(text:str, key: str, size:int):
     if size*2 > len(key):
         raise InputKeyError("Key must be " + str(size*2) + " characters long")
     onlyUppercase_letters(key)
-    onlyUppercase_letters(text)
+    # onlyUppercase_letters(text)
 
 def onlyUppercase_letters(s):
     for i in s:
         if (ord(i) < 65 or 91 < ord(i)):
-            raise InputKeyError("text must contain only uppercase letters")
+            raise InputKeyError("The key must contain only uppercase letters")
     return True
 
 #---------------> Converters

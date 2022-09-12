@@ -1,8 +1,8 @@
 from algorithms.caesar import caesarEncrypt, caesarDecrypt
 from algorithms.vigenere import vigenereEncrypt, vigenereDecrypt
 from algorithms.affine import affineEncrypt, affineDecrypt
-from algorithms.substitution import substitutionEncrypt
-from algorithms.permutation import permutationEncrypt
+from algorithms.substitution import substitutionDecrypt, substitutionEncrypt
+from algorithms.permutation import permutationDecrypt, permutationEncrypt
 from algorithms.hillText import hillEncrypt, hillDecrypt
 from algorithms.goodies import processInput, InputKeyError
 
@@ -49,7 +49,7 @@ def home():
                         case "Permutation cipher":
                             session["output_text"], session["output_key"] = permutationEncrypt(input_text, input_key) #Ok
                         case "Hill (Text) cipher":
-                            session["output_text"], session["output_key"] = hillEncrypt(input_text, input_key) # Not working
+                            session["output_text"], session["output_key"] = hillEncrypt(input_text, input_key) # Ok
                    
                     return redirect(url_for('outputTextAndKey')) 
 
@@ -69,8 +69,7 @@ def home():
                     case "Permutation cipher":
                         session["output_text"], session["output_key"] = permutationEncrypt(input_text) # Ok
                     case "Hill (Text) cipher":
-                        session["output_text"], session["output_key"] = hillEncrypt(input_text) # Not working
-
+                        session["output_text"], session["output_key"] = hillEncrypt(input_text) # Ok
                 return redirect(url_for('outputTextAndKey')) 
                 
         elif form.decrypt.data:
@@ -79,11 +78,17 @@ def home():
                     session["encrypted_or_decrypted"] = "decrypted"
                     match cypher_mode:
                         case "Caesar cipher":
-                            session["output_text"], session["output_key"] = caesarDecrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = caesarDecrypt(input_text, input_key) # Ok
                         case "Vigenere cipher":
-                            session["output_text"], session["output_key"] = vigenereDecrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = vigenereDecrypt(input_text, input_key) # Ok
                         case "Affine cipher":
-                            session["output_text"], session["output_key"] = affineDecrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = affineDecrypt(input_text, input_key) # Ok
+                        case "Substitution cipher":
+                            session["output_text"], session["output_key"] = substitutionDecrypt(input_text, input_key) #Ok
+                        case "Permutation cipher":
+                            session["output_text"], session["output_key"] = permutationDecrypt(input_text, input_key) # Not working
+                        case "Hill (Text) cipher":
+                            session["output_text"], session["output_key"] = hillDecrypt(input_text, input_key) #Ok
 
                     return redirect(url_for('outputTextAndKey'))  
 
@@ -93,13 +98,13 @@ def home():
             else:
                 match cypher_mode:
                     case "Caesar cipher":
-                        session["analysis_output"] = caesarDecrypt(input_text)
+                        session["analysis_output"] = caesarDecrypt(input_text) # Ok
                         return redirect(url_for('bruteForceAnalysis'))
                     case "Vigenere cipher":
-                        session["analysis_output"] = vigenereDecrypt(input_text)
+                        session["analysis_output"] = vigenereDecrypt(input_text) # Ok
                         return redirect(url_for('bruteForceAnalysis'))
                     case "Affine cipher":
-                        session["analysis_output"] = affineDecrypt(input_text)
+                        session["analysis_output"] = affineDecrypt(input_text) # Ok
                         return redirect(url_for('bruteForceAnalysis'))
 
                 

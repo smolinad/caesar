@@ -22,36 +22,34 @@ def permutationEncrypt(t: str, key=None):
 
     else:
             
-      key = [int(x) for x in k.split(" ")]
+        key = [int(x) for x in k.split(" ")]
 
-      if not isNumberPermutation(key):
-          return
+        if not isNumberPermutation(key):
+            return
 
-      text = completeWithAs(text, len(key))
-      encrypted_text = performPermutation(text, key)
+        text = completeWithAs(text, len(key))
+        encrypted_text = performPermutation(text, key)
 
-      return [encrypted_text, k]
+        return [encrypted_text, k]
 
 def permutationDecryptKey(t: str, key: str):
-
     text = t
     k = key
     if "".join(key.split()).isdigit():
-      key = [int(x) for x in k.split()]
+        key = [int(x) for x in k.split()]
 
-      if not isNumberPermutation(key):
-          return
-      if not len(text)%len(key) == 0:
-          raise InputKeyError("Length of key must divide length of text") #InputKeyError
-          return
+        if not isNumberPermutation(key):
+            return
+        if not len(text)%len(key) == 0:
+            raise InputKeyError("Length of key must divide length of text") #InputKeyError
 
-      inverse_key = inversePermutation(key)
-      encrypted_text = performPermutation(text,inverse_key)
-      k = " ".join([str(x) for x in inverse_key])
+        inverse_key = inversePermutation(key)
+        encrypted_text = performPermutation(text,inverse_key)
+        k = " ".join([str(x) for x in inverse_key])
 
-      return [encrypted_text,k]
+        return (encrypted_text, key)
     else:
-      raise InputKeyError("The key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #InputKeyError
+        raise InputKeyError("The key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #InputKeyError
 
 # --------------------------->
 # Funciones de Encrypt y Decrypt
@@ -61,9 +59,9 @@ def everyNumberJustOnce(s: list):
     for i in range(1, len(s) + 1):
         x: int = s.count(i)
         if 1 < x:
-             raise InputKeyError("The key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #raise
+            raise InputKeyError("The key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #raise
         elif x < 1:
-             raise InputKeyError("The key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #raise + cambiar print  por InputKeyError
+            raise InputKeyError("The key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #raise + cambiar print  por InputKeyError
 
     return True
 
@@ -138,42 +136,40 @@ def permutationDecrypt(textoCifrado, key=None):
             if len(textoCifrado) % num == 0:
                 divisores.append(num)
 
-
-
         if len(divisores) == 0:
-            raise KeyError("ERROR: Text lenght is not valid, must be 4,5 or 6 multiply") #cambiar print  por InputKeyError
+            raise InputKeyError("ERROR: Text lenght is not valid, must be 4,5 or 6 multiply") #cambiar print  por InputKeyError
 
         else:           
-                rangeDivisores =[]
+            rangeDivisores =[]
 
-                for i in divisores:
-                    rangeDivisores.append(list(range(i)))
+            for i in divisores:
+                rangeDivisores.append(list(range(i)))
 
-                permutaciones = []
-                permutacionesStr = []
+            permutaciones = []
+            permutacionesStr = []
 
-                for lista in rangeDivisores:
-                    permutaciones.append(list(itertools.permutations(lista)))
+            for lista in rangeDivisores:
+                permutaciones.append(list(itertools.permutations(lista)))
 
-                for divisor in permutaciones:
-                    for permutacion in divisor:
-                        llave = ''
-                        for numero in permutacion:
-                            llave += str(numero +1 ) + ' '
+            for divisor in permutaciones:
+                for permutacion in divisor:
+                    llave = ''
+                    for numero in permutacion:
+                        llave += str(numero +1 ) + ' '
+            
+                permutacionesStr.append(llave.rstrip(llave[-1])) #Todas las posibles permutaciones
                 
-                    permutacionesStr.append(llave.rstrip(llave[-1])) #Todas las posibles permutaciones
-                    
-                posiblesTextosDecifrados = []
+            posiblesTextosDecifrados = []
 
-                for posibleClave in permutacionesStr:
-                    t = permutationDecryptKey(textoCifrado, posibleClave)
-                    f = frecuenciaSubString(t[0])
-                
-                    if (f['TH'] + f['HE'] + f['IN'] + f['ER'] ) >= 10  :
-                        posiblesTextosDecifrados.append(t)
+            for posibleClave in permutacionesStr:
+                t = permutationDecryptKey(textoCifrado, posibleClave)
+                f = frecuenciaSubString(t[0])
+            
+                if (f['TH'] + f['HE'] + f['IN'] + f['ER'] ) >= 10  :
+                    posiblesTextosDecifrados.append(t)
 
-                return(posiblesTextosDecifrados)
+            return(posiblesTextosDecifrados)
     else:
-        permutationDecryptKey(textoCifrado,key)
+        permutationDecryptKey(textoCifrado, key)
 
 
