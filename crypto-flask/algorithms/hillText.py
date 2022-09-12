@@ -22,11 +22,11 @@ Devuelve clave
 def hillEncrypt( text: str, key = ""):
     if key == "":
         size = random.randint(2, 4)
-        keyMatrix = randomKeyMatrix(size) % 26
+        keyMatrix = randomKeyMatrix(size)
     else:
         size = int(math.sqrt(len(key)))
         checkInput(text, key, size)
-        keyMatrix = getMatrix(key, size) % 26
+        keyMatrix = getMatrix(key, size)
         isInvertibleMod(keyMatrix, 26, "key")
 
     textMatrix = getTextMatrix(text, size)
@@ -68,7 +68,7 @@ def hillCryptoAnalysis( encryptedTexts: list, plainTexts: list):
     return getText(key_matrix)
 
 def randomKeyMatrix(size: int):
-    matrix = sympy.randMatrix(size, min=0, max=26, symmetric=True)
+    matrix = sympy.randMatrix(size, min=0, max=25, symmetric=True)
     while math.gcd(matrix.det(), 26) != 1:
         matrix = sympy.randMatrix(size, min=0, max=25, symmetric=True)
     return matrix
