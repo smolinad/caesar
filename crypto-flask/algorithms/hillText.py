@@ -21,12 +21,12 @@ Devuelve clave
 
 def hillEncrypt( text: str, key = ""):
     if key == "":
-        size = random.randint(2,5)
-        keyMatrix = randomKeyMatrix(size)
+        size = random.randint(2, 4)
+        keyMatrix = randomKeyMatrix(size) % 26
     else:
         size = int(math.sqrt(len(key)))
         checkInput(text, key, size)
-        keyMatrix = getMatrix(key, size)
+        keyMatrix = getMatrix(key, size) % 26
         isInvertibleMod(keyMatrix, 26, "key")
 
     textMatrix = getTextMatrix(text, size)
@@ -148,8 +148,10 @@ def getText(keyMatrix: sympy.Matrix):
 
 t = "WORLDISFUNINNOS"
 k = "NINELETTE"
-a = hillEncrypt(t, k)
-ax = hillDecrypt(a[0], a[1])
+
+"""
+for i in range(100):
+    print(hillEncrypt(t))
 
 b = hillEncrypt(t)
 bx = hillDecrypt(b[0], b[1])
@@ -160,3 +162,4 @@ e_t = ["BHB", "XQS", "FWD"]
 
 y = [hillEncrypt(i, k) for i in p_t]
 x = hillCryptoAnalysis(e_t, p_t) # Debe ser k= NINELETTE
+"""

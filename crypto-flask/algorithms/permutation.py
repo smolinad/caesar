@@ -129,51 +129,51 @@ def frecuenciaSubString(cadena):
 
 
 def permutationDecrypt(textoCifrado, key=None):
-  divisores = []
-  if key == None:
-    for num in [4,5,6]:
-      if len(textoCifrado) % num == 0:
-        divisores.append(num)
 
-    if len(divisores) == 0:
-      raise KeyError("Text lenght is not valid, must be 4,5 or 6 multiply") #cambiar print  por InputKeyError
+    divisores = []
 
-    else:
-       if not "".join(key.split()).isdigit():
-            raise InputKeyError("The key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #cambiar print  por InputKeyError
-       
-       else:
-            rangeDivisores =[]
+    if key == None:
 
-            for i in divisores:
-                rangeDivisores.append(list(range(i)))
+        for num in [4,5,6]:
+            if len(textoCifrado) % num == 0:
+                divisores.append(num)
 
-            permutaciones = []
-            permutacionesStr = []
 
-            for lista in rangeDivisores:
-                permutaciones.append(list(itertools.permutations(lista)))
 
-            for divisor in permutaciones:
-                for permutacion in divisor:
-                    llave = ''
-                    for numero in permutacion:
-                        llave += str(numero +1 ) + ' '
-            
-                permutacionesStr.append(llave.rstrip(llave[-1])) #Todas las posibles permutaciones
+        if len(divisores) == 0:
+            raise KeyError("ERROR: Text lenght is not valid, must be 4,5 or 6 multiply") #cambiar print  por InputKeyError
+
+        else:           
+                rangeDivisores =[]
+
+                for i in divisores:
+                    rangeDivisores.append(list(range(i)))
+
+                permutaciones = []
+                permutacionesStr = []
+
+                for lista in rangeDivisores:
+                    permutaciones.append(list(itertools.permutations(lista)))
+
+                for divisor in permutaciones:
+                    for permutacion in divisor:
+                        llave = ''
+                        for numero in permutacion:
+                            llave += str(numero +1 ) + ' '
                 
-            posiblesTextosDecifrados = []
+                    permutacionesStr.append(llave.rstrip(llave[-1])) #Todas las posibles permutaciones
+                    
+                posiblesTextosDecifrados = []
 
-            for posibleClave in permutacionesStr:
-                t = permutationDecryptKey(textoCifrado, posibleClave)
-                f = frecuenciaSubString(t[0])
-            
-                if (f['TH'] + f['HE'] + f['IN'] + f['ER'] ) >= 10  :
-                    posiblesTextosDecifrados.append(t)
+                for posibleClave in permutacionesStr:
+                    t = permutationDecryptKey(textoCifrado, posibleClave)
+                    f = frecuenciaSubString(t[0])
+                
+                    if (f['TH'] + f['HE'] + f['IN'] + f['ER'] ) >= 10  :
+                        posiblesTextosDecifrados.append(t)
 
-            return(posiblesTextosDecifrados)
-  else:
-    raise permutationDecryptKey(textoCifrado, key)
-
+                return(posiblesTextosDecifrados)
+    else:
+        permutationDecryptKey(textoCifrado,key)
 
 
