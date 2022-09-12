@@ -1,7 +1,7 @@
 # Falta analysis
 import random, itertools
 
-from algorithms.goodies import ALPHABET, InputKeyError
+from goodies import ALPHABET, InputKeyError
 
 
 """
@@ -144,11 +144,7 @@ def permutationDecrypt(textoCifrado, key=None):
         if len(divisores) == 0:
             raise KeyError("ERROR: Text lenght is not valid, must be 4,5 or 6 multiply") #cambiar print  por InputKeyError
 
-        else:
-            if not "".join(key.split()).isdigit():
-                    raise InputKeyError("ERROR : Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #cambiar print  por InputKeyError
-        
-            else:
+        else:           
                 rangeDivisores =[]
 
                 for i in divisores:
@@ -180,6 +176,5 @@ def permutationDecrypt(textoCifrado, key=None):
                 return(posiblesTextosDecifrados)
     else:
         permutationDecryptKey(textoCifrado,key)
-
 
 
