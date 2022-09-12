@@ -26,8 +26,8 @@ def permutationEncrypt(t: str, key=None):
             
         key = [int(x) for x in k.split(" ")]
 
-      if not isNumberPermutation(key):
-          raise InputKeyError("Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #InputKeyError
+        if not isNumberPermutation(key):
+            raise InputKeyError("Key must be a permutation where numbers are separated by an space Ex: '2 3 5 4 1'") #InputKeyError
 
         text = completeWithAs(text, len(key))
         encrypted_text = performPermutation(text, key)
@@ -174,11 +174,7 @@ def permutationDecrypt(textoCifrado, key=None):
 
             return(posiblesTextosDecifrados)
     else:
-<<<<<<< HEAD
-        permutationDecryptKey(textoCifrado, key)
-=======
         return permutationDecryptKey(textoCifrado,key)
 
->>>>>>> 3c96dcf90149aeca1e268d9d097e76a1a7a04e1e
 
 

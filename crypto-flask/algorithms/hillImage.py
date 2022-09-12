@@ -3,7 +3,7 @@
 import cv2 as cv
 import numpy
 import numpy as np
-from goodies import InputKeyError
+from algorithms.goodies import InputKeyError
 
 """
 hillEncrypt recibe (s: str, k="") donde s es el nombre de la imagen a encriptar  y k es el nombre de la imagen clave
@@ -13,7 +13,7 @@ hillDecrypt recibe (s: str, k: str) donde s y k son los descritos arriba.
 no devuelve nada, en lugar de ello guarda las imagenes decrypted y key en la carpeta test-img
 """
 
-def hillEncrypt(s: str, k=""):
+def hillImgEncrypt(s: str, k=""):
     mod = 256
     plain_rectangle = readGray(s)
 
@@ -37,7 +37,7 @@ def hillEncrypt(s: str, k=""):
     cv.imwrite('test-img/encrypted.png', encrypted)
     cv.imwrite('test-img/key.png', key_orig)
 
-def hillDecrypt(s: str, k: str):
+def hillImgDecrypt(s: str, k: str):
     mod = 256
     encrypted = readGray(s)
     key_orig = readGray(k)
@@ -49,7 +49,7 @@ def hillDecrypt(s: str, k: str):
     isInvolutory(key, mod)
 
     if key.shape[0] != encrypted.shape[0]:
-        raise InputKeyError
+        raise InputKeyError("")
 
     decrypted = np.matmul(encrypted, key) % mod
 
@@ -86,5 +86,5 @@ def readGray(s: str):
 
     return cv.cvtColor(coloredIm, cv.COLOR_BGR2GRAY)
 
-hillEncrypt('test-img/mani.png')
-hillDecrypt('test-img/encrypted.png', 'test-img/key.png')
+# hillEncrypt('test-img/mani.png')
+# hillDecrypt('test-img/encrypted.png', 'test-img/key.png')

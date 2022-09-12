@@ -1,9 +1,10 @@
 from algorithms.caesar import caesarEncrypt, caesarDecrypt
 from algorithms.vigenere import vigenereEncrypt, vigenereDecrypt
 from algorithms.affine import affineEncrypt, affineDecrypt
-from algorithms.substitution import substitutionDecrypt, substitutionEncrypt
+from algorithms.substitution import substitutionEncrypt, substitutionDecrypt, substitutionCryptanalysis
 from algorithms.permutation import permutationDecrypt, permutationEncrypt
 from algorithms.hillText import hillEncrypt, hillDecrypt
+from algorithms.hillImage import hillImgEncrypt, hillImgDecrypt
 from algorithms.goodies import processInput, InputKeyError
 
 from flask import Flask, redirect, url_for, session, flash
@@ -86,7 +87,7 @@ def home():
                         case "Substitution cipher":
                             session["output_text"], session["output_key"] = substitutionDecrypt(input_text, input_key) #Ok
                         case "Permutation cipher":
-                            session["output_text"], session["output_key"] = permutationDecrypt(input_text, input_key) # Not working
+                            session["output_text"], session["output_key"] = permutationDecrypt(input_text, input_key) # Ok
                         case "Hill (Text) cipher":
                             session["output_text"], session["output_key"] = hillDecrypt(input_text, input_key) #Ok
 
@@ -106,6 +107,13 @@ def home():
                     case "Affine cipher":
                         session["analysis_output"] = affineDecrypt(input_text) # Ok
                         return redirect(url_for('bruteForceAnalysis'))
+                    case "Substitution cipher":
+                        session["analysis_output"] = substitutionCryptanalysis(input_text) #Ok
+                        return redirect(url_for('substitutionAnalysis'))
+                    case "Permutation cipher":
+                        session["output_text"], session["output_key"] = permutationDecrypt(input_text, input_key) 
+                    case "Hill (Text) cipher":
+                        session["output_text"], session["output_key"] = hillDecrypt(input_text, input_key)
 
                 
 
@@ -128,22 +136,44 @@ def bruteForceAnalysis():
     output = session.get("analysis_output", None)
     return render_template('bruteforce.html', output=output)
 
+@app.route('/decrypted-', methods=['GET'])
+def substitutionAnalysis():
+    frequency, digraphs = session.get("analysis_output", None)
+    return render_template('subsanalysis.html', frequency=frequency, digraphs=digraphs)
+
 @app.route('/image-ciphers', methods=['GET', 'POST'])
 def imgAlgorithms():
     form = ImageForm()
-    # if form.validate_on_submit():
-    #     cypher_mode = form.cypher_mode.data
-    #     img = form.photo_or_pdf_file.data
-    #     input_key = form.input_key.data
+    if form.validate_on_submit():
+        cypher_mode = form.cypher_mode.data
+        input_img = form.photo_or_pdf_file.data
+        input_key = form.input_key.data
 
-    #     if form.encrypt.data:
-    #         try:
-    #             match:
-    #                 case "Hill (Image) cipher":
-    #                     session["output_text"], session["output_key"] = caesarEncrypt(input_text)
+        if form.encrypt.data:
+            session["encrypted_or_decrypted"] = "encrypted"
 
-    #         except InputKeyError as e:
-    #                 flash(e.message) 
+            try:
+                match cypher_mode:
+                    case "Hill (Image) cipher":
+                        session["output_img"], session["output_key"] = hillImgEncrypt(input_img, input_key) # Ok
+
+                return redirect(url_for('outputTextAndKey')) 
+
+            except InputKeyError as e:
+                    flash(e.message)                          
+                
+        elif form.decrypt.data:
+            try:
+                session["encrypted_or_decrypted"] = "decrypted"
+                match cypher_mode:
+                    case "Hill (Image) cipher":
+                        session["output_img"], session["output_key"] = hillImgDecrypt(input_img, input_key) 
+
+                return redirect(url_for('outputTextAndKey'))  
+
+            except InputKeyError as e:
+                flash(e.message)           
+
     return render_template('imgalg.html', form=form)
 
 
