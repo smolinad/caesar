@@ -1,7 +1,7 @@
 # Falta analysis
 import random, itertools
 
-from algorithms.goodies import ALPHABET, InputKeyError
+from goodies import ALPHABET, InputKeyError
 
 
 """
@@ -154,15 +154,17 @@ def permutationDecrypt(textoCifrado, key=None):
 
             for lista in rangeDivisores:
                 permutaciones.append(list(itertools.permutations(lista)))
-
+            
             for divisor in permutaciones:
+                
                 for permutacion in divisor:
+                    
                     llave = ''
                     for numero in permutacion:
                         llave += str(numero +1 ) + ' '
             
-                permutacionesStr.append(llave.rstrip(llave[-1])) #Todas las posibles permutaciones
-            
+                    permutacionesStr.append(llave.rstrip(llave[-1])) #Todas las posibles permutaciones
+                
                     
                 posiblesTextosDecifrados = []
 
@@ -174,4 +176,6 @@ def permutationDecrypt(textoCifrado, key=None):
             return(posiblesTextosDecifrados)
     else:
         return permutationDecryptKey(textoCifrado,key)
+    
+
 
