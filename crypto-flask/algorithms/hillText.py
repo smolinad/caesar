@@ -5,7 +5,7 @@ import random
 import sympy
 
 #from algorithms.goodies import InputKeyError
-from goodies import InputKeyError
+from algorithms.goodies import InputKeyError
 """
 Encrypt y Decrypt reciben (size: int, text: str, key: str)
  donde size es la dimensión de las matrices
@@ -151,20 +151,20 @@ def getText(keyMatrix: sympy.Matrix):
 
 
 
-t = "WORLDISFUNINNOS"
-k = "NINELETTE"
+# # t = "WORLDISFUNINNOS"
+# # k = "NINELETTE"
 
-b = hillEncrypt(t)
-bx = hillDecrypt(b[0], b[1])
+# b = hillEncrypt(t)
+# bx = hillDecrypt(b[0], b[1])
 
-"Example invertible 3x3 matrix mod 26 fxampjtqo"
-p_t = """
-FXA
-MPJ
-TQOV"""
-e_t = """BHB
-XQS
-FWD"""
-y = [hillEncrypt(i, k) for i in p_t]
-x = hillCryptoAnalysis(e_t, p_t) # Debe ser k= NINELETTE
-#print(x)
+# "Example invertible 3x3 matrix mod 26 fxampjtqo"
+# p_t = """
+# FXA
+# MPJ
+# TQOV"""
+# e_t = """BHB
+# XQS
+# FWD"""
+# y = [hillEncrypt(i, k) for i in p_t]
+# x = hillCryptoAnalysis(e_t, p_t) # Debe ser k= NINELETTE
+# #print(x)
