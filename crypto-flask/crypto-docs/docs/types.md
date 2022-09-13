@@ -103,21 +103,21 @@ In the previous example, we are just replacing `A` for `B`.
     
 Así, las matrices asociadas a son, respectivamente
     
-$$\left(\begin{matrix}7 & 18 \\ 13 & 11\end{matrix}\right) $$
+$$\begin{bmatrix}7 & 18 \\ 13 & 11\end{bmatrix} $$
 
-$$\left(\begin{matrix}7 & 4 \\ 11 & 11 \\ 14 & 0\end{matrix}\right) $$
+$$\begin{bmatrix}7 & 4 \\ 11 & 11 \\ 14 & 0\end{bmatrix} $$
 
 Multiplicamos las matrices
 
-$$\left(\begin{matrix}7 & 4\end{matrix}\right) \left[\begin{matrix} 7 & 18 \\ 23 & 11\end{matrix}\right] =  ( 7 \cdot 7 + 4 \cdot 23, 7 \cdot 18 + 4 \cdot 11) = ( 11, 14 )$$
+$$\begin{bmatrix}7 & 4\end{bmatrix} \begin{bmatrix} 7 & 18 \\ 23 & 11\end{bmatrix} =  ( 7 \cdot 7 + 4 \cdot 23, 7 \cdot 18 + 4 \cdot 11) = ( 11, 14 )$$
 
-$$\left(\begin{matrix}11 & 11\end{matrix}\right) \left[\begin{matrix} 7 & 18 \\ 23 & 11\end{matrix}\right] =  ( 11 \cdot 7 + 11 \cdot 23, 11 \cdot 18 + 11 \cdot 11) = ( 18, 7 ) $$
+$$\begin{bmatrix}11 & 11\end{bmatrix} \begin{bmatrix} 7 & 18 \\ 23 & 11\end{bmatrix} =  ( 11 \cdot 7 + 11 \cdot 23, 11 \cdot 18 + 11 \cdot 11) = ( 18, 7 ) $$
     
-$$\left(\begin{matrix}14 & 0\end{matrix}\right) \left[\begin{matrix} 7 & 18 \\ 23 & 11\end{matrix}\right] =  ( 14 \cdot 7 + 0 \cdot 23, 14 \cdot 18 + 0 \cdot 11) = ( 20, 18 ) $$
+$$\begin{bmatrix}14 & 0\end{bmatrix} \begin{bmatrix} 7 & 18 \\ 23 & 11\end{bmatrix} =  ( 14 \cdot 7 + 0 \cdot 23, 14 \cdot 18 + 0 \cdot 11) = ( 20, 18 ) $$
 
 Y obtenemos
 
-$$\left(\begin{matrix}11 & 14 \\ 18 & 7 \\ 20 & 18\end{matrix}\right) $$
+$$\begin{bmatrix}11 & 14 \\ 18 & 7 \\ 20 & 18\end{bmatrix} $$
 
     11 14 18 7 20 18 = LOSHUS
 
