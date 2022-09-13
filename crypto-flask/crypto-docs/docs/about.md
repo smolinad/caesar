@@ -9,7 +9,7 @@ We wanted to create some page elegant and functional, and here is result of that
  
      [smolinad@unal.edu.co](mailto:smolinad@unal.edu.co)
 
-* Maria Sol Botello Leon
+* María Sol Botello León
 
     [mbotello@unal.edu.co](mailto:mbotello@unal.edu.co)
 

@@ -4,6 +4,7 @@ import math
 import random
 
 import sympy
+#from algorithms.goodies import InputKeyError
 from goodies import InputKeyError
 """
 Encrypt y Decrypt reciben (size: int, text: str, key: str)
@@ -19,14 +20,14 @@ Cada una debe constar de size palabras, de las cuales solo se toma en cuenta las
 Devuelve clave
 """
 
-def hillEncrypt( text: str, key = ""):
-    if key == "":
+def hillEncrypt( text: str, key = None):
+    if key == None:
         size = random.randint(2, 4)
-        keyMatrix = randomKeyMatrix(size) % 26
+        keyMatrix = randomKeyMatrix(size)
     else:
         size = int(math.sqrt(len(key)))
         checkInput(text, key, size)
-        keyMatrix = getMatrix(key, size) % 26
+        keyMatrix = getMatrix(key, size)
         isInvertibleMod(keyMatrix, 26, "key")
 
     textMatrix = getTextMatrix(text, size)
@@ -34,7 +35,7 @@ def hillEncrypt( text: str, key = ""):
 
     encriptedText = getText(encryptedMatrix)
     keyText = getText(keyMatrix)
-    return ["".join(encriptedText), keyText]
+    return ("".join(encriptedText), keyText)
 
 def hillDecrypt( text: str, key: str):
     size = int(math.sqrt(len(key)))
@@ -48,9 +49,15 @@ def hillDecrypt( text: str, key: str):
     inverseKey = getText(inverseKeyMatrix)
     decryptedText = getText(decipherMatrix)
 
-    return [decryptedText, inverseKey]
+    return (decryptedText, inverseKey)
 
-def hillCryptoAnalysis( encryptedTexts: list, plainTexts: list):
+def hillCryptoAnalysis( encryptedLines: str, plainLines: str):
+    encryptedTexts = encryptedLines.split("\n")
+    plainTexts = plainLines.split("\n")
+
+    encryptedTexts = list(filter(lambda i: i != "", encryptedTexts))
+    plainTexts = list(filter(lambda i: i != "", plainTexts))
+
     size = len(encryptedTexts)
     checkAnalysisInput(encryptedTexts, plainTexts, size)
 
@@ -68,7 +75,7 @@ def hillCryptoAnalysis( encryptedTexts: list, plainTexts: list):
     return getText(key_matrix)
 
 def randomKeyMatrix(size: int):
-    matrix = sympy.randMatrix(size, min=0, max=26, symmetric=True)
+    matrix = sympy.randMatrix(size, min=0, max=25, symmetric=True)
     while math.gcd(matrix.det(), 26) != 1:
         matrix = sympy.randMatrix(size, min=0, max=25, symmetric=True)
     return matrix
@@ -84,22 +91,20 @@ def solveKey(encrypted_matrix: sympy.Matrix, plain_matrix: sympy.Matrix):
 
 def isInvertibleMod(matrix: sympy.Matrix, n: int , s=""):
     if matrix.rows != matrix.cols:
-        raise InputKeyError(s + " matrix must be square")
+        raise InputKeyError(s + " associated matrix must be square")
     det_k = matrix.det()
     if math.gcd(det_k, n) > 1:
         raise InputKeyError(
-            "The determinant of the " + s + " matrix must be comprime with 26"
+            "The determinant of the " + s + " associated matrix must be comprime with 26"
         )
 
 #---------------> Checkers
 
 def checkAnalysisInput(encryptedTexts: list, plainTexts: list, n: int):
     if n not in range(2, 5):
-        raise InputKeyError("Matrices must be between 2x2 and 4x4")
-    if 1 != len(encryptedTexts) and len(encryptedTexts) != n:
-        raise InputKeyError("Insertar "+str(n)+" textos cifrados")
-    if 1 != len(plainTexts) and len(plainTexts) != n:
-        raise InputKeyError("Insertar "+str(n)+" textos claros")
+        raise InputKeyError("This page works with up to 4 encrypted texts")
+    if len(encryptedTexts) != len(encryptedTexts):
+        raise InputKeyError("Write the same ammount of plain texts and encrypted texts")
 
 def checkInput(text:str, key: str, size:int):
     if size < 0 or size > 4:
@@ -107,12 +112,12 @@ def checkInput(text:str, key: str, size:int):
     if size*2 > len(key):
         raise InputKeyError("Key must be " + str(size*2) + " characters long")
     onlyUppercase_letters(key)
-    onlyUppercase_letters(text)
+    # onlyUppercase_letters(text)
 
 def onlyUppercase_letters(s):
     for i in s:
         if (ord(i) < 65 or 91 < ord(i)):
-            raise InputKeyError("text must contain only uppercase letters")
+            raise InputKeyError("The key must contain only uppercase letters")
     return True
 
 #---------------> Converters
@@ -126,7 +131,7 @@ def getMatrix(text: list, size: int, square=False):
         matrix_num.append(intList)
 
         if square and len(intList) != size:
-            raise InputKeyError("There must be an equal amount of elements in every column and row")
+            raise InputKeyError("Key lenght must be a square")
 
     return sympy.Matrix(matrix_num)
 
@@ -149,17 +154,17 @@ def getText(keyMatrix: sympy.Matrix):
 t = "WORLDISFUNINNOS"
 k = "NINELETTE"
 
-"""
-for i in range(100):
-    print(hillEncrypt(t))
-
 b = hillEncrypt(t)
 bx = hillDecrypt(b[0], b[1])
 
 "Example invertible 3x3 matrix mod 26 fxampjtqo"
-p_t = ["FXA", "MPJ", "TQOV"]
-e_t = ["BHB", "XQS", "FWD"]
-
+p_t = """
+FXA
+MPJ
+TQOV"""
+e_t = """BHB
+XQS
+FWD"""
 y = [hillEncrypt(i, k) for i in p_t]
 x = hillCryptoAnalysis(e_t, p_t) # Debe ser k= NINELETTE
-"""
+#print(x)

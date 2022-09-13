@@ -77,7 +77,7 @@ def substitutionDecrypt(t: str, k=" "):
     return [str(decrypted_text), key]
 
 
-def substitutionCryptoanalysis(text: str):
+def substitutionCryptanalysis(text: str):
     return [frequencyOfLetters(text), mostCommon(frequencyOfDigraphs(text))]
 
 

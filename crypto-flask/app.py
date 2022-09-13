@@ -1,8 +1,10 @@
 from algorithms.caesar import caesarEncrypt, caesarDecrypt
 from algorithms.vigenere import vigenereEncrypt, vigenereDecrypt
 from algorithms.affine import affineEncrypt, affineDecrypt
-from algorithms.substitution import substitutionEncrypt
-from algorithms.permutation import permutationEncrypt
+from algorithms.substitution import substitutionEncrypt, substitutionDecrypt, substitutionCryptanalysis
+from algorithms.permutation import permutationDecrypt, permutationEncrypt
+from algorithms.hillText import hillCryptoAnalysis, hillEncrypt, hillDecrypt
+from algorithms.hillImage import hillImgEncrypt, hillImgDecrypt
 from algorithms.goodies import processInput, InputKeyError
 
 from flask import Flask, redirect, url_for, session, flash
@@ -38,15 +40,17 @@ def home():
                 try:
                     match cypher_mode:
                         case "Caesar cipher":
-                            session["output_text"], session["output_key"] = caesarEncrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = caesarEncrypt(input_text, input_key) #Ok
                         case "Vigenere cipher":
-                            session["output_text"], session["output_key"] = vigenereEncrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = vigenereEncrypt(input_text, input_key) #Ok
                         case "Affine cipher":
-                            session["output_text"], session["output_key"] = affineEncrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = affineEncrypt(input_text, input_key) #Ok 
                         case "Substitution cipher":
-                            session["output_text"], session["output_key"] = substitutionEncrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = substitutionEncrypt(input_text, input_key) #Ok
                         case "Permutation cipher":
-                            session["output_text"], session["output_key"] = permutationEncrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = permutationEncrypt(input_text, input_key) #Ok
+                        case "Hill (Text) cipher":
+                            session["output_text"], session["output_key"] = hillEncrypt(input_text, input_key) # Ok
                    
                     return redirect(url_for('outputTextAndKey')) 
 
@@ -56,16 +60,17 @@ def home():
             else:
                 match cypher_mode:
                     case "Caesar cipher":
-                        session["output_text"], session["output_key"] = caesarEncrypt(input_text)
+                        session["output_text"], session["output_key"] = caesarEncrypt(input_text) #Ok 
                     case "Vigenere cipher":
-                        session["output_text"], session["output_key"] = vigenereEncrypt(input_text)
+                        session["output_text"], session["output_key"] = vigenereEncrypt(input_text) #Ok
                     case "Affine cipher":
-                        session["output_text"], session["output_key"] = affineEncrypt(input_text)
+                        session["output_text"], session["output_key"] = affineEncrypt(input_text) #Ok
                     case "Substitution cipher":
-                        session["output_text"], session["output_key"] = substitutionEncrypt(input_text)
+                        session["output_text"], session["output_key"] = substitutionEncrypt(input_text) # Ok (I hope :s)
                     case "Permutation cipher":
-                        session["output_text"], session["output_key"] = permutationEncrypt(input_text)
-
+                        session["output_text"], session["output_key"] = permutationEncrypt(input_text) # Ok
+                    case "Hill (Text) cipher":
+                        session["output_text"], session["output_key"] = hillEncrypt(input_text) # Ok
                 return redirect(url_for('outputTextAndKey')) 
                 
         elif form.decrypt.data:
@@ -74,11 +79,17 @@ def home():
                     session["encrypted_or_decrypted"] = "decrypted"
                     match cypher_mode:
                         case "Caesar cipher":
-                            session["output_text"], session["output_key"] = caesarDecrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = caesarDecrypt(input_text, input_key) # Ok
                         case "Vigenere cipher":
-                            session["output_text"], session["output_key"] = vigenereDecrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = vigenereDecrypt(input_text, input_key) # Ok
                         case "Affine cipher":
-                            session["output_text"], session["output_key"] = affineDecrypt(input_text, input_key)
+                            session["output_text"], session["output_key"] = affineDecrypt(input_text, input_key) # Ok
+                        case "Substitution cipher":
+                            session["output_text"], session["output_key"] = substitutionDecrypt(input_text, input_key) #Ok
+                        case "Permutation cipher":
+                            session["output_text"], session["output_key"] = permutationDecrypt(input_text, input_key) # Ok
+                        case "Hill (Text) cipher":
+                            session["output_text"], session["output_key"] = hillDecrypt(input_text, input_key) #Ok
 
                     return redirect(url_for('outputTextAndKey'))  
 
@@ -88,14 +99,23 @@ def home():
             else:
                 match cypher_mode:
                     case "Caesar cipher":
-                        session["analysis_output"] = caesarDecrypt(input_text)
+                        session["analysis_output"] = caesarDecrypt(input_text) # Ok
                         return redirect(url_for('bruteForceAnalysis'))
                     case "Vigenere cipher":
-                        session["analysis_output"] = vigenereDecrypt(input_text)
+                        session["analysis_output"] = vigenereDecrypt(input_text) # Ok
                         return redirect(url_for('bruteForceAnalysis'))
                     case "Affine cipher":
-                        session["analysis_output"] = affineDecrypt(input_text)
+                        session["analysis_output"] = affineDecrypt(input_text) # Ok
                         return redirect(url_for('bruteForceAnalysis'))
+                    case "Substitution cipher":
+                        session["analysis_output"] = substitutionCryptanalysis(input_text) #Ok
+                        return redirect(url_for('substitutionAnalysis'))
+                    case "Permutation cipher":
+                        session["output_text"], session["output_key"] = permutationDecrypt(input_text) 
+                    case "Hill (Text) cipher":
+                        session["output_text"] = hillCryptoAnalysis(input_text)
+                        session["output_key"] = ""
+                        return redirect(url_for('outputTextAndKey'))  
 
                 
 
@@ -118,22 +138,44 @@ def bruteForceAnalysis():
     output = session.get("analysis_output", None)
     return render_template('bruteforce.html', output=output)
 
+@app.route('/decrypted-', methods=['GET'])
+def substitutionAnalysis():
+    frequency, digraphs = session.get("analysis_output", None)
+    return render_template('subsanalysis.html', frequency=frequency, digraphs=digraphs)
+
 @app.route('/image-ciphers', methods=['GET', 'POST'])
 def imgAlgorithms():
     form = ImageForm()
     # if form.validate_on_submit():
     #     cypher_mode = form.cypher_mode.data
-    #     img = form.photo_or_pdf_file.data
+    #     input_img = form.photo_or_pdf_file.data
     #     input_key = form.input_key.data
 
     #     if form.encrypt.data:
+    #         session["encrypted_or_decrypted"] = "encrypted"
+
     #         try:
-    #             match:
+    #             match cypher_mode:
     #                 case "Hill (Image) cipher":
-    #                     session["output_text"], session["output_key"] = caesarEncrypt(input_text)
+    #                     session["output_img"], session["output_key"] = hillImgEncrypt(input_img, input_key) # Ok
+
+    #             return redirect(url_for('outputTextAndKey')) 
 
     #         except InputKeyError as e:
-    #                 flash(e.message) 
+    #                 flash(e.message)                          
+                
+    #     elif form.decrypt.data:
+    #         try:
+    #             session["encrypted_or_decrypted"] = "decrypted"
+    #             match cypher_mode:
+    #                 case "Hill (Image) cipher":
+    #                     session["output_img"], session["output_key"] = hillImgDecrypt(input_img, input_key) 
+
+    #             return redirect(url_for('outputTextAndKey'))  
+
+    #         except InputKeyError as e:
+    #             flash(e.message)           
+
     return render_template('imgalg.html', form=form)
 
 
