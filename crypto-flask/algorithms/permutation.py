@@ -162,19 +162,16 @@ def permutationDecrypt(textoCifrado, key=None):
                         llave += str(numero +1 ) + ' '
             
                 permutacionesStr.append(llave.rstrip(llave[-1])) #Todas las posibles permutaciones
-                
-            posiblesTextosDecifrados = []
-
-            for posibleClave in permutacionesStr:
-                t = permutationDecryptKey(textoCifrado, posibleClave)
-                f = frecuenciaSubString(t[0])
             
-                if (f['TH'] + f['HE'] + f['IN'] + f['ER'] ) >= 10  :
+                    
+                posiblesTextosDecifrados = []
+
+                for posibleClave in permutacionesStr:
+                    t = permutationDecryptKey(textoCifrado, posibleClave)
+                
                     posiblesTextosDecifrados.append(t)
 
             return (posiblesTextosDecifrados)
     else:
         return permutationDecryptKey(textoCifrado,key)
-
-
 

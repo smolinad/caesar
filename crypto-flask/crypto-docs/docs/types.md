@@ -1,6 +1,6 @@
 # Encryption systems
 
-In the first instance we assume we are working in English language, so the dictionary has 26 letters and they are numbered as follows:
+Let´s assume we are with text in English, in which the dictionary has 26 letters and are numbered as follows:
 
 | A | B | C | D | E | F | G | H | I | J | K  | L  | M  | N  | O  | P  | Q  | R  | S  | T  | U  | V  | W  | X  | Y  | Z  |
 |---|---|---|---|---|---|---|---|---|---|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
@@ -10,16 +10,18 @@ For all methods where text is encrypted, the letters are converted to their nume
 
     HELLO = 7 4 11 11 14
 
+Here on we will call the numerical value of a letter as letter value
+
 ## Caesar
 **Key:** Integer number between $0$ and $25$.
 
-**Method:** Add to every letter the value of the given key. 
+**Method:** Add the key value to every single letter value.
 
 **Example:** 
 
     Key = 2
 
-    HELLO = 7 4 11 11 14
+    Plain text = HELLO = 7 4 11 11 14
 
     7+2 4+2 11+2 11+2 14+2 = 9 6 13 13 16 = K H N N R
 
@@ -36,7 +38,7 @@ For all methods where text is encrypted, the letters are converted to their nume
 
     Key = 2 3
 
-    HELLO = 7 4 11 11 14
+    Plain text = HELLO = 7 4 11 11 14
 
     (2*7)+3 (4*2)+3 (11*2)+3 (11*2)+3 (14*2)+3  = 17 11 25 25 5 = S L Z Z F
 
@@ -49,7 +51,7 @@ For all methods where text is encrypted, the letters are converted to their nume
 
     Key = LOVE = 11 14 21 4
 
-    HELLO = 7 4 11 11 14
+    Plain text = HELLO = 7 4 11 11 14
 
     7+11 4+14 11+21 11+4 14+11  = 18 18 7 15 25 = S S H P Z
 
@@ -57,13 +59,13 @@ For all methods where text is encrypted, the letters are converted to their nume
 ## Permutation
 **Key:** A permutation of numbers between $1$ and $n$, where $n$ divides length of the text.
 
-**Method:** The word is separated by chunks of the length of the key, and each letter of each chunk is sent to the value through the permutation on the key.
+**Method:** The word is separated in blocks with the same length as the key, on each block the ith letter takes the ith key number place.
 
 **Example:** 
 
     Key = 3 1 4 2 
 
-    HELLOMIA = 7 4 11 11 14 12 8 0
+    Plain text = HELLOMIA = 7 4 11 11 14 12 8 0
 
     7 4 11 11 -> 4 11 7 11 = E L H L
     14 12 8 0 -> 12 0 14 8 =  M A O I
@@ -79,7 +81,7 @@ For all methods where text is encrypted, the letters are converted to their nume
 
     Key = BACDEFGHIJKLMNOPQRSTUVWXYZ 
 
-    HELLOMIA = 7 4 11 11 14 12 8 0
+    Plain text = HELLOMIA = 7 4 11 11 14 12 8 0
 
     7 4 11 11 14 12 8 1 = HELLOMIB
 
@@ -89,23 +91,33 @@ In the previous example, we are just replacing `A` for `B`.
 
 ## Hill
 
-**Key:** An invertible matrix over module $26$, of size $m \times m$.
+**Key:** A word in uppercase of lenght $n* n$ where n is between 2 and 4
 
-**Method:** Multiply every chunk of length $n$ in the input text (or image) by the matrix.
+**Method:** Multiply every block of length $n$ of the text (or image) by the key associated matrix .
 
 **Example:** 
 
-Key = $\left[\begin{matrix}
-    7 & 18 \\
-    23 & 11\end{matrix}\right]$
+    Key = HSNL
 
-    HELLO = 7 4 11 11 14 
+    Plain text = HELLO
+    
+Así, las matrices asociadas a son, respectivamente
+    
+$$\left(\begin{matrix}7 & 18 \\ 13 & 11\end{matrix}\right) $$
+
+$$\left(\begin{matrix}7 & 4 \\ 11 & 11 \\ 14 & 0\end{matrix}\right) $$
+
+Multiplicamos las matrices
 
 $$\left(\begin{matrix}7 & 4\end{matrix}\right) \left[\begin{matrix} 7 & 18 \\ 23 & 11\end{matrix}\right] =  ( 7 \cdot 7 + 4 \cdot 23, 7 \cdot 18 + 4 \cdot 11) = ( 11, 14 )$$
 
 $$\left(\begin{matrix}11 & 11\end{matrix}\right) \left[\begin{matrix} 7 & 18 \\ 23 & 11\end{matrix}\right] =  ( 11 \cdot 7 + 11 \cdot 23, 11 \cdot 18 + 11 \cdot 11) = ( 18, 7 ) $$
     
 $$\left(\begin{matrix}14 & 0\end{matrix}\right) \left[\begin{matrix} 7 & 18 \\ 23 & 11\end{matrix}\right] =  ( 14 \cdot 7 + 0 \cdot 23, 14 \cdot 18 + 0 \cdot 11) = ( 20, 18 ) $$
+
+Y obtenemos
+
+$$\left(\begin{matrix}11 & 14 \\ 18 & 7 \\ 20 & 18\end{matrix}\right) $$
 
     11 14 18 7 20 18 = LOSHUS
 
