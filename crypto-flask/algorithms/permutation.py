@@ -1,4 +1,3 @@
-# Falta analysis
 import random, itertools
 
 from algorithms.goodies import ALPHABET, InputKeyError
@@ -52,7 +51,7 @@ def permutationDecryptKey(t: str, key: str):
         encrypted_text = performPermutation(text,inverse_key)
         k = " ".join([str(x) for x in inverse_key])
 
-        return [encrypted_text,k]
+        return dict(message=encrypted_text,key=k)
       
 
 # --------------------------->
@@ -141,7 +140,7 @@ def permutationDecrypt(textoCifrado, key=None):
                 divisores.append(num)
 
         if len(divisores) == 0:
-            raise InputKeyError("ERROR: Text lenght is not valid, must be 4, 5 or 6 multiple") #cambiar print  por InputKeyError
+            raise InputKeyError("ERROR: Text lenght is not valid, must be 4,5 or 6 multiply") #cambiar print  por InputKeyError
 
         else:           
             rangeDivisores =[]
@@ -162,16 +161,13 @@ def permutationDecrypt(textoCifrado, key=None):
                         llave += str(numero +1 ) + ' '
             
                 permutacionesStr.append(llave.rstrip(llave[-1])) #Todas las posibles permutaciones
-            
-                    
+        
                 posiblesTextosDecifrados = []
 
                 for posibleClave in permutacionesStr:
                     t = permutationDecryptKey(textoCifrado, posibleClave)
-                
                     posiblesTextosDecifrados.append(t)
 
-            return (posiblesTextosDecifrados)
+            return(posiblesTextosDecifrados)
     else:
         return permutationDecryptKey(textoCifrado,key)
-
