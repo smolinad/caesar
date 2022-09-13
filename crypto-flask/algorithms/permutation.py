@@ -1,7 +1,7 @@
 # Falta analysis
 import random, itertools
 
-from goodies import ALPHABET, InputKeyError
+from algorithms.goodies import ALPHABET, InputKeyError
 
 
 """

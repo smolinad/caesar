@@ -34,8 +34,9 @@ def hillImgEncrypt(s: str, k=""):
     isInvolutory(key, mod)
     encrypted = np.matmul(plain, key) % mod
 
-    cv.imwrite('test-img/encrypted.png', encrypted)
-    cv.imwrite('test-img/key.png', key_orig)
+    cv.imwrite('img/encrpted/encrypted.png', encrypted)
+    cv.imwrite('img/encrypted/key.png', key_orig)
+    # return (cv.imencode('.png', encrypted), cv.imencode('.png', key_orig))
 
 def hillImgDecrypt(s: str, k: str):
     mod = 256
