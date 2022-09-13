@@ -146,8 +146,8 @@ def getText(keyMatrix: sympy.Matrix):
 
 
 
-t = "WORLDISFUNINNOS"
-k = "NINELETTE"
+# t = "WORLDISFUNINNOS"
+# k = "NINELETTE"
 
 """
 for i in range(100):
