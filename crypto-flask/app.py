@@ -111,10 +111,10 @@ def home():
                         session["analysis_output"] = substitutionCryptanalysis(input_text) #Ok
                         return redirect(url_for('substitutionAnalysis'))
                     case "Permutation cipher":
-                        session["output_text"], session["output_key"] = permutationDecrypt(input_text) 
+                        print(permutationDecrypt(input_text))
+                        # session["output_text"], session["output_key"] = permutationDecrypt(input_text) 
                     case "Hill (Text) cipher":
                         session["output_text"] = hillCryptoAnalysis(input_text)
-                        session["output_key"] = ""
                         return redirect(url_for('outputTextAndKey'))  
 
                 

@@ -141,7 +141,7 @@ def permutationDecrypt(textoCifrado, key=None):
                 divisores.append(num)
 
         if len(divisores) == 0:
-            raise InputKeyError("ERROR: Text lenght is not valid, must be 4,5 or 6 multiply") #cambiar print  por InputKeyError
+            raise InputKeyError("ERROR: Text lenght is not valid, must be 4, 5 or 6 multiple") #cambiar print  por InputKeyError
 
         else:           
             rangeDivisores =[]
@@ -172,7 +172,7 @@ def permutationDecrypt(textoCifrado, key=None):
                 if (f['TH'] + f['HE'] + f['IN'] + f['ER'] ) >= 10  :
                     posiblesTextosDecifrados.append(t)
 
-            return(posiblesTextosDecifrados)
+            return (posiblesTextosDecifrados)
     else:
         return permutationDecryptKey(textoCifrado,key)
 
