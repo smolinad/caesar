@@ -2,4 +2,5 @@
 .idea/inspectionProfiles/Project_Default.xml
 .idea/workspace.xml
 crypto-flask/algorithms/.idea
-crypto-flask\crypto-docs\docs\hill-images
+crypto-flask/crypto-docs/docs/hill-images
+crypto-flask/algorithms/hill-false-positive

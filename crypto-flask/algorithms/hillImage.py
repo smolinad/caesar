@@ -13,7 +13,6 @@ dec_dir = 'decrypted-img\\'
 """
 hillEncrypt recibe (s: str, k="") donde s es el nombre de la imagen a encriptar  y k es el nombre de la imagen clave
 no devuelve nada, en lugar de ello guarda las imagenes encrypted y key en la carpeta hill-images
-
 hillDecrypt recibe (s: str, k: str) donde s y k son los descritos arriba.
 no devuelve nada, en lugar de ello guarda las imagenes decrypted y key en la carpeta hill-images
 """
@@ -40,16 +39,11 @@ def hillImgEncrypt(s: str, k=""):
     key = [involutoryMatrixOf(i) for i in cv.split(key_orig)]
     [isInvolutory(i, mod) for i in key]
 
-<<<<<<< HEAD
-    cv.imwrite('results/encrypted/encrypted.png', encrypted)
-    cv.imwrite('results/encrypted/key.png', key_orig)
-=======
     e = [np.matmul(i, j) % mod for i, j in zip(cv.split(colored_img),key)]
     encrypted = cv.merge(e)
 
     cv.imwrite(enc_dir+s, encrypted)
     # return (cv.imencode('.png', encrypted), cv.imencode('.png', key_orig))
->>>>>>> 818c9e0dc1fc0e6037b181916b8bbd627726cc75
 
 def hillImgDecrypt(s: str, k: str):
     mod = 256
@@ -74,14 +68,7 @@ def hillImgDecrypt(s: str, k: str):
 
     cv.imwrite(dec_dir+s, decrypted)
 
-<<<<<<< HEAD
-    cv.imwrite('results/decrypted/decrypted.png', decrypted)
-    cv.imwrite('results/decrypted/key.png', key_orig)
-
-def isInvolutory(a: numpy.ndarray, mod: int):
-=======
 def isInvolutory(a: np.ndarray, mod: int):
->>>>>>> 818c9e0dc1fc0e6037b181916b8bbd627726cc75
     isSquare(a)
     y = np.identity(a.shape[0])
     x = np.matmul(a % mod, a % mod) % mod
@@ -123,4 +110,3 @@ for filename in os.listdir(b+dir+img_dir):
     print(filename)
     hillImgEncrypt(filename, 'mani.png')
     hillImgDecrypt(filename, 'mani.png')
-
