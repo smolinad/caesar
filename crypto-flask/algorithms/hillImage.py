@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 import os
-#from algorithms.\
+#from algorithms.goodies import InputKeyError
 from goodies import InputKeyError
 
 dir = 'hill-images\\'
@@ -92,8 +92,8 @@ def isSquare(a: np.ndarray):
         raise InputKeyError("Encrypted image and key image must be squared")
 
 def read(s: str):
-    if s.split(".")[1] != "png":
-        raise InputKeyError("The image format must be png")
+    if s.split(".")[-1] != "png":
+        raise InputKeyError(s+"image format must be png")
 
     coloredIm = cv.imread(s)
 
@@ -112,4 +112,3 @@ for filename in os.listdir(b+dir+img_dir):
     hillImgEncrypt(filename, 'mani.png')
     hillImgDecrypt(filename, 'mani.png')
 
-#No desencripta si no es .png!!!
