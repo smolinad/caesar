@@ -34,8 +34,8 @@ def hillImgEncrypt(s: str, k=""):
     isInvolutory(key, mod)
     encrypted = np.matmul(plain, key) % mod
 
-    cv.imwrite('test-img/encrypted.png', encrypted)
-    cv.imwrite('test-img/key.png', key_orig)
+    cv.imwrite('results/encrypted/encrypted.png', encrypted)
+    cv.imwrite('results/encrypted/key.png', key_orig)
 
 def hillImgDecrypt(s: str, k: str):
     mod = 256
@@ -53,8 +53,8 @@ def hillImgDecrypt(s: str, k: str):
 
     decrypted = np.matmul(encrypted, key) % mod
 
-    cv.imwrite('test-img/decrypted.png', decrypted)
-    cv.imwrite('test-img/key.png', key_orig)
+    cv.imwrite('results/decrypted/decrypted.png', decrypted)
+    cv.imwrite('results/decrypted/key.png', key_orig)
 
 def isInvolutory(a: numpy.ndarray, mod: int):
     isSquare(a)
