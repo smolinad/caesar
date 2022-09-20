@@ -2,8 +2,8 @@
 
 import math
 import random
-
 import sympy
+
 #from algorithms.goodies import InputKeyError
 from algorithms.goodies import InputKeyError
 """

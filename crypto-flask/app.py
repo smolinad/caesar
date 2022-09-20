@@ -9,6 +9,8 @@ from algorithms.goodies import processInput, InputKeyError
 
 from flask import Flask, redirect, url_for, session, flash
 from flask.templating import render_template
+from werkzeug.utils import secure_filename
+import cv2 as cv
 
 from algorithms.form import InputForm, ImageForm
 
@@ -133,6 +135,7 @@ def outputTextAndKey():
         encrypted_or_decrypted=encrypted_or_decrypted, 
         output_text=output_text, 
         output_key=output_key)
+    
 
 @app.route('/decrypted', methods=['GET'])
 def bruteForceAnalysis():
@@ -147,39 +150,57 @@ def substitutionAnalysis():
 @app.route('/image-ciphers', methods=['GET', 'POST'])
 def imgAlgorithms():
     form = ImageForm()
-    # if form.validate_on_submit():
-    #     cypher_mode = form.cypher_mode.data
-    #     input_img = form.photo_or_pdf_file.data
-    #     input_key = form.input_key.data
+    if form.validate_on_submit():
+        cypher_mode = form.cypher_mode.data
+        filename = secure_filename(form.input_img.data.filename)
+        input_key = form.input_key.data
 
-    #     if form.encrypt.data:
-    #         session["encrypted_or_decrypted"] = "encrypted"
+        if form.encrypt.data:
+            session["encrypted_or_decrypted"] = "encrypted"
 
-    #         try:
-    #             match cypher_mode:
-    #                 case "Hill (Image) cipher":
-    #                     session["output_img"], session["output_key"] = hillImgEncrypt(input_img, input_key) # Ok
+            try:
+                match cypher_mode:
+                    case "Hill (Image) cipher":
+                        path_ = '/uploads/img' + filename
+                        form.file.data.save(path_)
+                        hillImgEncrypt(path_, input_key)
+                        # session["output_img"], session["output_key"] = hillImgEncrypt(input_img, input_key) # Ok
+                        print("Hi")
+                        
+                return redirect(url_for('outputImgAndKey')) 
 
-    #             return redirect(url_for('outputTextAndKey')) 
-
-    #         except InputKeyError as e:
-    #                 flash(e.message)                          
+            except InputKeyError as e:
+                    flash(e.message)                          
                 
-    #     elif form.decrypt.data:
-    #         try:
-    #             session["encrypted_or_decrypted"] = "decrypted"
-    #             match cypher_mode:
-    #                 case "Hill (Image) cipher":
-    #                     session["output_img"], session["output_key"] = hillImgDecrypt(input_img, input_key) 
+        elif form.decrypt.data:
+            try:
+                session["encrypted_or_decrypted"] = "decrypted"
+                match cypher_mode:
+                    case "Hill (Image) cipher":
+                        path_ = '/uploads/img' + filename
+                        form.file.data.save(path_)
+                        hillImgDecrypt(path_, input_key)
+                        # session["output_img"], session["output_key"] = hillImgDecrypt(input_img, input_key) 
 
-    #             return redirect(url_for('outputTextAndKey'))  
+                return redirect(url_for('outputImgAndKey'))  
 
-    #         except InputKeyError as e:
-    #             flash(e.message)           
+            except InputKeyError as e:
+                flash(e.message)           
 
     return render_template('imgalg.html', form=form)
 
 
+@app.route('/encrypted-img', methods=['GET'])
+def outputImgAndKey():
+    # something1, output_img = session.get("output_img", None)
+    # something1, output_key = session.get("output_key", None)
+    # encrypted_or_decrypted = session.get("encrypted_or_decrypted", None)
+    return render_template(
+        # 'imgoutput.html', 
+        # encrypted_or_decrypted=encrypted_or_decrypted, 
+        # output_text=output_img, 
+        # output_key=output_key
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,3 +1,4 @@
+# Falta analysis
 import random, itertools
 
 from algorithms.goodies import ALPHABET, InputKeyError
@@ -51,7 +52,7 @@ def permutationDecryptKey(t: str, key: str):
         encrypted_text = performPermutation(text,inverse_key)
         k = " ".join([str(x) for x in inverse_key])
 
-        return dict(message=encrypted_text,key=k)
+        return [encrypted_text,k]
       
 
 # --------------------------->
@@ -153,21 +154,28 @@ def permutationDecrypt(textoCifrado, key=None):
 
             for lista in rangeDivisores:
                 permutaciones.append(list(itertools.permutations(lista)))
-
+            
             for divisor in permutaciones:
+                
                 for permutacion in divisor:
+                    
                     llave = ''
                     for numero in permutacion:
                         llave += str(numero +1 ) + ' '
             
-                permutacionesStr.append(llave.rstrip(llave[-1])) #Todas las posibles permutaciones
-        
+                    permutacionesStr.append(llave.rstrip(llave[-1])) #Todas las posibles permutaciones
+                
+                    
                 posiblesTextosDecifrados = []
 
                 for posibleClave in permutacionesStr:
                     t = permutationDecryptKey(textoCifrado, posibleClave)
+                
                     posiblesTextosDecifrados.append(t)
 
             return(posiblesTextosDecifrados)
     else:
         return permutationDecryptKey(textoCifrado,key)
+    
+
+
