@@ -1,8 +1,8 @@
 import cv2 as cv
 import numpy as np
 import os
-#from algorithms.goodies import InputKeyError
-from goodies import InputKeyError
+from algorithms.goodies import InputKeyError
+#from goodies import InputKeyError
 
 dir = 'hill-images\\'
 img_dir = 'img\\'
@@ -101,7 +101,7 @@ def read(s: str):
 
     return coloredIm
 
-b = os.getcwd()+'\\'
+"""b = os.getcwd()+'\\'
 os.chdir(b+dir)
 
 print(os.listdir(b+dir+img_dir))
@@ -109,4 +109,4 @@ for filename in os.listdir(b+dir+img_dir):
     f = os.path.join(b+dir+img_dir, filename)
     print(filename)
     hillImgEncrypt(filename, 'mani.png')
-    hillImgDecrypt(filename, 'mani.png')
+    hillImgDecrypt(filename, 'mani.png')"""
