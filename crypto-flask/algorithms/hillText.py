@@ -21,12 +21,16 @@ Devuelve clave
 """
 
 def hillEncrypt( text: str, key = None):
+    checkText(text)
+    checkKey(key)
     if key == None:
-        size = random.randint(2, 4)
+        if len(text)<4:
+            size = 2
+        else:
+            size = random.randint(2, 4)
         keyMatrix = randomKeyMatrix(size)
     else:
         size = int(math.sqrt(len(key)))
-        checkInput(text, key, size)
         keyMatrix = getMatrix(key, size)
         isInvertibleMod(keyMatrix, 26, "key")
 
@@ -91,7 +95,7 @@ def solveKey(encrypted_matrix: sympy.Matrix, plain_matrix: sympy.Matrix):
 
 def isInvertibleMod(matrix: sympy.Matrix, n: int , s=""):
     if matrix.rows != matrix.cols:
-        raise InputKeyError(s + " associated matrix must be square")
+        raise InputKeyError(s + " length must be a squared number")
     det_k = matrix.det()
     if math.gcd(det_k, n) > 1:
         raise InputKeyError(
@@ -106,18 +110,24 @@ def checkAnalysisInput(encryptedTexts: list, plainTexts: list, n: int):
     if len(encryptedTexts) != len(encryptedTexts):
         raise InputKeyError("Write the same ammount of plain texts and encrypted texts")
 
-def checkInput(text:str, key: str, size:int):
-    if size < 0 or size > 4:
-        raise InputKeyError("Matrix solved up to 4x4")
-    if size*2 > len(key):
-        raise InputKeyError("Key must be " + str(size*2) + " characters long")
-    onlyUppercase_letters(key)
-    # onlyUppercase_letters(text)
+def checkText(text:str):
+    if len(text)<2:
+        raise InputKeyError("Text to be encrypted must be at least two characters long")
 
+def checkKey(key: str):
+    onlyUppercase_letters(key)
+    if len(key) > 16:
+        raise InputKeyError("We work with keys of up to 16 characters")
+    if len(key)<2:
+        raise InputKeyError("Key must be at least 2 characters long")
+    s = int(math.sqrt(len(key)))
+    if s*2!=len(key):
+        raise InputKeyError("Key length must be a squared number")
+    
 def onlyUppercase_letters(s):
     for i in s:
         if (ord(i) < 65 or 91 < ord(i)):
-            raise InputKeyError("The key must contain only uppercase letters")
+            raise InputKeyError("Key must contain only uppercase letters")
     return True
 
 #---------------> Converters
