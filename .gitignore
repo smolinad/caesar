@@ -1,6 +1,5 @@
-
-.idea/inspectionProfiles/Project_Default.xml
-.idea/workspace.xml
+.idea
 crypto-flask/algorithms/.idea
 crypto-flask/crypto-docs/docs/hill-images
 crypto-flask/algorithms/hill-false-positive
+crypto-flask/algorithms/__pycache__
