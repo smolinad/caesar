@@ -7,7 +7,7 @@
 {% block body %}
 
     <div class="h-100 d-flex justify-content-center container">
-        <form method="POST" action="/" class="grid" novalidate>
+        <form method="POST" action="{{ url_for('imgAlgorithms') }}" class="grid" enctype="multipart/form-data" novalidate>
             {{ form.csrf_token }}
             {{ form.hidden_tag() }}
 
@@ -18,7 +18,7 @@
             {{ form.cypher_mode(class="form-select form-select-sm") }}
 
             <div class="input" style="margin-top: 1rem;">
-                {{ form.input_img(class="form-control") }}
+                {{ form.input_img(class_="form-control") }}
             </div>
 
             <div class="input" style="margin-top: 1rem;">
@@ -37,10 +37,10 @@
             {% endwith %}
             
             <div class="d-flex justify-content-center">
-                <button class="text-btn encrypt" name="encrypt" value="encrypt">
+                <button class="text-btn encrypt" name="encrypt_img" value="encrypt">
                     <i class="fa-solid fa-lock"></i> Encrypt
                 </button>
-                <button class="text-btn decrypt" name="decrypt" value="decrypt">
+                <button class="text-btn decrypt" name="decrypt_img" value="decrypt">
                     <i class="fa-solid fa-lock-open"></i> Decrypt
                 </button>
             </div>
