@@ -8,8 +8,8 @@ from algorithms.hillText import hillCryptoAnalysis, hillEncrypt, hillDecrypt
 from algorithms.goodies import processInput, InputKeyError
 
 
-from flask import Flask, redirect, url_for, session, flash, send_from_directory
-from flask_session import Session
+from flask import Flask, redirect, url_for, session, flash
+# from flask_session import Session
 from flask.templating import render_template
 from werkzeug.utils import secure_filename
 import cv2 as cv
@@ -35,9 +35,9 @@ SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-SESSION_TYPE = 'filesystem'
-app.config.from_object(__name__)
-Session(app)
+# SESSION_TYPE = 'filesystem'
+# app.config.from_object(__name__)
+# Session(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
