@@ -165,7 +165,7 @@ def imgAlgorithms():
                         form.file.data.save(path_)
                         hillImgEncrypt(path_, input_key)
                         # session["output_img"], session["output_key"] = hillImgEncrypt(input_img, input_key) # Ok
-                        print("Hi")
+                        
                         
                 return redirect(url_for('outputImgAndKey')) 
 
