@@ -1,7 +1,8 @@
 import cv2 as cv
 import numpy as np
 import os
-from goodies import InputKeyError
+from algorithms.goodies import InputKeyError
+from flask import url_for
 #from goodies import InputKeyError
 
 
@@ -14,7 +15,11 @@ enc_dir = 'encrypted-img/'
 dec_dir = 'decrypted-img/'
 """
 
+<<<<<<< HEAD
 dir = 'crypto-flask/web/static/uploads/'
+=======
+dir = 'web/static/uploads/'
+>>>>>>> 9254f801 (...)
 img_dir = 'uploaded/'
 key_dir = 'key/'
 enc_dir = 'encrypted/'
@@ -138,5 +143,11 @@ def hillImgDecrypt(s: str, k: str):
 
 
 
+<<<<<<< HEAD
 
 hillImgEncrypt('2021-04-07 (5).png')
+=======
+# b = os.getcwd() + '/'
+# os.chdir(b+dir)
+# hillImgEncrypt('regalo.png','crypto-flask/web/static/uploads/img/regalo.png')
+>>>>>>> 9254f801 (...)

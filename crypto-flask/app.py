@@ -4,7 +4,7 @@ from algorithms.affine import affineEncrypt, affineDecrypt
 from algorithms.substitution import substitutionEncrypt, substitutionDecrypt, substitutionCryptanalysis
 from algorithms.permutation import permutationDecrypt, permutationEncrypt
 from algorithms.hillText import hillCryptoAnalysis, hillEncrypt, hillDecrypt
-# from algorithms.hillImage import hillImgEncrypt, hillImgDecrypt
+from algorithms.hillImage import hillImgEncrypt, hillImgDecrypt
 from algorithms.goodies import processInput, InputKeyError
 
 
@@ -22,6 +22,11 @@ from algorithms.form import InputForm, ImageForm
 
 import os
 
+dir = 'web/static/uploads/'
+img_dir = 'uploaded/'
+key_dir = 'key/'
+enc_dir = 'encrypted/'
+dec_dir = 'decrypted/'
 
 UPLOAD_FOLDER = 'web/static/uploads/uploaded'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -34,10 +39,6 @@ app = Flask(__name__,
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-# SESSION_TYPE = 'filesystem'
-# app.config.from_object(__name__)
-# Session(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -169,11 +170,9 @@ def imgAlgorithms():
         input_img = form.input_img.data
         filename = secure_filename(input_img.filename)
         path_ = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        print(path_)
         input_img.save(path_)
 
-        # encoded = b64encode(input_img)
-        # mime = "image/jpeg"
-        # session["input_img"] = "data:%s;base64,%s" % (mime, encoded)
         session["input_img_folder"] = 'uploads/uploaded/'
         session["input_img_filename"] = filename
         if form.encrypt_img.data:
@@ -182,6 +181,9 @@ def imgAlgorithms():
             try:
                 match cypher_mode:
                     case "Hill (Image) cipher":
+                        # b = os.getcwd() + '/'
+                        # os.chdir(b+dir)
+                        session["key_img_filename"] = hillImgEncrypt(filename)
                         return redirect(url_for('outputImgAndKey')) 
 
             except InputKeyError as e:
@@ -211,8 +213,11 @@ def outputImgAndKey():
     input_img_folder = session.get("input_img_folder", None)
     input_img_filename = session.get("input_img_filename", None)
 
-    output_img_folder = "uploads/" + mode
-    output_img_filename = session.get("output_img_filename", None)
+    output_img_folder = "uploads/" + mode + "/"
+    output_img_filename = input_img_filename
+
+    key_img_folder = dir + key_dir
+    key_img_filename = session.get("key_img_filename", None)
 
     return render_template(
         'imgoutput.html', 
@@ -220,6 +225,8 @@ def outputImgAndKey():
         input_img_filename=input_img_filename,
         output_img_folder=output_img_folder,
         output_img_filename=output_img_filename,
+        key_img_folder=key_img_folder,
+        key_img_filename=key_img_filename
     )
 
 
