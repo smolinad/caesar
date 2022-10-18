@@ -6,20 +6,27 @@
 
 {% block body %}
 
-    <div class="h-100 d-flex align-items-center justify-content-center container text-center">
-        <div>
-            <h3>Your image has been {{ encrypted_or_decrypted }} succesfully!</h3>
-        </div>
+    <div class="container text-center">
+        <h3>Your image has been {{ encrypted_or_decrypted }} succesfully!</h3>
+    </div>
+
+    <div class="container text-center">
+        
         <div class="row align-items-center">
-            <div class="col">
+            <div class="row">
                 <h5 style="margin-top:1rem;">This is your image:</h5>
                 <img src="{{ url_for('static', filename=input_img_folder+input_img_filename) }}">
             </div>
-            <div class="col">
-                <h5 style="margin-top:1rem;">This is your image:</h5>
-                <img src="{{ url_for('static', filename=output_img_folder+output_img_filename ) }}">
+            <div class="row">
+                <h5 style="margin-top:1rem;">This is your {{ encrypted_or_decrypted }} image:</h5>
+                <img src="{{ url_for('static', filename=output_img_folder+output_img_filename) }}">
             </div>
-            
+            {% if key_img_folder!=None and key_img_filename!=None %}
+                <div class="row">
+                    <h5 style="margin-top:1rem;">This is your key:</h5>
+                    <img src="{{ url_for('static', filename=key_img_folder+key_img_filename) }}">
+                </div>
+            {% endif %}
           </div>
         
         

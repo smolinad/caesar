@@ -88,7 +88,6 @@ def hillImgEncrypt(s: str, k=""):
     mod = 256
     img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", s)
     colored_img = read(img_path)
-    nombre_llave ='key_' + s
 
     n = min(colored_img.shape[0], colored_img.shape[1])
     if n % 2 != 0:
@@ -98,12 +97,15 @@ def hillImgEncrypt(s: str, k=""):
     if k == "":
         m = int(n/2)
         key_orig = np.random.randint(0, mod, (m, m, 3))
-        cv.imwrite(os.path.join(os.getcwd(), "web/static/uploads/key", nombre_llave), key_orig)
+        cv.imwrite(os.path.join(os.getcwd(), "web/static/uploads/key", s), key_orig)
+        key_folder = "key/"
 
     else:
         m = int(n/2)
-        key_orig = read(dir+key_dir+k)
+        key_img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded_key", k)
+        key_orig = read(key_img_path)
         key_orig = cv.resize(key_orig, (m, m))
+        key_folder = "uploaded_key/"
 
     key = [involutoryMatrixOf(i) for i in cv.split(key_orig)]
     [isInvolutory(i, mod) for i in key]
@@ -113,19 +115,23 @@ def hillImgEncrypt(s: str, k=""):
 
     cv.imwrite(os.path.join(os.getcwd(), "web/static/uploads/encrypted", s), encrypted)
     # return (cv.imencode('.png', encrypted), cv.imencode('.png', key_orig))
-    return nombre_llave
+    return key_folder
 
 
 def hillImgDecrypt(s: str, k: str):
+    if k=="":
+        raise InputKeyError("Key required")
     mod = 256
-    encrypted = read(dir+enc_dir+s)
+    img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", s)
+    encrypted = read(img_path)
 
     n = encrypted.shape[0]
     if n % 2 != 0:
         n = n-1
 
     m = int(n/2)
-    key_orig = read(dir+key_dir+k)
+    key_img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded_key", k)
+    key_orig = read(key_img_path)
     key_orig = cv.resize(key_orig, (m, m))
 
     isSquare(encrypted)
@@ -137,8 +143,9 @@ def hillImgDecrypt(s: str, k: str):
     d = [np.matmul(i, j) % mod for i, j in zip(cv.split(encrypted),key)]
     decrypted = cv.merge(d)
 
-    cv.imwrite(dir+dec_dir+s, decrypted)
-    return key
+    cv.imwrite(os.path.join(os.getcwd(), "web/static/uploads/decrypted", s), decrypted)
+    
+    return "uploaded_key/"
 
 
 

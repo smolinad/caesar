@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
-{% block title %} 
-
+{% block title %}
+    <title>Caesar - Encrypt your images easily!</title>
 {% endblock %}
 
 {% block body %}
@@ -15,10 +15,22 @@
                 <img class="mx-auto d-block" src="{{ url_for('static', filename='img/logo.svg') }}" width="300" height="100">
             </div>
             
+            <p style="margin-bottom: 0.1rem;">Choose the algoritm: </p>
             {{ form.cypher_mode(class="form-select form-select-sm") }}
 
+            <div  style="margin-top: 1rem;">
+                <p style="margin-bottom: 0.1rem;">Cipher mode (Block algorithms only): </p>
+                {{ form.block_mode(class="form-select form-select-sm") }}
+            </div>
+
             <div class="input" style="margin-top: 1rem;">
+                <p style="margin-bottom: 0.1rem;">Upload your image: </p>
                 {{ form.input_img(class_="form-control") }}
+            </div>
+
+            <div class="input" style="margin-top: 1rem;">
+                <p style="margin-bottom: 0.1rem;">Upload your key image (Hill only): </p>
+                {{ form.input_key_as_img(class_="form-control") }}
             </div>
 
             <div class="input" style="margin-top: 1rem;">

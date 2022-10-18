@@ -12,11 +12,13 @@ import imageio as iio
 import requests
 from Cryptodome.Cipher import DES3
 from Cryptodome.Cipher import DES 
+import os
 
-dir_encr = 'crypto-flask/web/static/uploads/encrypted/'
+dir_encr = 'web/static/uploads/encrypted/'
+
 dir_des = 'crypto-flask/web/static/uploads/decrypted/'
 
-def DesCifrar(nombre,img_path,mode, key):
+def desEncrypt(nombre,mode, key):
     if(key==""):
         key = get_random_bytes(8)
     ivk = get_random_bytes(8)
@@ -30,6 +32,8 @@ def DesCifrar(nombre,img_path,mode, key):
     elif(mode == 'OFB'):
         mod = DES.MODE_OFB
 
+    img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", nombre)
+
     image = Image.open(img_path)
     size = image.size
     image = np.array(image)
@@ -41,18 +45,19 @@ def DesCifrar(nombre,img_path,mode, key):
     cripbytes = cipher.encrypt(pad(image.tobytes(), DES.block_size))
     imgData = np.frombuffer(cripbytes)
     im = Image.frombuffer("RGB", size, imgData)
-    im.save("imagenCifrada.bmp")
+    im.save(os.path.join(os.getcwd(), dir_encr, nombre))
         
-    file_out = open("key.txt", "wb")
-    file_out.write(key)
-    file_out.close()
+    # file_out = open("key.txt", "wb")
+    # file_out.write(key)
+    # file_out.close()
 
-    file_out = open("ivk.txt", "wb")
-    file_out.write(ivk)
-    file_out.close()
+    # file_out = open("ivk.txt", "wb")
+    # file_out.write(ivk)
+    # file_out.close()
+    return {'key': key , 'inicial_vector': ivk}
 
 
-def DesDescifrar(nombre,img_path,mode, key):
+def desDecrypt(nombre,img_path,mode, key):
     if(mode == 'ECB'):
         mod = DES.MODE_ECB
     elif(mode == 'CBC'):
@@ -85,3 +90,6 @@ def DesDescifrar(nombre,img_path,mode, key):
     decrypbytes = cipher.decrypt(imagebytes)
     imgData = np.frombuffer(decrypbytes)
     Image.frombuffer("RGB", size, imgData).save("imagen.bmp")
+
+
+#DesCifrar('2021-03-04 (1).png','ECB','')

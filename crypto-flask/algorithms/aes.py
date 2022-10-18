@@ -11,6 +11,7 @@ import imageio as iio
 import requests
 from Cryptodome.Cipher import DES3
 from Cryptodome.Cipher import DES
+import os
 
 #Recibe nombre de la imagen su path, el modo y una llave que es de 24 bits"
 
@@ -32,8 +33,8 @@ expansion = [4, 1, 2, 3, 2, 3, 4, 1]
 s0 = [[1, 0, 3, 2], [3, 2, 1, 0], [0, 2, 1, 3], [3, 1, 3, 2]]
 s1 = [[0, 1, 2, 3], [2, 0, 1, 3], [3, 0, 1, 0], [2, 1, 0, 3]] 
 
-dir_encr = 'crypto-flask\\web\\static\\uploads\\encrypted\\'
-dir_des = 'crypto-flask\\web\\static\\uploads\\decrypted\\'
+dir_encr = 'web/static/uploads/encrypted/'
+dir_des = 'web/static/uploads/decrypted/'
 
 
 def loadImageBlock(url):
@@ -62,7 +63,7 @@ def loadImage3Block(path):
     im.save("imagen.bmp")
 
 
-def aesEncrypt(nombre,img_path,mode, key, bt=16):
+def aesEncrypt(nombre,mode, key, bt=16):
     if(key==""):
         key = get_random_bytes(bt)
     ivk = get_random_bytes(16)
@@ -76,6 +77,8 @@ def aesEncrypt(nombre,img_path,mode, key, bt=16):
     elif(mode == 'OFB'):
         mod = AES.MODE_OFB
 
+    img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", nombre)
+
     image = Image.open(img_path)
     size = image.size
     image = np.array(image)
@@ -87,17 +90,17 @@ def aesEncrypt(nombre,img_path,mode, key, bt=16):
     cripbytes = cipher.encrypt(pad(image.tobytes(),AES.block_size))
     imgData = np.frombuffer(cripbytes)
     im = Image.frombuffer("RGB", size, imgData)
-    im.save(dir_encr + nombre)
+    im.save(os.path.join(os.getcwd(), dir_encr, nombre))
 
-    file_out = open("key.txt", "wb")
-    file_out.write(key)
-    file_out.close()
+    # file_out = open("key.txt", "wb")
+    # file_out.write(key)
+    # file_out.close()
 
-    file_out = open("ivk.txt", "wb")
-    file_out.write(ivk)
-    file_out.close()
+    # file_out = open("ivk.txt", "wb")
+    # file_out.write(ivk)
+    # file_out.close()
 
-    return key
+    return {'key': key , 'inicial_vector': ivk}
 
 
 def aesDecrypt(nombre,img_path,mode, key, bt=16):
@@ -135,5 +138,5 @@ def aesDecrypt(nombre,img_path,mode, key, bt=16):
     Image.frombuffer("RGB", size, imgData).save(dir_des + nombre)
     return key
 
-print(aesEncrypt('sebas.png','crypto-flask\\web\\static\\uploads\\img\\sebas.png','ECB',''))
+#print(aesEncrypt('sebas.png','crypto-flask\\web\\static\\uploads\\img\\sebas.png','ECB',''))
 #aesDecrypt('sebas.png','crypto-flask\\web\\static\\uploads\\img\\sebas.png','ECB','')

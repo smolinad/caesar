@@ -1,6 +1,7 @@
 import string
 import re 
 import unicodedata
+import os
 
 ALPHABET = string.ascii_uppercase
 
@@ -18,3 +19,8 @@ class InputKeyError(Exception):
 
     def __str__(self):
         return self.message
+
+def deleteImages(list_dir):
+    for dir in list_dir:
+        for f in os.listdir(dir):
+            os.remove(os.path.join(dir, f))
