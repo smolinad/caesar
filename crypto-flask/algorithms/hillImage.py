@@ -54,6 +54,16 @@ def isInvolutory(a: np.ndarray, mod: int):
         return
     raise InputKeyError("Error de código")
 
+def involutoryMatrixOf(a11: np.ndarray):
+    a22 = -a11
+    y = np.identity(a11.shape[0])
+    a12 = y - a11
+    a21 = y + a11
+    a1 = np.concatenate((a11, a21))
+    a2 = np.concatenate((a12, a22))
+    a = np.concatenate((a1, a2), axis=1)
+    return a
+
 def isSquare(a: np.ndarray):
     if a.shape[0] != a.shape[1]:
         raise InputKeyError("Encrypted image and key image must be squared")
