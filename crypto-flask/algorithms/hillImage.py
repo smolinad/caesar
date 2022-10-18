@@ -15,7 +15,7 @@ dec_dir = 'decrypted-img/'
 """
 
 dir = 'crypto-flask/web/static/uploads/'
-img_dir = 'img/'
+img_dir = 'uploaded/'
 key_dir = 'key/'
 enc_dir = 'encrypted/'
 dec_dir = 'decrypted/'
@@ -80,9 +80,9 @@ def read(s: str):
     return coloredIm
 
 
-def hillImgEncrypt(s: str,path, k=""):
+def hillImgEncrypt(s: str, k=""):
     mod = 256
-    colored_img = read(img_dir+s)
+    colored_img = read(dir+img_dir+s)
     nombre_llave ='key_' + s
 
     n = min(colored_img.shape[0], colored_img.shape[1])
@@ -97,7 +97,7 @@ def hillImgEncrypt(s: str,path, k=""):
 
     else:
         m = int(n/2)
-        key_orig = read(key_dir+k)
+        key_orig = read(dir+key_dir+k)
         key_orig = cv.resize(key_orig, (m, m))
 
     key = [involutoryMatrixOf(i) for i in cv.split(key_orig)]
@@ -106,21 +106,21 @@ def hillImgEncrypt(s: str,path, k=""):
     e = [np.matmul(i, j) % mod for i, j in zip(cv.split(colored_img),key)]
     encrypted = cv.merge(e)
 
-    cv.imwrite(enc_dir+s, encrypted)
+    cv.imwrite(dir+enc_dir+s, encrypted)
     # return (cv.imencode('.png', encrypted), cv.imencode('.png', key_orig))
     return nombre_llave
 
 
-def hillImgDecrypt(s: str,path, k: str):
+def hillImgDecrypt(s: str, k: str):
     mod = 256
-    encrypted = read(enc_dir+s)
+    encrypted = read(dir+enc_dir+s)
 
     n = encrypted.shape[0]
     if n % 2 != 0:
         n = n-1
 
     m = int(n/2)
-    key_orig = read(key_dir+k)
+    key_orig = read(dir+key_dir+k)
     key_orig = cv.resize(key_orig, (m, m))
 
     isSquare(encrypted)
@@ -132,12 +132,11 @@ def hillImgDecrypt(s: str,path, k: str):
     d = [np.matmul(i, j) % mod for i, j in zip(cv.split(encrypted),key)]
     decrypted = cv.merge(d)
 
-    cv.imwrite(dec_dir+s, decrypted)
+    cv.imwrite(dir+dec_dir+s, decrypted)
     return key
 
 
 
 
-b = os.getcwd() + '/'
-os.chdir(b+dir)
-hillImgEncrypt('regalo.png','crypto-flask/web/static/uploads/img/regalo.png')
+
+hillImgEncrypt('2021-04-07 (5).png')

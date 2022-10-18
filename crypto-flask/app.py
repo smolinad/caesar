@@ -215,7 +215,7 @@ def outputImgAndKey():
     output_img_filename = session.get("output_img_filename", None)
 
     return render_template(
-        'imgoutput.html',
+        'imgoutput.html', 
         input_img_folder=input_img_folder,
         input_img_filename=input_img_filename,
         output_img_folder=output_img_folder,
