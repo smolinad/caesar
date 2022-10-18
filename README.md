@@ -9,5 +9,6 @@ Para ejecutar el código fuente siga los pasos:
 - En la terminal ubicarse en la carpeta del proyecto y entrar a la carpeta `crypto-flask`
 - Instalar las librerías enlistadas en `requirements.txt` con el comando `pip install -r requirements.txt` o alternativamente ejecutar el ambiente de desarrollo ubicado en la carpeta `env/Scripts/activate`.
   - Para Windows, ejecutar el ambiente con el comando `.\env\Scripts\activate.ps1`.
-- Ejecutar la aplicación con el comando `python app.py`.
+  - Para Linux (Debian/Ubuntu), ejecutar el comando `source venv/bin/activate`.
+- Ejecutar la aplicación con el comando `python app.py` (Windows) o `python3 app.py` (Linux).
 - Abrir el enlace del servidor local en el navegador (`127.0.0.1:5000` por defecto).
