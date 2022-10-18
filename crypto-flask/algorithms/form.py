@@ -4,7 +4,7 @@ from wtforms import TextAreaField, SubmitField, SelectField, FileField
 from wtforms.validators import DataRequired, Length
 
 TEXT_CIPHER_MODES = ["Caesar", "Affine", "Vigenere", "Substitution", "Permutation", "Hill (Text)"]
-IMG_CIPHER_MODES = ["Hill (Image)"]
+IMG_CIPHER_MODES = ["Hill (Image)", "3DES"]
 
 class InputForm(FlaskForm):
     cypher_mode = SelectField(label='State', choices=[mode + " cipher"  for mode in TEXT_CIPHER_MODES])

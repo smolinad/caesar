@@ -5,18 +5,14 @@ from algorithms.substitution import substitutionEncrypt, substitutionDecrypt, su
 from algorithms.permutation import permutationDecrypt, permutationEncrypt
 from algorithms.hillText import hillCryptoAnalysis, hillEncrypt, hillDecrypt
 from algorithms.hillImage import hillImgEncrypt, hillImgDecrypt
+from algorithms.des3 import des3Encrypt
 from algorithms.goodies import processInput, InputKeyError
-
 
 from flask import Flask, redirect, url_for, session, flash
 # from flask_session import Session
 from flask.templating import render_template
 from werkzeug.utils import secure_filename
 import cv2 as cv
-
-from PIL import Image
-import base64 
-from io import BytesIO
 
 from algorithms.form import InputForm, ImageForm
 
@@ -170,7 +166,6 @@ def imgAlgorithms():
         input_img = form.input_img.data
         filename = secure_filename(input_img.filename)
         path_ = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        print(path_)
         input_img.save(path_)
 
         session["input_img_folder"] = 'uploads/uploaded/'
@@ -181,9 +176,10 @@ def imgAlgorithms():
             try:
                 match cypher_mode:
                     case "Hill (Image) cipher":
-                        # b = os.getcwd() + '/'
-                        # os.chdir(b+dir)
                         session["key_img_filename"] = hillImgEncrypt(filename)
+                        return redirect(url_for('outputImgAndKey')) 
+                    case "3DES cipher":
+                        session["key_img_filename"] = des3Encrypt(filename, path_, 'ECB', "")
                         return redirect(url_for('outputImgAndKey')) 
 
             except InputKeyError as e:
