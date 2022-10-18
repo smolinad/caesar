@@ -170,6 +170,7 @@ def imgAlgorithms():
 
         session["input_img_folder"] = 'uploads/uploaded/'
         session["input_img_filename"] = filename
+
         if form.encrypt_img.data:
             session["encrypted_or_decrypted"] = "encrypted"
 
