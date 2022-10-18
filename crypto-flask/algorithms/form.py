@@ -11,11 +11,11 @@ class InputForm(FlaskForm):
     input_text = TextAreaField("input_text", validators=[DataRequired(), Length(max=1000)], default=None)
     input_key = TextAreaField("input_key", default=None)
     encrypt = SubmitField("Encrypt")
-    decrypt = SubmitField("decrypt")
+    decrypt = SubmitField("Decrypt")
     
 class ImageForm(FlaskForm):
     cypher_mode = SelectField(label='State', choices=[mode + " cipher"  for mode in IMG_CIPHER_MODES])
-    input_img = FileField("input_img", validators=[FileRequired(), FileAllowed(['jpg','jpeg','png'])])
+    input_img = FileField("input_img", validators=[FileRequired(), FileAllowed(['jpg', 'jpeg','png','JPG','JPEG','PNG'])])
     input_key = TextAreaField("input_key", default=None)
-    encrypt = SubmitField("Encrypt")
-    decrypt = SubmitField("decrypt")
+    encrypt_img = SubmitField("Encrypt")
+    decrypt_img = SubmitField("Decrypt")
