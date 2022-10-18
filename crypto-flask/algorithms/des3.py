@@ -14,8 +14,8 @@ from Cryptodome.Cipher import DES3
 from Cryptodome.Cipher import DES 
 import os
 
-dir_up = 'crypto-flask/web/static/uploads/uploaded/'
-dir_encr = 'crypto-flask/web/static/uploads/encrypted/'
+dir_up = 'web/static/uploads/uploaded/'
+dir_encr = 'web/static/uploads/encrypted/'
 dir_des = 'crypto-flask/web/static/uploads/decrypted/'
 
 "Recibe nombre de la imagen su path, el modo y una llave que es de 24 bits"
@@ -30,13 +30,13 @@ dir_des = 'crypto-flask/web/static/uploads/decrypted/'
 #"""
 
 
-def des3Encrypt(nombre,mode, key):
+def des3Encrypt(nombre, mode, key):
     if(key==""):
         key = get_random_bytes(24)
     ivk = get_random_bytes(8)
-    file_out = open("key.txt", "wb")
-    file_out.write(key)
-    file_out.close()
+    # file_out = open("key.txt", "wb")
+    # file_out.write(key)
+    # file_out.close()
 
     if(mode == 'ECB'):
         mod = DES3.MODE_ECB
@@ -46,7 +46,7 @@ def des3Encrypt(nombre,mode, key):
         mod = DES3.MODE_CFB
     elif(mode == 'OFB'):
         mod = DES3.MODE_OFB
-    img_path = dir_up + nombre
+    img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", nombre)
     print(img_path)
     image = Image.open(img_path)
     size = image.size
@@ -61,16 +61,14 @@ def des3Encrypt(nombre,mode, key):
     cripbytes = cipher.encrypt(pad(image.tobytes(), DES3.block_size))
     imgData = np.frombuffer(cripbytes)
     im = Image.frombuffer("RGB", size, imgData)
-    path_ = os.path.join(curr_dir, dir_encr + nombre)
-    print(path_)
-    im.save(path_)
-        
-    
+    im.save(os.path.join(os.getcwd(), dir_encr, nombre))
+    # im.save(dir_encr+nombre)
+         
 
     # file_out = open("ivk.txt", "wb")
     # file_out.write(ivk)
     # file_out.close()
-    return {"key": key, "ivk": ivk}
+    return key
 
 
 
@@ -113,5 +111,5 @@ def des3Decrypt(nombre,mode, key):
 
     return key
 
-des3Encrypt('fractal.png','ECB','')
-des3Decrypt('fractal.png','ECB','')
+# des3Encrypt('fractal.png','ECB','')
+# des3Decrypt('fractal.png','ECB','')

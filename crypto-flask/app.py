@@ -180,7 +180,7 @@ def imgAlgorithms():
                         session["key_img_filename"] = hillImgEncrypt(filename)
                         return redirect(url_for('outputImgAndKey')) 
                     case "3DES cipher":
-                        session["key_img_filename"] = des3Encrypt(filename, path_, 'ECB', "")
+                        des3Encrypt(filename,'ECB', "")
                         return redirect(url_for('outputImgAndKey')) 
 
             except InputKeyError as e:
@@ -213,17 +213,15 @@ def outputImgAndKey():
     output_img_folder = "uploads/" + mode + "/"
     output_img_filename = input_img_filename
 
-    key_img_folder = dir + key_dir
-    key_img_filename = session.get("key_img_filename", None)
+    # key_img_folder = dir + key_dir
+    # key_img_filename = session.get("key_img_filename", None)
 
     return render_template(
         'imgoutput.html', 
         input_img_folder=input_img_folder,
         input_img_filename=input_img_filename,
         output_img_folder=output_img_folder,
-        output_img_filename=output_img_filename,
-        key_img_folder=key_img_folder,
-        key_img_filename=key_img_filename
+        output_img_filename=output_img_filename
     )
 
 
