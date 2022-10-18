@@ -12,6 +12,7 @@ import requests
 from Cryptodome.Cipher import DES3
 from Cryptodome.Cipher import DES 
 
+dir_up = 'crypto-flask/web/static/uploads/uploaded/'
 dir_encr = 'crypto-flask/web/static/uploads/encrypted/'
 dir_des = 'crypto-flask/web/static/uploads/decrypted/'
 
@@ -27,11 +28,10 @@ dir_des = 'crypto-flask/web/static/uploads/decrypted/'
 #"""
 
 
-def des3Encrypt(nombre,img_path,mode, key):
+def des3Encrypt(nombre,mode, key):
     if(key==""):
         key = get_random_bytes(24)
     ivk = get_random_bytes(8)
-    prueba = key
     file_out = open("key.txt", "wb")
     file_out.write(key)
     file_out.close()
@@ -44,7 +44,8 @@ def des3Encrypt(nombre,img_path,mode, key):
         mod = DES3.MODE_CFB
     elif(mode == 'OFB'):
         mod = DES3.MODE_OFB
-
+    img_path = dir_up + nombre
+    print(img_path)
     image = Image.open(img_path)
     size = image.size
     image = np.array(image)
@@ -70,7 +71,8 @@ def des3Encrypt(nombre,img_path,mode, key):
 
 
 
-def des3Decrypt(nombre,img_path,mode, key):
+
+def des3Decrypt(nombre,mode, key):
     if(mode == 'ECB'):
         mod = DES3.MODE_ECB
     elif(mode == 'CBC'):
@@ -89,7 +91,7 @@ def des3Decrypt(nombre,img_path,mode, key):
     file_in = open("ivk.txt", "rb")
     ivk = file_in.read()
     file_in.close()
-
+    img_path = dir_encr + nombre
     image = Image.open(img_path)
     size = image.size
     image = np.array(image)
@@ -107,5 +109,5 @@ def des3Decrypt(nombre,img_path,mode, key):
 
     return key
 
-des3Encrypt('fractal.png','crypto-flask/web/static/uploads/img/fractal.png','ECB','')
-#des3Decrypt('fractal.png','crypto-flask/web/static/uploads/img/fractal.png','ECB','')
+des3Encrypt('fractal.png','ECB','')
+des3Decrypt('fractal.png','ECB','')
