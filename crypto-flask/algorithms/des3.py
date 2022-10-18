@@ -45,7 +45,6 @@ def des3Encrypt(nombre,mode, key):
     elif(mode == 'OFB'):
         mod = DES3.MODE_OFB
     img_path = dir_up + nombre
-    print(img_path)
     image = Image.open(img_path)
     size = image.size
     image = np.array(image)
@@ -60,8 +59,6 @@ def des3Encrypt(nombre,mode, key):
     imgData = np.frombuffer(cripbytes)
     im = Image.frombuffer("RGB", size, imgData)
     im.save(dir_encr + nombre)
-        
-    
 
     file_out = open("ivk.txt", "wb")
     file_out.write(ivk)
