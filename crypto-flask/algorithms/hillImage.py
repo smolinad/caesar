@@ -1,7 +1,8 @@
 import cv2 as cv
 import numpy as np
 import os
-from goodies import InputKeyError
+from algorithms.goodies import InputKeyError
+# from flask import url_for
 #from goodies import InputKeyError
 
 
@@ -14,7 +15,7 @@ enc_dir = 'encrypted-img/'
 dec_dir = 'decrypted-img/'
 """
 
-dir = 'crypto-flask/web/static/uploads/'
+dir = 'web/static/uploads/'
 img_dir = 'uploaded/'
 key_dir = 'key/'
 enc_dir = 'encrypted/'
@@ -54,6 +55,7 @@ def isInvolutory(a: np.ndarray, mod: int):
         return
     raise InputKeyError("Error de código")
 
+
 def involutoryMatrixOf(a11: np.ndarray):
     a22 = -a11
     y = np.identity(a11.shape[0])
@@ -64,9 +66,11 @@ def involutoryMatrixOf(a11: np.ndarray):
     a = np.concatenate((a1, a2), axis=1)
     return a
 
+
 def isSquare(a: np.ndarray):
     if a.shape[0] != a.shape[1]:
         raise InputKeyError("Encrypted image and key image must be squared")
+
 
 def read(s: str):
     if s.split(".")[-1] != "png":
@@ -82,7 +86,8 @@ def read(s: str):
 
 def hillImgEncrypt(s: str, k=""):
     mod = 256
-    colored_img = read(dir+img_dir+s)
+    img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", s)
+    colored_img = read(img_path)
     nombre_llave ='key_' + s
 
     n = min(colored_img.shape[0], colored_img.shape[1])
@@ -93,7 +98,7 @@ def hillImgEncrypt(s: str, k=""):
     if k == "":
         m = int(n/2)
         key_orig = np.random.randint(0, mod, (m, m, 3))
-        cv.imwrite(key_dir + nombre_llave, key_orig)
+        cv.imwrite(os.path.join(os.getcwd(), "web/static/uploads/key", nombre_llave), key_orig)
 
     else:
         m = int(n/2)
@@ -106,7 +111,7 @@ def hillImgEncrypt(s: str, k=""):
     e = [np.matmul(i, j) % mod for i, j in zip(cv.split(colored_img),key)]
     encrypted = cv.merge(e)
 
-    cv.imwrite(dir+enc_dir+s, encrypted)
+    cv.imwrite(os.path.join(os.getcwd(), "web/static/uploads/encrypted", s), encrypted)
     # return (cv.imencode('.png', encrypted), cv.imencode('.png', key_orig))
     return nombre_llave
 
@@ -139,4 +144,4 @@ def hillImgDecrypt(s: str, k: str):
 
 
 
-hillImgEncrypt('2021-04-07 (5).png')
+# hillImgEncrypt('image.png')

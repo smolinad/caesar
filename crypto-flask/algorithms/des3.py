@@ -1,5 +1,6 @@
-import math
-import random
+# import math
+# import random
+from readline import append_history_file
 from PIL import Image
 import numpy as np
 from Cryptodome.Cipher import AES
@@ -7,13 +8,14 @@ from Cryptodome.Random import get_random_bytes
 from Cryptodome.Util.Padding import pad
 from Cryptodome.Util.Padding import unpad
 from base64 import b64encode
-import imageio as iio
-import requests
+# import imageio as iio
+# import requests
 from Cryptodome.Cipher import DES3
 from Cryptodome.Cipher import DES 
+import os
 
-dir_up = 'crypto-flask/web/static/uploads/uploaded/'
-dir_encr = 'crypto-flask/web/static/uploads/encrypted/'
+dir_up = 'web/static/uploads/uploaded/'
+dir_encr = 'web/static/uploads/encrypted/'
 dir_des = 'crypto-flask/web/static/uploads/decrypted/'
 
 "Recibe nombre de la imagen su path, el modo y una llave que es de 24 bits"
@@ -28,13 +30,13 @@ dir_des = 'crypto-flask/web/static/uploads/decrypted/'
 #"""
 
 
-def des3Encrypt(nombre,mode, key):
+def des3Encrypt(nombre, mode, key):
     if(key==""):
         key = get_random_bytes(24)
     ivk = get_random_bytes(8)
-    file_out = open("key.txt", "wb")
-    file_out.write(key)
-    file_out.close()
+    # file_out = open("key.txt", "wb")
+    # file_out.write(key)
+    # file_out.close()
 
     if(mode == 'ECB'):
         mod = DES3.MODE_ECB
@@ -44,7 +46,12 @@ def des3Encrypt(nombre,mode, key):
         mod = DES3.MODE_CFB
     elif(mode == 'OFB'):
         mod = DES3.MODE_OFB
+<<<<<<< HEAD
     img_path = dir_up + nombre
+=======
+    img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", nombre)
+    print(img_path)
+>>>>>>> e62aa976ea522c6ba06731d8f4c039c86015c1dd
     image = Image.open(img_path)
     size = image.size
     image = np.array(image)
@@ -58,11 +65,17 @@ def des3Encrypt(nombre,mode, key):
     cripbytes = cipher.encrypt(pad(image.tobytes(), DES3.block_size))
     imgData = np.frombuffer(cripbytes)
     im = Image.frombuffer("RGB", size, imgData)
+<<<<<<< HEAD
     im.save(dir_encr + nombre)
+=======
+    im.save(os.path.join(os.getcwd(), dir_encr, nombre))
+    # im.save(dir_encr+nombre)
+         
+>>>>>>> e62aa976ea522c6ba06731d8f4c039c86015c1dd
 
-    file_out = open("ivk.txt", "wb")
-    file_out.write(ivk)
-    file_out.close()
+    # file_out = open("ivk.txt", "wb")
+    # file_out.write(ivk)
+    # file_out.close()
     return key
 
 
@@ -106,5 +119,5 @@ def des3Decrypt(nombre,mode, key):
 
     return key
 
-des3Encrypt('fractal.png','ECB','')
-des3Decrypt('fractal.png','ECB','')
+# des3Encrypt('fractal.png','ECB','')
+# des3Decrypt('fractal.png','ECB','')

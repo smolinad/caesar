@@ -4,9 +4,9 @@ from algorithms.affine import affineEncrypt, affineDecrypt
 from algorithms.substitution import substitutionEncrypt, substitutionDecrypt, substitutionCryptanalysis
 from algorithms.permutation import permutationDecrypt, permutationEncrypt
 from algorithms.hillText import hillCryptoAnalysis, hillEncrypt, hillDecrypt
-# from algorithms.hillImage import hillImgEncrypt, hillImgDecrypt
+from algorithms.hillImage import hillImgEncrypt, hillImgDecrypt
+from algorithms.des3 import des3Encrypt
 from algorithms.goodies import processInput, InputKeyError
-
 
 from flask import Flask, redirect, url_for, session, flash
 # from flask_session import Session
@@ -14,14 +14,15 @@ from flask.templating import render_template
 from werkzeug.utils import secure_filename
 import cv2 as cv
 
-from PIL import Image
-import base64 
-from io import BytesIO
-
 from algorithms.form import InputForm, ImageForm
 
 import os
 
+dir = 'web/static/uploads/'
+img_dir = 'uploaded/'
+key_dir = 'key/'
+enc_dir = 'encrypted/'
+dec_dir = 'decrypted/'
 
 UPLOAD_FOLDER = 'web/static/uploads/uploaded'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -34,10 +35,6 @@ app = Flask(__name__,
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-# SESSION_TYPE = 'filesystem'
-# app.config.from_object(__name__)
-# Session(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -171,17 +168,19 @@ def imgAlgorithms():
         path_ = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         input_img.save(path_)
 
-        # encoded = b64encode(input_img)
-        # mime = "image/jpeg"
-        # session["input_img"] = "data:%s;base64,%s" % (mime, encoded)
         session["input_img_folder"] = 'uploads/uploaded/'
         session["input_img_filename"] = filename
+
         if form.encrypt_img.data:
             session["encrypted_or_decrypted"] = "encrypted"
 
             try:
                 match cypher_mode:
                     case "Hill (Image) cipher":
+                        session["key_img_filename"] = hillImgEncrypt(filename)
+                        return redirect(url_for('outputImgAndKey')) 
+                    case "3DES cipher":
+                        des3Encrypt(filename,'ECB', "")
                         return redirect(url_for('outputImgAndKey')) 
 
             except InputKeyError as e:
@@ -211,15 +210,18 @@ def outputImgAndKey():
     input_img_folder = session.get("input_img_folder", None)
     input_img_filename = session.get("input_img_filename", None)
 
-    output_img_folder = "uploads/" + mode
-    output_img_filename = session.get("output_img_filename", None)
+    output_img_folder = "uploads/" + mode + "/"
+    output_img_filename = input_img_filename
+
+    # key_img_folder = dir + key_dir
+    # key_img_filename = session.get("key_img_filename", None)
 
     return render_template(
         'imgoutput.html', 
         input_img_folder=input_img_folder,
         input_img_filename=input_img_filename,
         output_img_folder=output_img_folder,
-        output_img_filename=output_img_filename,
+        output_img_filename=output_img_filename
     )
 
 
