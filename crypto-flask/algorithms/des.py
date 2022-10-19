@@ -13,6 +13,7 @@ import requests
 from Cryptodome.Cipher import DES3
 from Cryptodome.Cipher import DES 
 import os
+from algorithms.goodies import InputKeyError
 
 dir_encr = 'web/static/uploads/encrypted/'
 
@@ -21,7 +22,15 @@ dir_des = 'crypto-flask/web/static/uploads/decrypted/'
 def desEncrypt(nombre,mode, key):
     if(key==""):
         key = get_random_bytes(8)
+    else:
+        if not (all([isinstance(item, int) for item in key]) and len(key) == 8):
+            raise InputKeyError("Key must be a binar number with length 8")
+
     ivk = get_random_bytes(8)
+
+    
+
+
 
     if(mode == 'ECB'):
         mod = DES.MODE_ECB
@@ -31,6 +40,8 @@ def desEncrypt(nombre,mode, key):
         mod = DES.MODE_CFB
     elif(mode == 'OFB'):
         mod = DES.MODE_OFB
+    elif(mode == 'CTR'):
+        mod = DES.MODE_CTR
 
     img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", nombre)
 
@@ -38,10 +49,14 @@ def desEncrypt(nombre,mode, key):
     size = image.size
     image = np.array(image)
     cipher = None
-    if(mod != DES.MODE_ECB):
-        cipher = DES.new(key, mod,iv=ivk)
+
+    if(mod != DES.MODE_ECB and mod != DES.MODE_CTR):
+        cipher = DES.new(key, mod, ivk)
+    elif mod == DES.MODE_CTR:
+        cipher = DES.new(key, mod, nonce=b"")
     else:
         cipher = DES.new(key, mod)
+
     cripbytes = cipher.encrypt(pad(image.tobytes(), DES.block_size))
     imgData = np.frombuffer(cripbytes)
     im = Image.frombuffer("RGB", size, imgData)
@@ -66,6 +81,8 @@ def desDecrypt(nombre,img_path,mode, key):
         mod = DES.MODE_CFB
     elif(mode == 'OFB'):
         mod = DES.MODE_OFB
+    elif(mode == 'CTR'):
+        mod = DES.MODE_CTR
 
     if(key == ""):
         file_in = open("key.txt", "rb")
@@ -81,8 +98,10 @@ def desDecrypt(nombre,img_path,mode, key):
     image = np.array(image)
         
     cipher = None
-    if(mod != DES.MODE_ECB):
-        cipher = DES.new(key, mod, iv=ivk)
+    if(mod != DES.MODE_ECB and mod != DES.MODE_CTR):
+        cipher = DES.new(key, mod, ivk)
+    elif mod == DES.MODE_CTR:
+        cipher = DES.new(key, mod, nonce=b"")
     else:
         cipher = DES.new(key, mod)
 

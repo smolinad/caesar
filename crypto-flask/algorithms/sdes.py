@@ -57,7 +57,8 @@ def sdesEncrypt(text, key, mode):
 
     textCript=None
     if(mode == 'ECB'):
-        return {'encrypted_text' : S_DES_ENCRYPT_ECB(text, keys) , 'key': key}
+        return ( S_DES_ENCRYPT_ECB(text, keys) ,  key)
+
         
     elif(mode == 'CBC'):
         textCript, ivk = S_DES_ENCRYPT_CBC(text, keys)
@@ -69,7 +70,7 @@ def sdesEncrypt(text, key, mode):
     file_out = open("ivk.txt", "w")
     file_out.write(ivk)
     file_out.close()
-    return {'encrypted_text' : textCript , 'key': key}
+    return ( textCript ,  key)
 
 
 
@@ -305,7 +306,7 @@ def S_DES_DESENCRYPT_OFB(TextoEncriptado,keys,VI):
 
 
 
-#print(desEncrypt('hola','','ECB'))
+print(sdesEncrypt('hola','','ECB'))
 #print(desDecrypt(['11100111', '10001111', '01100010', '00101111'],"","ECB"))
 
 

@@ -13,6 +13,11 @@ def processInput(text:str):
     uppercase = no_digits.upper().strip() 
     return uppercase
 
+def strToByte(text:str):
+    numeros = [int(x) for x in range(len(text))]
+    return bytes(numeros)
+
+
 class InputKeyError(Exception):
     def __init__(self, message:str):
         self.message = message

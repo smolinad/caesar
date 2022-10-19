@@ -7,8 +7,9 @@ from algorithms.hillText import hillCryptoAnalysis, hillEncrypt, hillDecrypt
 from algorithms.hillImage import hillImgEncrypt, hillImgDecrypt
 from algorithms.des3 import des3Encrypt
 from algorithms.des import desEncrypt
+from algorithms.sdes import sdesEncrypt
 from algorithms.aes import aesEncrypt
-from algorithms.goodies import processInput, InputKeyError, deleteImages
+from algorithms.goodies import processInput, InputKeyError, deleteImages, strToByte
 
 from flask import Flask, redirect, url_for, session, flash
 # from flask_session import Session
@@ -73,7 +74,8 @@ def home():
                             session["output_text"], session["output_key"] = permutationEncrypt(input_text, input_key) #Ok
                         case "Hill (Text) cipher":
                             session["output_text"], session["output_key"] = hillEncrypt(input_text, input_key) # Ok
-                   
+                        case "DES (text) cipher":
+                            session["output_text"], session["output_key"] = sdesEncrypt(input_text, input_key, 'ECB') 
                     return redirect(url_for('outputTextAndKey')) 
 
                 except InputKeyError as e:
@@ -175,7 +177,7 @@ def imgAlgorithms():
     form = ImageForm()
     if form.validate_on_submit():
         cypher_mode = form.cypher_mode.data
-        input_key = form.input_key.data
+        input_key = strToByte(form.input_key.data)
         input_img = form.input_img.data
         input_mode = form.block_mode.data
         filename = secure_filename(input_img.filename)

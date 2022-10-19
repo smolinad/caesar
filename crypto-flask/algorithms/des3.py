@@ -11,7 +11,9 @@ from base64 import b64encode
 # import imageio as iio
 # import requests
 from Cryptodome.Cipher import DES3
-from Cryptodome.Cipher import DES 
+from Cryptodome.Cipher import DES
+from algorithms.goodies import InputKeyError
+
 import os
 
 #dir_up = 'web/static/uploads/uploaded/'
@@ -33,6 +35,9 @@ dir_des = 'web/static/uploads/decrypted/'
 def des3Encrypt(nombre, mode, key):
     if(key==""):
         key = get_random_bytes(24)
+    else:
+        if not (all([isinstance(item, int) for item in key]) and len(key) == 24):
+            raise InputKeyError("Key must be a binar number with length 24")
     ivk = get_random_bytes(8)
     # file_out = open("key.txt", "wb")
     # file_out.write(key)
@@ -46,6 +51,8 @@ def des3Encrypt(nombre, mode, key):
         mod = DES3.MODE_CFB
     elif(mode == 'OFB'):
         mod = DES3.MODE_OFB
+    elif(mode == 'CTR'):
+        mod = DES3.MODE_CTR
 
     img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", nombre)
 
@@ -53,8 +60,10 @@ def des3Encrypt(nombre, mode, key):
     size = image.size
     image = np.array(image)
     cipher = None
-    if(mod != DES3.MODE_ECB):
+    if(mod != DES3.MODE_ECB and mod != DES3.MODE_CTR):
         cipher = DES3.new(key, mod, ivk)
+    elif mod == DES3.MODE_CTR:
+        cipher = DES3.new(key, mod, nonce=b"")
     else:
         cipher = DES3.new(key, mod)
 
@@ -69,6 +78,7 @@ def des3Encrypt(nombre, mode, key):
     # file_out = open("ivk.txt", "wb")
     # file_out.write(ivk)
     # file_out.close()
+
     return {'key': key , 'inicial_vector': ivk}
 
 

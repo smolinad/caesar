@@ -3,7 +3,7 @@ from flask_wtf.file import FileAllowed, FileRequired
 from wtforms import TextAreaField, SubmitField, SelectField, FileField
 from wtforms.validators import DataRequired, Length
 
-TEXT_CIPHER_MODES = ["Caesar", "Affine", "Vigenere", "Substitution", "Permutation", "Hill (Text)"]
+TEXT_CIPHER_MODES = ["Caesar", "Affine", "Vigenere", "Substitution", "Permutation", "Hill (Text)", "DES (text)"]
 IMG_CIPHER_MODES = ["Hill (Image)", "3DES", "DES", "AES"]
 
 class InputForm(FlaskForm):
@@ -13,7 +13,7 @@ class InputForm(FlaskForm):
     encrypt = SubmitField("Encrypt")
     decrypt = SubmitField("Decrypt")
     
-BLOCK_IMAGES_MODES = ['ECB','CBC','CFB','OFB']
+BLOCK_IMAGES_MODES = ['ECB','CBC','CFB','OFB', 'CTR']
 
 class ImageForm(FlaskForm):
     cypher_mode = SelectField(label='State', choices=[mode + " cipher" for mode in IMG_CIPHER_MODES])

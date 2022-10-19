@@ -12,7 +12,7 @@ import requests
 from Cryptodome.Cipher import DES3
 from Cryptodome.Cipher import DES
 import os
-
+from algorithms.goodies import InputKeyError
 #Recibe nombre de la imagen su path, el modo y una llave que es de 24 bits"
 
 #"""ejemplo: aesEncrypt('sebas.png','crypto-flask\\uploads\\img\\sebas.png','ECB','')
@@ -66,6 +66,9 @@ def loadImage3Block(path):
 def aesEncrypt(nombre,mode, key, bt=16):
     if(key==""):
         key = get_random_bytes(bt)
+    else:
+        if not (all([isinstance(item, int) for item in key]) and len(key) == bt):
+            raise InputKeyError(f"Key must be a binar number with length {bt}")
     ivk = get_random_bytes(16)
 
     if(mode == 'ECB'):
@@ -76,6 +79,8 @@ def aesEncrypt(nombre,mode, key, bt=16):
         mod = AES.MODE_CFB
     elif(mode == 'OFB'):
         mod = AES.MODE_OFB
+    elif(mode == 'CTR'):
+        mod = AES.MODE_CTR
 
     img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", nombre)
 
@@ -83,10 +88,14 @@ def aesEncrypt(nombre,mode, key, bt=16):
     size = image.size
     image = np.array(image)
     cipher = None
-    if(mod != AES.MODE_ECB):
-        cipher = AES.new(key, mod,iv=ivk)
+
+    if(mod != AES.MODE_ECB and mod != AES.MODE_CTR):
+        cipher = AES.new(key, mod, ivk)
+    elif mod == AES.MODE_CTR:
+        cipher = AES.new(key, mod, nonce=b"")
     else:
         cipher = AES.new(key, mod)
+
     cripbytes = cipher.encrypt(pad(image.tobytes(),AES.block_size))
     imgData = np.frombuffer(cripbytes)
     im = Image.frombuffer("RGB", size, imgData)
