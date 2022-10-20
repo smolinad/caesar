@@ -16,10 +16,9 @@ import os
 from algorithms.goodies import InputKeyError, ALPHABET
 
 dir_encr = 'web/static/uploads/encrypted/'
+dir_des = 'web/static/uploads/decrypted/'
 
-dir_des = 'crypto-flask/web/static/uploads/decrypted/'
-
-def desEncrypt(nombre,mode, key, ivk):
+def desEncrypt(nombre, mode, key, ivk):
     # if(key==""):
     #     key = get_random_bytes(8)
     # else:
@@ -78,7 +77,12 @@ def desEncrypt(nombre,mode, key, ivk):
     return {'key': key.decode()  , 'inicial_vector': ivk.decode() }
 
 
-def desDecrypt(nombre,img_path,mode, key):
+def desDecrypt(nombre, mode, key, ivk):
+    if (len(key)!=8):
+        raise InputKeyError("Key must have a length of 8 letters.")
+    if (len(ivk)!=8):
+        raise InputKeyError("Initial vector must have a length of 8 letters.")
+
     if(mode == 'ECB'):
         mod = DES.MODE_ECB
     elif(mode == 'CBC'):
@@ -90,20 +94,22 @@ def desDecrypt(nombre,img_path,mode, key):
     elif(mode == 'CTR'):
         mod = DES.MODE_CTR
 
-    if(key == ""):
-        try:
-            file_in = open("key.txt", "rb")
-            key = file_in.read()
-            file_in.close()
-        except:
-            raise InputKeyError("we can not decrypt without a key :(")
+    # if(key == ""):
+    #     try:
+    #         file_in = open("key.txt", "rb")
+    #         key = file_in.read()
+    #         file_in.close()
+    #     except:
+    #         raise InputKeyError("we can not decrypt without a key :(")
 
 
-    file_in = open("ivk.txt", "rb")
-    ivk = file_in.read()
-    file_in.close()
+    # file_in = open("ivk.txt", "rb")
+    # ivk = file_in.read()
+    # file_in.close()
 
-    image = Image.open("imagenCifrada.bmp")
+    img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", nombre)
+    image = Image.open(img_path)
+    #image = Image.open("imagenCifrada.bmp")
     size = image.size
     image = np.array(image)
         
@@ -118,7 +124,11 @@ def desDecrypt(nombre,img_path,mode, key):
     imagebytes = image.tobytes()
     decrypbytes = cipher.decrypt(imagebytes)
     imgData = np.frombuffer(decrypbytes)
-    Image.frombuffer("RGB", size, imgData).save("imagen.bmp")
+    #Image.frombuffer("RGB", size, imgData).save("imagen.bmp")
+    im = Image.frombuffer("RGB", size, imgData)
+    im.save(os.path.join(os.getcwd(), dir_des, nombre))
+
+    return {'key': key.decode(), 'inicial_vector': ivk.decode()}
 
 
 #DesCifrar('2021-03-04 (1).png','ECB','')

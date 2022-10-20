@@ -6,10 +6,10 @@ from algorithms.permutation import permutationDecrypt, permutationEncrypt
 from algorithms.hillText import hillCryptoAnalysis, hillEncrypt, hillDecrypt
 from algorithms.hillImage import hillImgEncrypt, hillImgDecrypt
 from algorithms.des3 import des3Decrypt, des3Encrypt
-from algorithms.des import desEncrypt
+from algorithms.des import desEncrypt, desDecrypt
 from algorithms.sdes import sdesEncrypt,sdesDecrypt
-from algorithms.aes import aesEncrypt
-from algorithms.goodies import processInput, InputKeyError, deleteImages, strToByte
+from algorithms.aes import aesEncrypt, aesDecrypt
+from algorithms.goodies import processInput, InputKeyError, deleteImages
 
 from flask import Flask, redirect, url_for, session, flash
 # from flask_session import Session
@@ -262,6 +262,14 @@ def imgAlgorithms():
                         session["result_dict"] = des3Decrypt(filename, input_mode, input_key, input_ivk)
                         session["result_dict"]["mode"] = input_mode
                         return redirect(url_for('outputImgAndKey'))
+                    case "DES cipher":
+                        session["result_dict"] = desDecrypt(filename, input_mode, input_key, input_ivk)
+                        session["result_dict"]["mode"] = input_mode
+                        return redirect(url_for('outputImgAndKey'))
+                    case "AES cipher":
+                        session["result_dict"] = aesDecrypt(filename, input_mode, input_key, input_ivk)
+                        session["result_dict"]["mode"] = input_mode
+                        return redirect(url_for('outputImgAndKey'))
 
                 return redirect(url_for('outputImgAndKey'))  
 
@@ -283,6 +291,7 @@ def outputImgAndKey():
     if session.get("hill", None):
         key_img_folder = "uploads/" + session.get("key_img_folder", None)
         key_img_filename = session.get("key_img_filename", None)
+        result_dict = None
     else:
         key_img_folder = key_img_filename = None
         result_dict = session.get("result_dict", None)

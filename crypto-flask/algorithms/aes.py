@@ -63,7 +63,7 @@ dir_des = 'web/static/uploads/decrypted/'
 #     im.save("imagen.bmp")
 
 
-def aesEncrypt(nombre,mode, key, ivk, bt=16):
+def aesEncrypt(nombre, mode, key, ivk, bt=16):
     # if(key==""):
     #     key = get_random_bytes(bt)
     # else:
@@ -73,12 +73,12 @@ def aesEncrypt(nombre,mode, key, ivk, bt=16):
 
     if(key==""):
         key = "".join(r.sample(ALPHABET, bt)).encode()
-    elif (len(key)!=8):
+    elif (len(key)!=bt):
         raise InputKeyError("Key must have a length of 16 letters.")
     
     if(ivk==""):
         ivk = "".join(r.sample(ALPHABET, 16)).encode()
-    elif (len(ivk)!=8):
+    elif (len(ivk)!=16):
         raise InputKeyError("Initial vector must have a length of 16 letters.")
 
     if(mode == 'ECB'):
@@ -119,10 +119,16 @@ def aesEncrypt(nombre,mode, key, ivk, bt=16):
     # file_out.write(ivk)
     # file_out.close()
 
-    return {'key': key.decode("utf-8")  , 'inicial_vector': ivk.decode("utf-8") }
+    return {'key': key.decode()  , 'inicial_vector': ivk.decode() }
 
 
-def aesDecrypt(nombre,img_path,mode, key, bt=16):
+def aesDecrypt(nombre, mode, key, ivk, bt=16):
+
+    if (len(key)!=16):
+        raise InputKeyError("Key must have a length of 8 letters.")
+    if (len(ivk)!=16):
+        raise InputKeyError("Initial vector must have a length of 8 letters.")
+
     if(mode == 'ECB'):
         mod = AES.MODE_ECB
     elif(mode == 'CBC'):
@@ -132,15 +138,15 @@ def aesDecrypt(nombre,img_path,mode, key, bt=16):
     elif(mode == 'OFB'):
         mod = AES.MODE_OFB
 
-    if(key == ""):
-        file_in = open("key.txt", "rb")
-        key = file_in.read()
-        file_in.close()
+    # if(key == ""):
+    #     file_in = open("key.txt", "rb")
+    #     key = file_in.read()
+    #     file_in.close()
 
-    file_in = open("ivk.txt", "rb")
-    ivk = file_in.read()
-    file_in.close()
-
+    # file_in = open("ivk.txt", "rb")
+    # ivk = file_in.read()
+    # file_in.close()
+    img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", nombre)
     image = Image.open(img_path)
     size = image.size
     image = np.array(image)
@@ -154,8 +160,12 @@ def aesDecrypt(nombre,img_path,mode, key, bt=16):
     imagebytes = image.tobytes()
     decrypbytes = cipher.decrypt(imagebytes)
     imgData = np.frombuffer(decrypbytes)
-    Image.frombuffer("RGB", size, imgData).save(dir_des + nombre)
-    return key
+    # Image.frombuffer("RGB", size, imgData).save(dir_des + nombre)
+    # return key
+    im = Image.frombuffer("RGB", size, imgData)
+    im.save(os.path.join(os.getcwd(), dir_des, nombre))
+
+    return {'key': key.decode(), 'inicial_vector': ivk.decode()}
 
 #print(aesEncrypt('sebas.png','crypto-flask\\web\\static\\uploads\\img\\sebas.png','ECB',''))
 #aesDecrypt('sebas.png','crypto-flask\\web\\static\\uploads\\img\\sebas.png','ECB','')
