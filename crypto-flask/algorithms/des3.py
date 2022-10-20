@@ -16,7 +16,6 @@ from algorithms.goodies import InputKeyError, ALPHABET
 
 import os
 
-#dir_up = 'web/static/uploads/uploaded/'
 dir_encr = 'web/static/uploads/encrypted/'
 dir_des = 'web/static/uploads/decrypted/'
 
@@ -34,16 +33,15 @@ dir_des = 'web/static/uploads/decrypted/'
 
 def des3Encrypt(nombre, mode, key, ivk):
     if(key==""):
-        key = "".join(r.sample(ALPHABET, 24)).encode()
-        
+        key = "".join(r.sample(ALPHABET, 24)).encode() 
     elif (len(key)!=24):
         raise InputKeyError("Key must have a length of 24 letters.")
     
     if(ivk==""):
         ivk = "".join(r.sample(ALPHABET, 8)).encode()
-    elif (len(key)!=8):
+    elif (len(ivk)!=8):
         raise InputKeyError("Initial vector must have a length of 8 letters.")
-        
+
     # key = get_random_bytes(24)
     # else:
     #     if not (all([isinstance(item, int) for item in key]) and len(key) == 24):
@@ -93,8 +91,12 @@ def des3Encrypt(nombre, mode, key, ivk):
 
 
 
+def des3Decrypt(nombre, mode, key, ivk):
+    if (len(key)!=24):
+        raise InputKeyError("Key must have a length of 24 letters.")
+    if (len(ivk)!=8):
+        raise InputKeyError("Initial vector must have a length of 8 letters.")
 
-def des3Decrypt(nombre,mode, key):
     if(mode == 'ECB'):
         mod = DES3.MODE_ECB
     elif(mode == 'CBC'):
@@ -103,17 +105,20 @@ def des3Decrypt(nombre,mode, key):
         mod = DES3.MODE_CFB
     elif(mode == 'OFB'):
         mod = DES3.MODE_OFB
+    elif(mode == 'CTR'):
+        mod = DES3.MODE_CTR
 
-    if(key == ""):
-        file_in = open("key.txt", "rb")
-        key = file_in.read()
-        file_in.close()
+    # if(key == ""):
+    #     file_in = open("key.txt", "rb")
+    #     key = file_in.read()
+    #     file_in.close()
 
     #ivk = get_random_bytes(8)
-    file_in = open("ivk.txt", "rb")
-    ivk = file_in.read()
-    file_in.close()
-    img_path = dir_encr + nombre
+    # file_in = open("ivk.txt", "rb")
+    # ivk = file_in.read()
+    # file_in.close()
+    # img_path = dir_encr + nombre
+    img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", nombre)
     image = Image.open(img_path)
     size = image.size
     image = np.array(image)
@@ -127,9 +132,11 @@ def des3Decrypt(nombre,mode, key):
     imagebytes = image.tobytes()
     decrypbytes = cipher.decrypt(imagebytes)
     imgData = np.frombuffer(decrypbytes)
-    Image.frombuffer("RGB", size, imgData).save(dir_des + nombre)
+    # Image.frombuffer("RGB", size, imgData).save(dir_des + nombre)
+    im = Image.frombuffer("RGB", size, imgData)
+    im.save(os.path.join(os.getcwd(), dir_des, nombre))
 
-    return key
+    return {'key': key.decode(), 'inicial_vector': ivk.decode()}
 
 # des3Encrypt('fractal.png','ECB','')
 # des3Decrypt('fractal.png','ECB','')

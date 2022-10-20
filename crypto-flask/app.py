@@ -5,7 +5,7 @@ from algorithms.substitution import substitutionEncrypt, substitutionDecrypt, su
 from algorithms.permutation import permutationDecrypt, permutationEncrypt
 from algorithms.hillText import hillCryptoAnalysis, hillEncrypt, hillDecrypt
 from algorithms.hillImage import hillImgEncrypt, hillImgDecrypt
-from algorithms.des3 import des3Encrypt
+from algorithms.des3 import des3Decrypt, des3Encrypt
 from algorithms.des import desEncrypt
 from algorithms.sdes import sdesEncrypt,sdesDecrypt
 from algorithms.aes import aesEncrypt
@@ -190,9 +190,14 @@ def imgAlgorithms():
         input_key = processInput(form.input_key.data)
         input_ivk = processInput(form.input_ivk.data)
 
+        if input_key != '':
+            input_key = input_key.encode()
+        if input_ivk != '':
+            input_ivk = input_ivk.encode()
+
         input_img = form.input_img.data
         input_mode = form.block_mode.data
-        
+
         filename = secure_filename(input_img.filename)
         path_ = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded', filename)
         input_img.save(path_)
@@ -221,25 +226,16 @@ def imgAlgorithms():
                         hillImgEncrypt(filename, key_filename)
                         return redirect(url_for('outputImgAndKey')) 
                     case "3DES cipher":
-                        if input_key != '':
-                            input_key = strToByte(input_key)
-                        if input_ivk != '':
-                            input_ivk = strToByte(input_ivk)
                         session["result_dict"] = des3Encrypt(filename, input_mode, input_key, input_ivk)
+                        session["result_dict"]["mode"] = input_mode
                         return redirect(url_for('outputImgAndKey'))
                     case "DES cipher":
-                        if input_key != '':
-                            input_key = strToByte(input_key)
-                        if input_ivk != '':
-                            input_ivk = strToByte(input_ivk)
                         session["result_dict"] = desEncrypt(filename, input_mode, input_key, input_ivk)
+                        session["result_dict"]["mode"] = input_mode
                         return redirect(url_for('outputImgAndKey')) 
                     case "AES cipher":
-                        if input_key != '':
-                            input_key = strToByte(input_key)
-                        if input_ivk != '':
-                            input_ivk = strToByte(input_ivk)
                         session["result_dict"] = aesEncrypt(filename, input_mode, input_key, input_ivk)
+                        session["result_dict"]["mode"] = input_mode
                         return redirect(url_for('outputImgAndKey')) 
 
             except InputKeyError as e:
@@ -257,15 +253,15 @@ def imgAlgorithms():
                             key_filename = secure_filename(input_key_img.filename)
                             session["key_img_folder"] = upkey_dir + "/"
                             session["key_img_filename"] = key_filename
-                            path_to_save = os.path.join(
-                                app.config['UPLOAD_FOLDER'],
-                                'uploaded_key',
-                                key_filename
-                                )
+                            path_to_save = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded_key', key_filename)
                             input_key_img.save(path_to_save)
                         else:
                             key_filename = ""
                         hillImgDecrypt(filename, key_filename)
+                    case "3DES cipher":
+                        session["result_dict"] = des3Decrypt(filename, input_mode, input_key, input_ivk)
+                        session["result_dict"]["mode"] = input_mode
+                        return redirect(url_for('outputImgAndKey'))
 
                 return redirect(url_for('outputImgAndKey'))  
 

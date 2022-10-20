@@ -78,7 +78,7 @@ def aesEncrypt(nombre,mode, key, ivk, bt=16):
     
     if(ivk==""):
         ivk = "".join(r.sample(ALPHABET, 16)).encode()
-    elif (len(key)!=8):
+    elif (len(ivk)!=8):
         raise InputKeyError("Initial vector must have a length of 16 letters.")
 
     if(mode == 'ECB'):

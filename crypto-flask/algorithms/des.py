@@ -35,7 +35,7 @@ def desEncrypt(nombre,mode, key, ivk):
     
     if(ivk==""):
         ivk = "".join(r.sample(ALPHABET, 8)).encode()
-    elif (len(key)!=8):
+    elif (len(ivk)!=8):
         raise InputKeyError("Initial vector must have a length of 8 letters.")
 
     if(mode == 'ECB'):

@@ -31,10 +31,12 @@
 
             {% if result_dict!=None%}
                 <div class="row">
+                    <h5 style="margin-top:1rem;">You used:</h5>
+                    <textarea class="textarea key" name="output_mode" style="margin-top: 0.25rem;" readonly>{{ result_dict.mode }} mode</textarea>
                     <h5 style="margin-top:1rem;">This is your key:</h5>
                     <textarea class="textarea key" name="output_key" style="margin-top: 0.25rem;" readonly>{{ result_dict.key }}</textarea>
                     <h5 style="margin-top:1rem;">This is your initial vector:</h5>
-                    <textarea class="textarea key" name="output_key" style="margin-top: 0.25rem;" readonly>{{ result_dict.inicial_vector }}</textarea>
+                    <textarea class="textarea key" name="output_ivk" style="margin-top: 0.25rem;" readonly>{{ result_dict.inicial_vector }}</textarea>
                 </div>
             {% endif %}
           </div>
