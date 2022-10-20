@@ -26,6 +26,7 @@ class ImageForm(FlaskForm):
         FileAllowed(['jpg', 'jpeg','png','JPG','JPEG','PNG'])]
         )
     input_key = TextAreaField("input_key", default=None)
+    input_ivk = TextAreaField("input_ivk", default=None)
     input_key_as_img = FileField(
         "input_key_img",
         validators=[FileAllowed(['jpg', 'jpeg','png','JPG','JPEG','PNG'])]

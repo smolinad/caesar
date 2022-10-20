@@ -1,5 +1,5 @@
 # import math
-# import random
+import random as r
 #from readline import append_history_file
 from PIL import Image
 import numpy as np
@@ -12,7 +12,7 @@ from base64 import b64encode
 # import requests
 from Cryptodome.Cipher import DES3
 from Cryptodome.Cipher import DES
-from algorithms.goodies import InputKeyError
+from algorithms.goodies import InputKeyError, ALPHABET
 
 import os
 
@@ -32,13 +32,24 @@ dir_des = 'web/static/uploads/decrypted/'
 #"""
 
 
-def des3Encrypt(nombre, mode, key):
+def des3Encrypt(nombre, mode, key, ivk):
     if(key==""):
-        key = get_random_bytes(24)
-    else:
-        if not (all([isinstance(item, int) for item in key]) and len(key) == 24):
-            raise InputKeyError("Key must be a binar number with length 24")
-    ivk = get_random_bytes(8)
+        key = "".join(r.sample(ALPHABET, 24)).encode()
+        
+    elif (len(key)!=24):
+        raise InputKeyError("Key must have a length of 24 letters.")
+    
+    if(ivk==""):
+        ivk = "".join(r.sample(ALPHABET, 8)).encode()
+    elif (len(key)!=8):
+        raise InputKeyError("Initial vector must have a length of 8 letters.")
+        
+    # key = get_random_bytes(24)
+    # else:
+    #     if not (all([isinstance(item, int) for item in key]) and len(key) == 24):
+    #         raise InputKeyError("Key must be a binary number with length 24")
+    
+    # ivk = get_random_bytes(8)
     # file_out = open("key.txt", "wb")
     # file_out.write(key)
     # file_out.close()
@@ -73,13 +84,11 @@ def des3Encrypt(nombre, mode, key):
     im = Image.frombuffer("RGB", size, imgData)
     im.save(os.path.join(os.getcwd(), dir_encr, nombre))
     # im.save(dir_encr+nombre)
-         
-
     # file_out = open("ivk.txt", "wb")
     # file_out.write(ivk)
     # file_out.close()
 
-    return {'key': key , 'inicial_vector': ivk}
+    return {'key': key.decode(), 'inicial_vector': ivk.decode()}
 
 
 

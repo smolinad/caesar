@@ -18,11 +18,6 @@
             <p style="margin-bottom: 0.1rem;">Choose the algoritm: </p>
             {{ form.cypher_mode(class="form-select form-select-sm") }}
 
-            <div  style="margin-top: 1rem;">
-                <p style="margin-bottom: 0.1rem;">Cipher mode (Block algorithms only): </p>
-                {{ form.block_mode(class="form-select form-select-sm") }}
-            </div>
-
             <div class="input" style="margin-top: 1rem;">
                 <p style="margin-bottom: 0.1rem;">Upload your image: </p>
                 {{ form.input_img(class_="form-control") }}
@@ -33,9 +28,25 @@
                 {{ form.input_key_as_img(class_="form-control") }}
             </div>
 
-            <div class="input" style="margin-top: 1rem;">
-                {{ form.input_key(placeholder="Input your key 🗝️ here (optional)", class_="key") }}
+            <div class="card border-light text-bg-dark" style="padding: 1rem; margin-top: 2rem; margin-bottom: 1rem;">
+                <p>Block algorithms settings</p>
+                <div style="margin-top: 1rem;">
+                    <p style="margin-bottom: 0.1rem;">Cipher mode: </p>
+                    {{ form.block_mode(class="form-select form-select-sm") }}
+                </div>
+    
+                <div class="input" style="margin-top: 1rem;">
+                    <p style="margin-bottom: 0.1rem;">Input your key: </p>
+                    {{ form.input_key(placeholder="Input your key 🗝️ here (optional)", class_="key") }}
+                </div>
+    
+                <div class="input" style="margin-top: 1rem;">
+                    <p style="margin-bottom: 0.1rem;">Input your initial vector: </p>
+                    {{ form.input_ivk(placeholder="Input your initial vector here (optional)", class_="key") }}
+                </div>
+
             </div>
+            
 
             {% with messages = get_flashed_messages() %}
                 {% if messages %}

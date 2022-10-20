@@ -186,9 +186,13 @@ def imgAlgorithms():
     form = ImageForm()
     if form.validate_on_submit():
         cypher_mode = form.cypher_mode.data
-        input_key = strToByte(form.input_key.data)
+
+        input_key = processInput(form.input_key.data)
+        input_ivk = processInput(form.input_ivk.data)
+
         input_img = form.input_img.data
         input_mode = form.block_mode.data
+        
         filename = secure_filename(input_img.filename)
         path_ = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded', filename)
         input_img.save(path_)
@@ -217,13 +221,25 @@ def imgAlgorithms():
                         hillImgEncrypt(filename, key_filename)
                         return redirect(url_for('outputImgAndKey')) 
                     case "3DES cipher":
-                        session["result_dict"] = des3Encrypt(filename, input_mode, input_key)
+                        if input_key != '':
+                            input_key = strToByte(input_key)
+                        if input_ivk != '':
+                            input_ivk = strToByte(input_ivk)
+                        session["result_dict"] = des3Encrypt(filename, input_mode, input_key, input_ivk)
                         return redirect(url_for('outputImgAndKey'))
                     case "DES cipher":
-                        session["result_dict"] = desEncrypt(filename, input_mode, input_key)
+                        if input_key != '':
+                            input_key = strToByte(input_key)
+                        if input_ivk != '':
+                            input_ivk = strToByte(input_ivk)
+                        session["result_dict"] = desEncrypt(filename, input_mode, input_key, input_ivk)
                         return redirect(url_for('outputImgAndKey')) 
                     case "AES cipher":
-                        session["result_dict"] = aesEncrypt(filename, input_mode, input_key)
+                        if input_key != '':
+                            input_key = strToByte(input_key)
+                        if input_ivk != '':
+                            input_ivk = strToByte(input_ivk)
+                        session["result_dict"] = aesEncrypt(filename, input_mode, input_key, input_ivk)
                         return redirect(url_for('outputImgAndKey')) 
 
             except InputKeyError as e:
@@ -283,7 +299,8 @@ def outputImgAndKey():
         output_img_folder=output_img_folder,
         output_img_filename=output_img_filename,
         key_img_folder=key_img_folder,
-        key_img_filename=key_img_filename
+        key_img_filename=key_img_filename,
+        result_dict=result_dict
     )
 
 

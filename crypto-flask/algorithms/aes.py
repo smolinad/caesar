@@ -1,5 +1,5 @@
 import math
-import random
+import random as r
 from PIL import Image
 import numpy as np
 from Cryptodome.Cipher import AES
@@ -7,12 +7,12 @@ from Cryptodome.Random import get_random_bytes
 from Cryptodome.Util.Padding import pad
 from Cryptodome.Util.Padding import unpad
 from base64 import b64encode
-import imageio as iio
-import requests
+# import imageio as iio
+# import requests
 from Cryptodome.Cipher import DES3
 from Cryptodome.Cipher import DES
 import os
-from algorithms.goodies import InputKeyError
+from algorithms.goodies import InputKeyError, ALPHABET
 #Recibe nombre de la imagen su path, el modo y una llave que es de 24 bits"
 
 #"""ejemplo: aesEncrypt('sebas.png','crypto-flask\\uploads\\img\\sebas.png','ECB','')
@@ -37,39 +37,49 @@ dir_encr = 'web/static/uploads/encrypted/'
 dir_des = 'web/static/uploads/decrypted/'
 
 
-def loadImageBlock(url):
-    f = open('imagen.bmp', 'wb')
-    f.write(requests.get(url).content)
-    f.close()
-    image = iio.imread('imagen.bmp')
-    im = Image.fromarray(image)
-    im = im.convert('RGB')
-    im.save("imagen.bmp")
+# def loadImageBlock(url):
+#     f = open('imagen.bmp', 'wb')
+#     f.write(requests.get(url).content)
+#     f.close()
+#     image = iio.imread('imagen.bmp')
+#     im = Image.fromarray(image)
+#     im = im.convert('RGB')
+#     im.save("imagen.bmp")
 
-def loadImage2Block(a):
-    if(a==0):
-        image = iio.imread('imagen.bmp')
-    elif(a==1):
-        image = iio.imread('imagenCifrada.bmp')
-    reshape = 1
-    for i in image.shape:
-        reshape *= i
-    return image.reshape((1, reshape)), image.shape
+# def loadImage2Block(a):
+#     if(a==0):
+#         image = iio.imread('imagen.bmp')
+#     elif(a==1):
+#         image = iio.imread('imagenCifrada.bmp')
+#     reshape = 1
+#     for i in image.shape:
+#         reshape *= i
+#     return image.reshape((1, reshape)), image.shape
 
-def loadImage3Block(path):
-    image = iio.imread(path)
-    im = Image.fromarray(image)
-    im = im.convert('RGB')
-    im.save("imagen.bmp")
+# def loadImage3Block(path):
+#     image = iio.imread(path)
+#     im = Image.fromarray(image)
+#     im = im.convert('RGB')
+#     im.save("imagen.bmp")
 
 
-def aesEncrypt(nombre,mode, key, bt=16):
+def aesEncrypt(nombre,mode, key, ivk, bt=16):
+    # if(key==""):
+    #     key = get_random_bytes(bt)
+    # else:
+    #     if not (all([isinstance(item, int) for item in key]) and len(key) == bt):
+    #         raise InputKeyError(f"Key must be a binar number with length {bt}")
+    # ivk = get_random_bytes(16)
+
     if(key==""):
-        key = get_random_bytes(bt)
-    else:
-        if not (all([isinstance(item, int) for item in key]) and len(key) == bt):
-            raise InputKeyError(f"Key must be a binar number with length {bt}")
-    ivk = get_random_bytes(16)
+        key = "".join(r.sample(ALPHABET, bt)).encode()
+    elif (len(key)!=8):
+        raise InputKeyError("Key must have a length of 16 letters.")
+    
+    if(ivk==""):
+        ivk = "".join(r.sample(ALPHABET, 16)).encode()
+    elif (len(key)!=8):
+        raise InputKeyError("Initial vector must have a length of 16 letters.")
 
     if(mode == 'ECB'):
         mod = AES.MODE_ECB
@@ -109,7 +119,7 @@ def aesEncrypt(nombre,mode, key, bt=16):
     # file_out.write(ivk)
     # file_out.close()
 
-    return {'key': key , 'inicial_vector': ivk}
+    return {'key': key.decode("utf-8")  , 'inicial_vector': ivk.decode("utf-8") }
 
 
 def aesDecrypt(nombre,img_path,mode, key, bt=16):
