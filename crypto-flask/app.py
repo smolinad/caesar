@@ -7,7 +7,7 @@ from algorithms.hillText import hillCryptoAnalysis, hillEncrypt, hillDecrypt
 from algorithms.hillImage import hillImgEncrypt, hillImgDecrypt
 from algorithms.des3 import des3Encrypt
 from algorithms.des import desEncrypt
-from algorithms.sdes import sdesEncrypt
+from algorithms.sdes import sdesEncrypt,sdesDecrypt
 from algorithms.aes import aesEncrypt
 from algorithms.goodies import processInput, InputKeyError, deleteImages, strToByte
 
@@ -54,6 +54,8 @@ def home():
     form = InputForm()
     if form.validate_on_submit():
         cypher_mode = form.cypher_mode.data
+        input_mode = form.block_mode.data
+        des_input_text =  [binario[1:-1] for binario in form.input_text.data[1:-1].replace(" ","").split(',') ]
         input_text = processInput(form.input_text.data)
         input_key = form.input_key.data
 
@@ -75,7 +77,7 @@ def home():
                         case "Hill (Text) cipher":
                             session["output_text"], session["output_key"] = hillEncrypt(input_text, input_key) # Ok
                         case "DES (text) cipher":
-                            session["output_text"], session["output_key"] = sdesEncrypt(input_text, input_key, 'ECB') 
+                            session["output_text"], session["output_key"] = sdesEncrypt(input_text, input_key, input_mode) 
                     return redirect(url_for('outputTextAndKey')) 
 
                 except InputKeyError as e:
@@ -95,6 +97,8 @@ def home():
                         session["output_text"], session["output_key"] = permutationEncrypt(input_text) # Ok
                     case "Hill (Text) cipher":
                         session["output_text"], session["output_key"] = hillEncrypt(input_text) # Ok
+                    case "DES (text) cipher":
+                        session["output_text"], session["output_key"] = sdesEncrypt(input_text, input_key, input_mode)
                 return redirect(url_for('outputTextAndKey')) 
                 
         elif form.decrypt.data:
@@ -114,6 +118,9 @@ def home():
                             session["output_text"], session["output_key"] = permutationDecrypt(input_text, input_key) # Ok
                         case "Hill (Text) cipher":
                             session["output_text"], session["output_key"] = hillDecrypt(input_text, input_key) #Ok
+                        case "DES (text) cipher":
+                           
+                            session["output_text"], session["output_key"] = sdesDecrypt(des_input_text, input_key, 'ECB')
 
                     return redirect(url_for('outputTextAndKey'))  
 
@@ -138,7 +145,9 @@ def home():
                         session["analysis_output"] = permutationDecrypt(input_text) # Ok
                         return redirect(url_for('bruteForceAnalysis'))
                     case "Hill (Text) cipher":
-                        return
+                        return 
+                    case "DES (text) cipher":
+                        session["output_text"], session["output_key"] = sdesDecrypt(des_input_text, input_key, 'ECB')
                         # session["output_text"] = hillCryptoAnalysis(input_text)
                         # return redirect(url_for('outputTextAndKey'))  
 

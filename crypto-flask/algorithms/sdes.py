@@ -1,5 +1,8 @@
 import math
 import random
+from algorithms.goodies import InputKeyError
+#from algorithms.goodies import InputKeyError
+
 
 p8_table = [6, 3, 7, 4, 8, 5, 10, 9]
 p10_table = [3, 5, 2, 7, 4, 10, 1, 9, 8, 6]
@@ -45,9 +48,13 @@ s1 = [[0, 1, 2, 3], [2, 0, 1, 3], [3, 0, 1, 0], [2, 1, 0, 3]]
 """
 
 def sdesEncrypt(text, key, mode):
+    
     if(key==""):
         for i in range(10):
             key+=str(random.randint(0, 1))
+    else:
+        if not (all([item.isdigit() for item in key]) and len(key) == 10):
+            raise InputKeyError(f"Key must be a binar number with length 10 ")
 
     keys = GeneratedKey(key)
 
@@ -56,10 +63,9 @@ def sdesEncrypt(text, key, mode):
     file_out.close()
 
     textCript=None
+
     if(mode == 'ECB'):
         return ( S_DES_ENCRYPT_ECB(text, keys) ,  key)
-
-        
     elif(mode == 'CBC'):
         textCript, ivk = S_DES_ENCRYPT_CBC(text, keys)
     elif(mode == 'CFB'):
@@ -70,20 +76,21 @@ def sdesEncrypt(text, key, mode):
     file_out = open("ivk.txt", "w")
     file_out.write(ivk)
     file_out.close()
+
     return ( textCript ,  key)
 
 
 
 def sdesDecrypt(text, key, mode):
     if(key == ""):
-        file_in = open("key.txt", "r")
-        key = file_in.read()
-        file_in.close()
+      raise InputKeyError("It is not possible decrypt with out a key :(")
+    else:
+        if not (all([item.isdigit() for item in key]) and len(key) == 10):
+          raise InputKeyError(f"Key must be a binar number with length 10")
     keys = GeneratedKey(key)
 
     if(mode == 'ECB'):
-        return {'encrypted_text' : S_DES_DESENCRYPT_ECB(text, keys) , 'key': key}
-
+        return (S_DES_DESENCRYPT_ECB(text, keys),key)
     else:
         file_in = open("ivk.txt", "r")
         ivk = file_in.read()
@@ -95,7 +102,7 @@ def sdesDecrypt(text, key, mode):
             textCript = S_DES_DESENCRYPT_CFB(text, keys,ivk)
         elif(mode == 'OFB'):
             textCript = S_DES_DESENCRYPT_OFB(text, keys,ivk)
-        return  {'encrypted_text' : textCript , 'key': key}
+        return (textCript,key)
 
 
 
@@ -304,10 +311,10 @@ def S_DES_DESENCRYPT_OFB(TextoEncriptado,keys,VI):
        plaintexto=toString(plaintextobinary)+plaintexto
   return(plaintexto[::-1])
 
-
-
-print(sdesEncrypt('hola','','ECB'))
-#print(desDecrypt(['11100111', '10001111', '01100010', '00101111'],"","ECB"))
+#text = "['10100110', '10001110', '11100011', '00101110']"
+#text = [binario[1:-1] for binario in text[1:-1].replace(" ","").split(',') ]
+#print(sdesEncrypt('hola','','ECB'))
+#print(sdesDecrypt(text,"1101111110","ECB"))
 
 
 

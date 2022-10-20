@@ -1,8 +1,7 @@
-from Cryptodome.Random import get_random_bytes
- 
-print(get_random_bytes(24))
+from algorithms.goodies import processInput
 
-num = [0, 'l', 0, 1, 1, 1]
+text = "['10100110', '10001110', '11100011', '00101110']"
+#text = [binario[1:-1] for binario in text[1:-1].replace(" ","").split(',') ]
 
-a = bytes(num)
-print(a)
+key = '0110111011'
+print([isinstance(item, int) for item in key])

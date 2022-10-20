@@ -5,15 +5,17 @@ from wtforms.validators import DataRequired, Length
 
 TEXT_CIPHER_MODES = ["Caesar", "Affine", "Vigenere", "Substitution", "Permutation", "Hill (Text)", "DES (text)"]
 IMG_CIPHER_MODES = ["Hill (Image)", "3DES", "DES", "AES"]
+BLOCK_IMAGES_MODES = ['ECB','CBC','CFB','OFB', 'CTR']
 
 class InputForm(FlaskForm):
     cypher_mode = SelectField(label='State', choices=[mode + " cipher"  for mode in TEXT_CIPHER_MODES])
+    block_mode = SelectField(label='', choices=BLOCK_IMAGES_MODES)
     input_text = TextAreaField("input_text", validators=[DataRequired(), Length(max=1000)], default=None)
     input_key = TextAreaField("input_key", default=None)
     encrypt = SubmitField("Encrypt")
     decrypt = SubmitField("Decrypt")
     
-BLOCK_IMAGES_MODES = ['ECB','CBC','CFB','OFB', 'CTR']
+
 
 class ImageForm(FlaskForm):
     cypher_mode = SelectField(label='State', choices=[mode + " cipher" for mode in IMG_CIPHER_MODES])

@@ -15,7 +15,7 @@ from Cryptodome.Cipher import DES
 import os
 from algorithms.goodies import InputKeyError
 
-dir_encr = 'web/static/uploads/encrypted/'
+dir_encr = 'web/static/uploads/encrypted/ '
 
 dir_des = 'crypto-flask/web/static/uploads/decrypted/'
 
@@ -27,10 +27,6 @@ def desEncrypt(nombre,mode, key):
             raise InputKeyError("Key must be a binar number with length 8")
 
     ivk = get_random_bytes(8)
-
-    
-
-
 
     if(mode == 'ECB'):
         mod = DES.MODE_ECB
@@ -85,9 +81,13 @@ def desDecrypt(nombre,img_path,mode, key):
         mod = DES.MODE_CTR
 
     if(key == ""):
-        file_in = open("key.txt", "rb")
-        key = file_in.read()
-        file_in.close()
+        try:
+            file_in = open("key.txt", "rb")
+            key = file_in.read()
+            file_in.close()
+        except:
+            raise InputKeyError("we can not decrypt without a key :(")
+
 
     file_in = open("ivk.txt", "rb")
     ivk = file_in.read()
