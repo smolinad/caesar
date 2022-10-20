@@ -4,8 +4,7 @@ from PIL import Image
 import numpy as np
 from Cryptodome.Cipher import AES
 from Cryptodome.Random import get_random_bytes
-from Cryptodome.Util.Padding import pad
-from Cryptodome.Util.Padding import unpad
+from Cryptodome.Util.Padding import pad, unpad
 from base64 import b64encode
 # import imageio as iio
 # import requests
