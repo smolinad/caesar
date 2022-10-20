@@ -137,6 +137,8 @@ def aesDecrypt(nombre, mode, key, ivk, bt=16):
         mod = AES.MODE_CFB
     elif(mode == 'OFB'):
         mod = AES.MODE_OFB
+    elif(mode == 'CTR'):
+        mod = DES.MODE_CTR
 
     # if(key == ""):
     #     file_in = open("key.txt", "rb")
