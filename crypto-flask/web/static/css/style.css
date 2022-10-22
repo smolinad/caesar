@@ -9,6 +9,22 @@ html, body{
     padding-top: 70px;
 }
 
+::-webkit-scrollbar {
+    width: 10px;
+}
+  
+::-webkit-scrollbar-track {
+    background: #111419;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #EFF1F3;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #EDFFAB;
+}
+
 .navbar ul li a{
     color: #EFF1F3;
     font-weight: bold;

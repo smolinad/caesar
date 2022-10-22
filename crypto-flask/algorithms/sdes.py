@@ -58,9 +58,9 @@ def sdesEncrypt(text, key, mode):
 
     keys = GeneratedKey(key)
 
-    file_out = open("key.txt", "w")
-    file_out.write(key)
-    file_out.close()
+    # file_out = open("key.txt", "w")
+    # file_out.write(key)
+    # file_out.close()
 
     textCript=None
 
@@ -73,9 +73,9 @@ def sdesEncrypt(text, key, mode):
     elif(mode == 'OFB'):
         textCript, ivk = S_DES_ENCRYPT_OFB(text, keys)
 
-    file_out = open("ivk.txt", "w")
-    file_out.write(ivk)
-    file_out.close()
+    # file_out = open("ivk.txt", "w")
+    # file_out.write(ivk)
+    # file_out.close()
 
     return ( textCript ,  key)
 
