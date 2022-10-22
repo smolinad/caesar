@@ -137,7 +137,7 @@ def aesDecrypt(nombre, mode, key, ivk, bt=16):
     elif(mode == 'OFB'):
         mod = AES.MODE_OFB
     elif(mode == 'CTR'):
-        mod = DES.MODE_CTR
+        mod = AES.MODE_CTR
 
     # if(key == ""):
     #     file_in = open("key.txt", "rb")
@@ -153,8 +153,17 @@ def aesDecrypt(nombre, mode, key, ivk, bt=16):
     image = np.array(image)
         
     cipher = None
-    if(mod != AES.MODE_ECB):
-        cipher = AES.new(key, mod, iv=ivk)
+    # if(mod != AES.MODE_ECB):
+    #     cipher = AES.new(key, mod, iv=ivk)
+    # elif mod == AES.MODE_CTR:
+    #     cipher = AES.new(key, mod, nonce=b"")
+    # else:
+    #     cipher = AES.new(key, mod)
+
+    if(mod != AES.MODE_ECB and mod != AES.MODE_CTR):
+        cipher = AES.new(key, mod, ivk)
+    elif mod == AES.MODE_CTR:
+        cipher = AES.new(key, mod, nonce=b"")
     else:
         cipher = AES.new(key, mod)
 

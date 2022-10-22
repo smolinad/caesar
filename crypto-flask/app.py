@@ -309,5 +309,9 @@ def outputImgAndKey():
     )
 
 
+@app.route('/gamma-pentagonal', methods=['POST', 'GET'])
+def gammaPentagonal():
+    return render_template("gamma.html")
+
 if __name__ == '__main__':
     app.run(debug=True)

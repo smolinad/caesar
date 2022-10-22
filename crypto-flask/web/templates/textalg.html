@@ -12,7 +12,7 @@
 {% block body %}
 
     <div class="h-100 d-flex justify-content-center container">
-        <form method="POST" action="/" class="grid" novalidate>
+        <form method="POST" action="{{ url_for('home') }}" class="grid" novalidate>
             {{ form.csrf_token }}
             {{ form.hidden_tag() }}
 

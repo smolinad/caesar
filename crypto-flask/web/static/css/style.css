@@ -1,6 +1,8 @@
 html, body{
-    background-color: #111419;
+    min-height: 80vh;
+    height: auto !important;
     height: 100%;
+    background-color: #111419;
     font-family: "Spline Sans Mono";
     font-size: 16px;
     color:#EFF1F3;
