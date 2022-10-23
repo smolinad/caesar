@@ -120,6 +120,24 @@ class Node {
     }
 }
 
+function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+  
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+  }
+
 const alphSize = 26;
 var nodes = [];
 var map = new Map();
@@ -319,7 +337,6 @@ function decipher(x0, y0, permutation, cipherText, graphType) {
                 b += cipherText[i];
                 ++i;
             }
-            console.log(a, b);
         } else continue;
         var c = parseInt(b);
         nodes = gammaGraph(x0, y0, size, graphType);
@@ -354,7 +371,7 @@ function setLetras(permutation, div = 12, canvas) {
         arr.push(letra);
         fila.push(arr);
         ++i;
-        x += canvas.width / size + 15;
+        x += canvas.width / size + 8;
         if (i == size) {
             i = 0;
             x = canvas.width / div;
@@ -364,6 +381,7 @@ function setLetras(permutation, div = 12, canvas) {
             fila = [];
         }
     }
+    console.log(letras)
     return letras;
 }
 
@@ -397,7 +415,7 @@ function drawP(permutation, x0 = 0, y0 = 0, canvas, context) {
     var j = 0;
     // var x = canvas.width / div - x0;
     // var y = ((div - 1) * canvas.height) / div - y0;
-    var x = 3
+    var x = 15
     var y = ((div - 1) * canvas.height) / div - y0;
     context.moveTo(x, y);
     // console.log(letras);
@@ -553,15 +571,6 @@ function drawGammaGraph(nodes, x0, y0, size, canvas, context) {
     }
 }
 
-
-console.log(cipher(-8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], "paulinateamo", 1));
-console.log(
-    decipher(
-        -8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], cipher(-8, -6, [3, 0, 2, 7, 9, 6, 1, 5, 4, 8], "paulinateamo", 1), 1
-    )
-)
-
-
 var graphCanvas = document.querySelector("#graphCanvas");
 var graphContext = graphCanvas.getContext("2d");
 var graphWidth = graphCanvas.width;
@@ -573,11 +582,115 @@ var permWidth = permCanvas.width;
 var permHeight = permCanvas.height;
 
 
-var permutation = [3, 0, 2, 7, 6, 1, 5, 4, 8]
+document.getElementById('encrypt').onclick = function() {
+    graphContext.clearRect(0, 0, graphCanvas.width, graphCanvas.height)
+    permContext.clearRect(0, 0, permCanvas.width, permCanvas.height)
 
-var nodes = gammaGraph(-8, -6, permutation.length, 1)
-drawGammaGraph(nodes, -8, -6, permutation.length, graphCanvas, graphContext)
+    var inputCoordX = document.getElementById("coordX").value
+    var inputCoordY = document.getElementById("coordY").value
+    var inputPermutation = document.getElementById("permutation").value
+    var inputText = document.getElementById("text-encrypt").value
 
-drawPermutation([3, 0, 2, 7, 9, 6, 1, 5, 4, 8], permCanvas, permContext)
+    if (inputCoordX == "") {
+        inputCoordX = 0
+        document.getElementById("coordX").value += 0
+    } else {
+        inputCoordX = parseInt(inputCoordX)
+    }
+
+    if (inputCoordY == "") {
+        inputCoordY = 0
+        document.getElementById("coordY").value += 0
+    } else {
+        inputCoordY = parseInt(inputCoordY)
+    }
+
+    if (inputPermutation == "") {
+        inputPermutation = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8])
+    } else {
+        var permutationList = inputPermutation.split(",")
+        .map(function (x) { 
+            return parseInt(x, 10)
+        })
+        if (!isAValidPermutation(permutationList)) {
+            inputPermutation = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8])
+        } else {
+            inputPermutation = permutationList
+        }
+    }
+
+    document.getElementById("coordX").value = ""
+    document.getElementById("coordY").value = ""
+    document.getElementById("permutation").value = ""
+    document.getElementById("text-encrypt").value = ""
+    document.getElementById("text-decrypt").value = ""
+
+    var outputText = cipher(inputCoordX, inputCoordY, inputPermutation, inputText, 1)
+    document.getElementById("coordX").value = inputCoordX
+    document.getElementById("coordY").value = inputCoordY
+    document.getElementById("permutation").value = inputPermutation
+    document.getElementById("text-encrypt").value = inputText
+    document.getElementById("text-decrypt").value += outputText
+
+    var nodes = gammaGraph(inputCoordX, inputCoordY, inputPermutation.length, 1)
+    drawGammaGraph(nodes, inputCoordX, inputCoordY, inputPermutation.length, graphCanvas, graphContext)
+    drawPermutation(inputPermutation, permCanvas, permContext)
+    
+}
+
+document.getElementById('decrypt').onclick = function() {
+    graphContext.clearRect(0, 0, graphCanvas.width, graphCanvas.height)
+    permContext.clearRect(0, 0, permCanvas.width, permCanvas.height)
+
+    var inputCoordX = document.getElementById("coordX").value
+    var inputCoordY = document.getElementById("coordY").value
+    var inputPermutation = document.getElementById("permutation").value
+    var inputText = document.getElementById("text-decrypt").value
+
+    if (inputCoordX == "") {
+        console.log("error")
+    } else {
+        inputCoordX = parseInt(inputCoordX)
+    }
+
+    if (inputCoordY == "") {
+        console.log("error")
+    } else {
+        inputCoordY = parseInt(inputCoordY)
+    }
+
+    if (inputPermutation == "") {
+        console.log("error")
+    } else {
+        var permutationList = inputPermutation.split(",")
+        .map(function (x) { 
+            return parseInt(x, 10)
+        })
+        if (!isAValidPermutation(permutationList)) {
+            console.log("error")
+        } else {
+            inputPermutation = permutationList
+        }
+    }
+
+    document.getElementById("coordX").value = ""
+    document.getElementById("coordY").value = ""
+    document.getElementById("permutation").value = ""
+    document.getElementById("text-encrypt").value = ""
+    document.getElementById("text-decrypt").value = ""
+    
+    var outputText = decipher(inputCoordX, inputCoordY, inputPermutation, inputText, 1)
+    document.getElementById("coordX").value = inputCoordX
+    document.getElementById("coordY").value = inputCoordY
+    document.getElementById("permutation").value = inputPermutation
+    document.getElementById("text-encrypt").value = outputText
+    document.getElementById("text-decrypt").value = inputText
+
+    var nodes = gammaGraph(inputCoordX, inputCoordY, inputPermutation.length, 1)
+    drawGammaGraph(nodes, inputCoordX, inputCoordY, inputPermutation.length, graphCanvas, graphContext)
+    drawPermutation(inputPermutation, permCanvas, permContext)
+    
+}
+     
 
 
