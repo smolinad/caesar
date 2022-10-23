@@ -415,7 +415,7 @@ function drawP(permutation, x0 = 0, y0 = 0, canvas, context) {
     var j = 0;
     // var x = canvas.width / div - x0;
     // var y = ((div - 1) * canvas.height) / div - y0;
-    var x = 15
+    var x = 6
     var y = ((div - 1) * canvas.height) / div - y0;
     context.moveTo(x, y);
     // console.log(letras);
