@@ -2,12 +2,12 @@ var rmAccents = function (inputText) {
     var accents = "ÁÄáäÓÖóöÉËéÇçÍÏíïÚÜúüÑñ";
     var noAccents = "AAaaOOooEEeeCcIIiiUUuuNn";
     return inputText
-        .split("")
+        .split(" ")
         .map(function (chr) {
             const accentIndex = accents.indexOf(chr);
             return accentIndex !== -1 ? noAccents[accentIndex] : chr;
         })
-        .join("");
+        .join("").toLowerCase();
 }
 
 var normalizeInput = function (inputText) {
@@ -581,16 +581,29 @@ var permContext = permCanvas.getContext("2d");
 var permWidth = permCanvas.width;
 var permHeight = permCanvas.height;
 
+document.addEventListener("keydown", function (e) {
+    if([37, 38, 39, 40].indexOf(e.keyCode) > -1){
+      e.preventDefault();
+      // Do whatever else you want with the keydown event (i.e. your navigation).
+    }
+}, false)
 
 document.getElementById('encrypt').onclick = function() {
     graphContext.clearRect(0, 0, graphCanvas.width, graphCanvas.height)
     permContext.clearRect(0, 0, permCanvas.width, permCanvas.height)
+
 
     var inputCoordX = document.getElementById("coordX").value
     var inputCoordY = document.getElementById("coordY").value
     var inputPermutation = document.getElementById("permutation").value
     var inputText = document.getElementById("text-encrypt").value
 
+    if (inputText == ""){
+        console.log("Must write some text") 
+    } else {
+        inputText = rmAccents(inputText)
+    }
+    
     if (inputCoordX == "") {
         inputCoordX = 0
         document.getElementById("coordX").value += 0
@@ -646,6 +659,8 @@ document.getElementById('decrypt').onclick = function() {
     var inputCoordY = document.getElementById("coordY").value
     var inputPermutation = document.getElementById("permutation").value
     var inputText = document.getElementById("text-decrypt").value
+
+    
 
     if (inputCoordX == "") {
         console.log("error")

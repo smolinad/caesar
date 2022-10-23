@@ -119,8 +119,7 @@ def home():
                         case "Hill (Text) cipher":
                             session["output_text"], session["output_key"] = hillDecrypt(input_text, input_key) #Ok
                         case "DES (text) cipher":
-                           
-                            session["output_text"], session["output_key"] = sdesDecrypt(des_input_text, input_key, 'ECB')
+                            session["output_text"], session["output_key"] = sdesDecrypt(des_input_text, input_key, input_mode)
 
                     return redirect(url_for('outputTextAndKey'))  
 
@@ -147,9 +146,7 @@ def home():
                     case "Hill (Text) cipher":
                         return 
                     case "DES (text) cipher":
-                        session["output_text"], session["output_key"] = sdesDecrypt(des_input_text, input_key, 'ECB')
-                        # session["output_text"] = hillCryptoAnalysis(input_text)
-                        # return redirect(url_for('outputTextAndKey'))  
+                        raise InputKeyError("No cryptanalysis mode for DES cipher")
 
                 
 

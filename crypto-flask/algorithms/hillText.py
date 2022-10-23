@@ -20,9 +20,9 @@ Cada una debe constar de size palabras, de las cuales solo se toma en cuenta las
 Devuelve clave
 """
 
-def hillEncrypt( text: str, key = None):
+def hillEncrypt(text: str, key = None):
     checkText(text)
-    checkKey(key)
+    # checkKey(key)
     if key == None:
         if len(text)<4:
             size = 2
