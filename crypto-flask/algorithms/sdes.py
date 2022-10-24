@@ -58,9 +58,9 @@ def sdesEncrypt(text, key, mode):
 
     keys = GeneratedKey(key)
 
-    # file_out = open("key.txt", "w")
-    # file_out.write(key)
-    # file_out.close()
+    file_out = open("key.txt", "w")
+    file_out.write(key)
+    file_out.close()
 
     textCript=None
 
@@ -70,18 +70,19 @@ def sdesEncrypt(text, key, mode):
         textCript, ivk = S_DES_ENCRYPT_CBC(text, keys)
     elif(mode == 'CFB'):
         textCript, ivk = S_DES_ENCRYPT_CFB(text, keys)
-    elif(mode == 'OFB'):
+    elif(mode == 'OFB' or mode == 'CTR'):
         textCript, ivk = S_DES_ENCRYPT_OFB(text, keys)
 
-    # file_out = open("ivk.txt", "w")
-    # file_out.write(ivk)
-    # file_out.close()
+    file_out = open("ivk.txt", "w")
+    file_out.write(ivk)
+    file_out.close()
 
     return ( textCript ,  key)
 
 
 
 def sdesDecrypt(text, key, mode):
+
     if(key == ""):
       raise InputKeyError("It is not possible decrypt with out a key :(")
     else:
@@ -100,7 +101,7 @@ def sdesDecrypt(text, key, mode):
             textCript = S_DES_DESENCRYPT_CBC(text, keys,ivk)
         elif(mode == 'CFB'):
             textCript = S_DES_DESENCRYPT_CFB(text, keys,ivk)
-        elif(mode == 'OFB'):
+        elif(mode == 'OFB' or mode == 'CTR'):
             textCript = S_DES_DESENCRYPT_OFB(text, keys,ivk)
         return (textCript,key)
 

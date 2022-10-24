@@ -1,17 +1,9 @@
-# import math
+
 import random as r
-#from readline import append_history_file
 from PIL import Image
 import numpy as np
-from Cryptodome.Cipher import AES
-from Cryptodome.Random import get_random_bytes
-from Cryptodome.Util.Padding import pad
-from Cryptodome.Util.Padding import unpad
-from base64 import b64encode
-# import imageio as iio
-# import requests
+from Cryptodome.Util.Padding import pad, unpad
 from Cryptodome.Cipher import DES3
-from Cryptodome.Cipher import DES
 from algorithms.goodies import InputKeyError, ALPHABET
 
 import os
@@ -42,16 +34,6 @@ def des3Encrypt(nombre, mode, key, ivk):
     elif (len(ivk)!=8):
         raise InputKeyError("Initial vector must have a length of 8 letters.")
 
-    # key = get_random_bytes(24)
-    # else:
-    #     if not (all([isinstance(item, int) for item in key]) and len(key) == 24):
-    #         raise InputKeyError("Key must be a binary number with length 24")
-    
-    # ivk = get_random_bytes(8)
-    # file_out = open("key.txt", "wb")
-    # file_out.write(key)
-    # file_out.close()
-
     if(mode == 'ECB'):
         mod = DES3.MODE_ECB
     elif(mode == 'CBC'):
@@ -68,6 +50,7 @@ def des3Encrypt(nombre, mode, key, ivk):
     image = Image.open(img_path)
     size = image.size
     image = np.array(image)
+    
     cipher = None
     if(mod != DES3.MODE_ECB and mod != DES3.MODE_CTR):
         cipher = DES3.new(key, mod, ivk)
@@ -81,10 +64,6 @@ def des3Encrypt(nombre, mode, key, ivk):
     imgData = np.frombuffer(cripbytes)
     im = Image.frombuffer("RGB", size, imgData)
     im.save(os.path.join(os.getcwd(), dir_encr, nombre))
-    # im.save(dir_encr+nombre)
-    # file_out = open("ivk.txt", "wb")
-    # file_out.write(ivk)
-    # file_out.close()
 
     return {'key': key.decode(), 'inicial_vector': ivk.decode()}
 
@@ -108,16 +87,6 @@ def des3Decrypt(nombre, mode, key, ivk):
     elif(mode == 'CTR'):
         mod = DES3.MODE_CTR
 
-    # if(key == ""):
-    #     file_in = open("key.txt", "rb")
-    #     key = file_in.read()
-    #     file_in.close()
-
-    #ivk = get_random_bytes(8)
-    # file_in = open("ivk.txt", "rb")
-    # ivk = file_in.read()
-    # file_in.close()
-    # img_path = dir_encr + nombre
     img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", nombre)
     image = Image.open(img_path)
     size = image.size
@@ -132,11 +101,8 @@ def des3Decrypt(nombre, mode, key, ivk):
     imagebytes = image.tobytes()
     decrypbytes = cipher.decrypt(imagebytes)
     imgData = np.frombuffer(decrypbytes)
-    # Image.frombuffer("RGB", size, imgData).save(dir_des + nombre)
     im = Image.frombuffer("RGB", size, imgData)
     im.save(os.path.join(os.getcwd(), dir_des, nombre))
 
     return {'key': key.decode(), 'inicial_vector': ivk.decode()}
 
-# des3Encrypt('fractal.png','ECB','')
-# des3Decrypt('fractal.png','ECB','')

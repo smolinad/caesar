@@ -173,7 +173,11 @@ def permutationDecrypt(textoCifrado, key=None):
                 
                     posiblesTextosDecifrados.append(t)
 
-            return(posiblesTextosDecifrados)
+            try:
+                return(posiblesTextosDecifrados)
+            except:
+                raise InputKeyError("Message imposible to decrypt") #cambiar print  por InputKeyError
+
     else:
         return permutationDecryptKey(textoCifrado,key)
     

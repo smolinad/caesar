@@ -45,7 +45,12 @@ def substitutionEncrypt(t: str, k=None):
         place: int = ord(i) - ord('A')
         b = key[place]
         encrypted_text += key[place]
-    return (str(encrypted_text), key)
+
+    key_text = ""
+    for letter in key:
+        key_text += letter + " "
+
+    return (str(encrypted_text), key_text)
 
 
 def substitutionDecrypt(t: str, k=" "):
@@ -67,14 +72,22 @@ def substitutionDecrypt(t: str, k=" "):
         random.shuffle(key)
         print("key:", key)
     else:
-        key = list(k)
+
+        key = [x for x in k.split()]
+        print(key)
     if (not isPermutation(key) or not onlyUppercase_letters(text)):
         return
 
     for i in text:
         place: int = key.index(i)
         decrypted_text += chr(place + ord('A'))
-    return [str(decrypted_text), key]
+    
+    key_text = ""
+    for letter in key:
+        key_text += letter + " "
+
+
+    return [str(decrypted_text), key_text]
 
 
 def substitutionCryptanalysis(text: str):
@@ -107,7 +120,7 @@ def everyElementJustOnce(s: list):
 
 def isPermutation(s: list):
     if len(s) != 26:
-        raise InputKeyError("The key must contain every letter just once")
+        raise InputKeyError("Lenght must be 26")
         # return False
     if onlyUppercase_letters(s) and everyElementJustOnce(s):
         return True

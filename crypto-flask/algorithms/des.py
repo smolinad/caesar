@@ -1,16 +1,9 @@
 
-import math
 import random as r
 from PIL import Image
 import numpy as np
-from Cryptodome.Cipher import AES
-from Cryptodome.Random import get_random_bytes
-from Cryptodome.Util.Padding import pad
-from Cryptodome.Util.Padding import unpad
-from base64 import b64encode
-# import imageio as iio
-# import requests
-from Cryptodome.Cipher import DES3
+
+from Cryptodome.Util.Padding import pad, unpad
 from Cryptodome.Cipher import DES 
 import os
 from algorithms.goodies import InputKeyError, ALPHABET
@@ -67,13 +60,6 @@ def desEncrypt(nombre, mode, key, ivk):
     im = Image.frombuffer("RGB", size, imgData)
     im.save(os.path.join(os.getcwd(), dir_encr, nombre))
         
-    # file_out = open("key.txt", "wb")
-    # file_out.write(key)
-    # file_out.close()
-
-    # file_out = open("ivk.txt", "wb")
-    # file_out.write(ivk)
-    # file_out.close()
     return {'key': key.decode()  , 'inicial_vector': ivk.decode() }
 
 
@@ -94,22 +80,8 @@ def desDecrypt(nombre, mode, key, ivk):
     elif(mode == 'CTR'):
         mod = DES.MODE_CTR
 
-    # if(key == ""):
-    #     try:
-    #         file_in = open("key.txt", "rb")
-    #         key = file_in.read()
-    #         file_in.close()
-    #     except:
-    #         raise InputKeyError("we can not decrypt without a key :(")
-
-
-    # file_in = open("ivk.txt", "rb")
-    # ivk = file_in.read()
-    # file_in.close()
-
     img_path = os.path.join(os.getcwd(), "web/static/uploads/uploaded", nombre)
     image = Image.open(img_path)
-    #image = Image.open("imagenCifrada.bmp")
     size = image.size
     image = np.array(image)
         
@@ -124,11 +96,7 @@ def desDecrypt(nombre, mode, key, ivk):
     imagebytes = image.tobytes()
     decrypbytes = cipher.decrypt(imagebytes)
     imgData = np.frombuffer(decrypbytes)
-    #Image.frombuffer("RGB", size, imgData).save("imagen.bmp")
     im = Image.frombuffer("RGB", size, imgData)
     im.save(os.path.join(os.getcwd(), dir_des, nombre))
 
     return {'key': key.decode(), 'inicial_vector': ivk.decode()}
-
-
-#DesCifrar('2021-03-04 (1).png','ECB','')

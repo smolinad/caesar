@@ -140,8 +140,8 @@ def getMatrix(text: list, size: int, square=False):
         intList = [ord(j) % 65 for j in charList]
         matrix_num.append(intList)
 
-        if square and len(intList) != size:
-            raise InputKeyError("Key lenght must be a square")
+        #if square and len(intList) != size:
+         #   raise InputKeyError("Key lenght must be a square")
 
     return sympy.Matrix(matrix_num)
 
