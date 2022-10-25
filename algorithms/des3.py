@@ -93,14 +93,18 @@ def des3Decrypt(nombre, mode, key, ivk):
     image = np.array(image)
         
     cipher = None
-    if(mod != DES3.MODE_ECB):
-        cipher = DES3.new(key, mod, iv=ivk)
+    if(mod != DES3.MODE_ECB and mod != DES3.MODE_CTR):
+        cipher = DES3.new(key, mod, ivk)
+    elif mod == DES3.MODE_CTR:
+        cipher = DES3.new(key, mod, nonce=b"")
     else:
         cipher = DES3.new(key, mod)
 
     imagebytes = image.tobytes()
     decrypbytes = cipher.decrypt(imagebytes)
     imgData = np.frombuffer(decrypbytes)
+    imgData = np.frombuffer(decrypbytes, dtype="int32")
+    # Image.frombuffer("RGB", size, imgData).save(dir_des + nombre)
     im = Image.frombuffer("RGB", size, imgData)
     im.save(os.path.join(os.getcwd(), dir_des, nombre))
 

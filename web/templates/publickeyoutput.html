@@ -13,10 +13,23 @@
             <h5 style="margin-top:1rem;">This is your text:</h5>
             <textarea class="textarea" name="output_text" style="margin-top: 0.25rem;" readonly>{{ output_text }}</textarea>
             <h5 style="margin-top:1rem;">This are your keys. Please keep them safe!</h5>
+
+            <h5>Prime 1:</h5>
             <textarea class="textarea" name="output_key" style="margin-top: 0.25rem;" readonly>
-Primes: {{ output_key[0] }} {{ output_key[1] }}  
-Priv key : {{ output_key[2] }} 
-Generator: {{ output_key[3] }}</textarea>
+{{ output_key[0] }}  
+            </textarea>
+            <h5>Prime 2:</h5>
+            <textarea class="textarea" name="output_key" style="margin-top: 0.25rem;" readonly>
+{{ output_key[1] }}  
+            </textarea>
+            <h5>Priv key:</h5>
+            <textarea class="textarea" name="output_key" style="margin-top: 0.25rem;" readonly>
+{{ output_key[2] }} 
+            </textarea>
+            <h5>Generator:</h5>
+            <textarea class="textarea" name="output_key" style="margin-top: 0.25rem;" readonly>
+{{ output_key[3] }}
+            </textarea>
         </div>
 
     </div>

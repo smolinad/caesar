@@ -9,7 +9,7 @@ from algorithms.des3 import des3Decrypt, des3Encrypt
 from algorithms.des import desEncrypt, desDecrypt
 from algorithms.sdes import sdesEncrypt,sdesDecrypt
 from algorithms.aes import aesEncrypt, aesDecrypt
-from algorithms.rsa import rsaEncrypt, rsaDecrypt
+from algorithms.rsaOESP import rsaEncrypt, rsaDecrypt
 from algorithms.rabin import rabinEncrypt, rabinDecrypt
 from algorithms.elgammal import elgammalEncrypt, elgammalDecrypt
 from algorithms.elgammalEc import elgammalEcEncrypt, elgammalEcDecrypt
@@ -181,33 +181,31 @@ def public_key_algorithms():
         cypher_mode = form.cypher_mode.data
         input_text = form.input_text.data
         input_text_decrypt = form.input_text.data
-        input_text_encrypt = processInput(form.input_text.data)
+        # input_text_encrypt = processInput(form.input_text.data)
         input_key = form.input_key.data
         input_g = form.input_generator.data
         input_primes = form.input_primes.data
-        p,q,g = "","",""
+        p, q, g = "", "", ""
         k = input_key
+
         try:
             input_primes = (input_primes).split()
             p = input_primes[0]
             q = input_primes[1]
         except:
             pass
-        try:
-            input_primes = (input_primes).split()
-            p = input_primes[0]
-            q = ""
-        except:
-            pass
+
         try:
             generator = input_g.split()
             g = generator[0]
         except:
             pass
+
         try:
             k = int(k)
         except:
             pass
+
         try:
             k = eval(k)
             a = int(k[0])
@@ -216,19 +214,25 @@ def public_key_algorithms():
             a = ""
             b = ""
         
-
         if form.encrypt.data:
             session["encrypted_or_decrypted"] = "encrypted"
+            input_text_encrypt = processInput(form.input_text.data)
             if input_primes != '':
                 try:
                     match cypher_mode:
-                        case "Rsa cipher":
-                            session["output_text"], session["output_key"] = rsaEncrypt(input_text_encrypt, p,q) 
+                        case "RSA cipher":
+                            session["output_text"], session["output_key"] = rsaEncrypt(input_text_encrypt, p, q) 
                         case "Rabin cipher":
-                            session["output_text"], session["output_key"] = rabinEncrypt(input_text_encrypt,p,q) 
-                        case "Elgammal cipher":
+                            session["output_text"], session["output_key"] = rabinEncrypt(input_text_encrypt, p, q) 
+                        case "Elgamal cipher":
                             session["output_text"], session["output_key"] = elgammalEncrypt(input_text_encrypt, p, g)
-                        case "Elgammal Eliptic Curve cipher":
+                        case "Elgamal Eliptic Curve cipher":
+                            try:
+                                input_primes = (input_primes).split()
+                                p = input_primes[0]
+                                q = ""
+                            except:
+                                pass
                             session["output_text"], session["output_key"] = elgammalEcEncrypt(input_text_encrypt, p)  
                     return redirect(url_for('publickeyoutput')) 
 
@@ -237,13 +241,13 @@ def public_key_algorithms():
                          
             else:
                 match cypher_mode:
-                        case "Rsa cipher":
+                        case "RSA cipher":
                             session["output_text"], session["output_key"] = rsaEncrypt(input_text_encrypt, "","") 
                         case "Rabin cipher":
                             session["output_text"], session["output_key"] = rabinEncrypt(input_text_encrypt,"","") 
-                        case "Elgammal cipher":
+                        case "Elgamal cipher":
                             session["output_text"], session["output_key"] = elgammalEncrypt(input_text_encrypt, "")
-                        case "Elgammal Eliptic Curve cipher":
+                        case "Elgamal Eliptic Curve cipher":
                             session["output_text"], session["output_key"] = elgammalEcEncrypt(input_text_encrypt, "")  
                 return redirect(url_for('publickeyoutput')) 
     
@@ -255,22 +259,23 @@ def public_key_algorithms():
                 try:
                     session["encrypted_or_decrypted"] = "decrypted"
                     match cypher_mode:
-                        case "Rsa cipher":
-                            try:
-                                input_text_decrypt = [int(binario[1:-1]) for binario in input_text_decrypt[1:-1].replace(" ","").split(',')]
-                            except:
-                                input_text_decrypt = ""
-                            session["output_text"], session["output_key"] = rsaDecrypt(input_text_decrypt,p,q,k) 
+                        case "RSA cipher":
+                            # try:
+                            #     input_text_decrypt = [int(binario[1:-1]) for binario in input_text_decrypt[1:-1].replace(" ","").split(',')]
+                            # except:
+                            #     input_text_decrypt = ""
+                            session["output_text"], session["output_key"] = rsaDecrypt(input_text_decrypt, "", k) 
                         case "Rabin cipher":
+                            input_text_encrypt = processInput(form.input_text.data)
                             session["output_text"], session["output_key"] = rabinDecrypt(input_text,p,q) 
 
-                        case "Elgammal cipher":
+                        case "Elgamal cipher":
                             try:
                                 input_text_decrypt = [int(binario[1:-1]) for binario in input_text_decrypt[1:-1].replace(" ","").split(',')]
                             except:
                                 input_text_decrypt = ""
                             session["output_text"], session["output_key"] = elgammalDecrypt(input_text_decrypt,p,k,g) 
-                        case "Elgammal Eliptic Curve cipher":
+                        case "Elgamal Eliptic Curve cipher":
                             session["output_text"], session["output_key"] = elgammalEcDecrypt(input_text_decrypt,p,a,b,g)
 
                     return redirect(url_for('publickeyoutput')) 

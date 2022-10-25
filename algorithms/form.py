@@ -4,7 +4,7 @@ from wtforms import TextAreaField, SubmitField, SelectField, FileField
 from wtforms.validators import DataRequired, Length
 
 TEXT_CIPHER_MODES = ["Caesar", "Affine", "Vigenere", "Substitution", "Permutation", "Hill (Text)", "DES (text)"]                   
-PUBLIC_KEY_MODES = ["Rsa", "Rabin", "Elgamal","Elgamal Eliptic Curve"]
+PUBLIC_KEY_MODES = ["RSA", "Rabin", "Elgamal","Elgamal Eliptic Curve"]
 IMG_CIPHER_MODES = ["Hill (Image)", "3DES", "DES", "AES"]
 BLOCK_IMAGES_MODES = ['ECB','CBC','CFB','OFB', 'CTR']
 
