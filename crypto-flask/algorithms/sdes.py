@@ -99,6 +99,7 @@ def sdesDecrypt(text, key, mode):
         textCript = None
         if(mode == 'CBC'):
             textCript = S_DES_DESENCRYPT_CBC(text, keys,ivk)
+
         elif(mode == 'CFB'):
             textCript = S_DES_DESENCRYPT_CFB(text, keys,ivk)
         elif(mode == 'OFB' or mode == 'CTR'):

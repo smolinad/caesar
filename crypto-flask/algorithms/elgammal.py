@@ -1,34 +1,10 @@
-import string
-import re 
-import unicodedata
-import os
+from sympy import randprime, isprime
+import random
+import math
+#from algorithms.goodies import InputKeyError, ALPHABET
 
-ALPHABET = string.ascii_uppercase
-
-def processInput(text:str):
-    text = text.translate(str.maketrans('', '', string.punctuation))
-    text = ''.join(text.split())
-    normalized = ''.join(c for c in unicodedata.normalize('NFD', text) if unicodedata.category(c) != 'Mn')
-    no_digits = re.sub(r'[0-9]+', '', normalized)
-    uppercase = no_digits.upper().strip() 
-    return uppercase
-
-def strToByte(text:str):
-    numeros = [int(x) for x in range(len(text))]
-    return bytes(numeros)
-
-
-class InputKeyError(Exception):
-    def __init__(self, message:str):
-        self.message = message
-
-    def __str__(self):
-        return self.message
-
-def deleteImages(list_dir):
-    for dir in list_dir:
-        for f in os.listdir(dir):
-            os.remove(os.path.join(dir, f))
+#Elgamal
+#For key generation i.e. large random number
 
 primos = [100003,100019,100043,100103,100151,100183,100207,100267,100271,100279,
 100291,100343,100363,100379,100391,100403,100411,100447,100459,100483,
@@ -59,3 +35,82 @@ primos = [100003,100019,100043,100103,100151,100183,100207,100267,100271,100279,
 105907,105943,105967,105971,105983,106019,106031,106087,106103,106123,
 106163,106187,106207,106219,106243,106279,106291,106303,106307,106319,
 106331,106363,106367,106391,106411,106427,106451,106487,106531,106543]
+
+def generatePrime(a=0):
+    if a!=0:
+        return randprime(2**(a-2),2**(a-1))
+    return randprime(2**(256),2**(512))
+
+
+def generatePrime(a=0):
+    if a!=0:
+        return randprime(2**(a-2),2**(a-1))
+    return randprime(2**(256),2**(512))
+
+def gcd(p,q):
+    while q != 0:
+        p, q = q, p%q
+    return p
+
+def gen_key(p):
+    key= random.randint(0,p)
+    while gcd(p,key)!=1:
+        key=random.randint(0,p)
+    return key
+
+def exp_modular(a,b,c):
+    x=1
+    y=a
+    while b>0:
+        if b%2==0:
+            x=(x*y)%c
+        y=(y*y)%c
+        b=int(b/2)
+    return x%c
+
+#For asymetric encryption
+def elgammalEncrypt(msg,p="",g = 3):
+    if p == "" :
+        p = generatePrime(10)
+    ct=[]
+    key=gen_key(p)
+    a_k=exp_modular(g,key,p)
+    #h=exp_modular(a_k,key,p)
+    h= exp_modular(g,key,p)
+    a_k_k=exp_modular(h,key,p)
+    for i in range(0,len(msg)):
+        ct.append(msg[i])
+    for i in range(0,len(ct)):
+        ct[i]=str(a_k_k*ord(ct[i]))
+    return ((ct,[p,0,key,g])) #tal vez sea a_k_k
+#For decryption
+def elgammalDecrypt(ct,p,key,g = 3):
+    a_k = exp_modular(g,key,p)
+    pt=[]
+    h=exp_modular(a_k,key,p)
+    for i in range(0,len(ct)):
+        pt.append(chr(int(int(ct[i])/h)))
+
+    text = ""
+    for let in pt:
+        text += let
+    return ((text,[p,0,key,g]))
+
+
+def generateGamalData(p, alpha=0):
+    if alpha==0:
+        alpha=random.randint(2,p) #generador
+    a = gen_key(p) # clave privada
+    alpha_a=exp_modular(alpha,a,p) #alpha^a
+    keys = {'public_key' : [str(p),str(alpha),str(alpha_a)], 'private_key' : str(a)}
+    return (keys)
+
+# mensaje = "funciona :)"
+# text, keys= elgammalEncrypt(mensaje)
+# p,k,g = int(keys[0]), int(keys[1]), int(keys[2])
+# print(text,p,k,g)
+# print(elgammalDecrypt(text,p,k,g))
+
+
+
+
