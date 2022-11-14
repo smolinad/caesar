@@ -12,6 +12,7 @@ from algorithms.aes import aesEncrypt, aesDecrypt
 from algorithms.rsa import rsaEncrypt, rsaDecrypt
 from algorithms.rabin import rabinEncrypt, rabinDecrypt
 from algorithms.elgammal import elgammalEncrypt, elgammalDecrypt
+from algorithms.elgammalEc import elgammalEcEncrypt, elgammalEcDecrypt
 from algorithms.goodies import processInput, InputKeyError, deleteImages
 
 from flask import Flask, redirect, url_for, session, flash
@@ -178,7 +179,13 @@ def public_key_algorithms():
         except:
             pass
         try:
-            k = int(input_g)
+            k = int(k)
+        except:
+            pass
+        try:
+            k = eval(k)
+            a = int(k[0])
+            b = int(k[1])
         except:
             pass
         
@@ -193,7 +200,9 @@ def public_key_algorithms():
                         case "Rabin cipher":
                             session["output_text"], session["output_key"] = rabinEncrypt(input_text_encrypt,p,q) 
                         case "Elgammal cipher":
-                            session["output_text"], session["output_key"] = elgammalEncrypt(input_text_encrypt, p, g) 
+                            session["output_text"], session["output_key"] = elgammalEncrypt(input_text_encrypt, p, g)
+                        case "Elgammal Eliptic Curve cipher":
+                            session["output_text"], session["output_key"] = elgammalEcEncrypt(input_text_encrypt, p)  
                     return redirect(url_for('publickeyoutput')) 
 
                 except InputKeyError as e:
@@ -206,23 +215,30 @@ def public_key_algorithms():
                         case "Rabin cipher":
                             session["output_text"], session["output_key"] = rabinEncrypt(input_text_encrypt,"","") 
                         case "Elgammal cipher":
-                            session["output_text"], session["output_key"] = elgammalEncrypt(input_text_encrypt, "")  
+                            session["output_text"], session["output_key"] = elgammalEncrypt(input_text_encrypt, "")
+                        case "Elgammal Eliptic Curve cipher":
+                            session["output_text"], session["output_key"] = elgammalEcEncrypt(input_text_encrypt, "")  
                 return redirect(url_for('publickeyoutput')) 
     
                 
         elif form.decrypt.data:
-            input_text_decrypt = [int(binario[1:-1]) for binario in input_text_decrypt[1:-1].replace(" ","").split(',')]
+            
 
             if input_primes != '':
                 try:
                     session["encrypted_or_decrypted"] = "decrypted"
                     match cypher_mode:
                         case "Rsa cipher":
+                            input_text_decrypt = [int(binario[1:-1]) for binario in input_text_decrypt[1:-1].replace(" ","").split(',')]
                             session["output_text"], session["output_key"] = rsaDecrypt(input_text_decrypt,p,q,k) 
                         case "Rabin cipher":
                             session["output_text"], session["output_key"] = rabinDecrypt(input_text,p,q) 
                         case "Elgammal cipher":
-                            session["output_text"], session["output_key"] = elgammalDecrypt(input_text_decrypt,p,k,g)  
+                            input_text_decrypt = [int(binario[1:-1]) for binario in input_text_decrypt[1:-1].replace(" ","").split(',')]
+                            session["output_text"], session["output_key"] = elgammalDecrypt(input_text_decrypt,p,k,g) 
+                        case "Elgammal Eliptic Curve cipher":
+                            session["output_text"], session["output_key"] = elgammalEcDecrypt(input_text_decrypt,p,a,b,g)
+
                     return redirect(url_for('publickeyoutput')) 
                 except InputKeyError :
                    raise InputKeyError(f"Can not decrypt without a key{ rabinDecrypt(input_text,p,q) } :)") 
