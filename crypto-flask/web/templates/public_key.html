@@ -12,7 +12,7 @@
 {% block body %}
 
     <div class="h-100 d-flex justify-content-center container">
-        <form method="POST" action="{{ url_for('home') }}" class="grid" novalidate>
+        <form method="POST" action="{{ url_for('public_key_algorithms') }}" class="grid" novalidate>
             {{ form.csrf_token }}
             {{ form.hidden_tag() }}
 
@@ -22,18 +22,22 @@
             
             {{ form.cypher_mode(class="form-select form-select-sm") }}
 
-            <div  style="margin-top: 1rem;">
-                <p style="margin-bottom: 0.1rem;">Cipher mode (DES algorithm only): </p>
-                {{ form.block_mode(class="form-select form-select-sm") }}
-            </div> 
-
 
             <div class="input" style="margin-top: 1rem;">
                 {{ form.input_text(placeholder="Input your text here...") }}
             </div>
 
+            <div class="input" style="margin-top: 1rem;">
+                <p style="margin-bottom: 0.1rem;">Keys: </p>
+                {{ form.input_primes(placeholder="Input your prime(s) here (optional)",class_="key") }}
+            </div> 
+
             <div class="input">
                 {{ form.input_key(placeholder="Input your key 🗝️ here (optional)", class_="key") }}
+            </div>
+            
+            <div class="input">
+                {{ form.input_generator(placeholder="Input your generator here (optional)", class_="key") }}
             </div>
 
             

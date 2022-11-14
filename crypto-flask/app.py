@@ -9,6 +9,9 @@ from algorithms.des3 import des3Decrypt, des3Encrypt
 from algorithms.des import desEncrypt, desDecrypt
 from algorithms.sdes import sdesEncrypt,sdesDecrypt
 from algorithms.aes import aesEncrypt, aesDecrypt
+from algorithms.rsa import rsaEncrypt, rsaDecrypt
+from algorithms.rabin import rabinEncrypt, rabinDecrypt
+from algorithms.elgammal import elgammalEncrypt, elgammalDecrypt
 from algorithms.goodies import processInput, InputKeyError, deleteImages
 
 from flask import Flask, redirect, url_for, session, flash
@@ -17,8 +20,8 @@ from flask.templating import render_template
 from werkzeug.utils import secure_filename
 import cv2 as cv
 
-from algorithms.form import InputForm, ImageForm
-
+from algorithms.form import InputForm, ImageForm, Input_Public_key_Form
+#
 import os
 
 dir = 'web/static/uploads/'
@@ -148,10 +151,95 @@ def home():
                     case "DES (text) cipher":
                         raise InputKeyError("No cryptanalysis mode for DES cipher")
 
-                
-
     return render_template('textalg.html', form=form)
 
+@app.route('/public-key-ciphers', methods=['GET', 'POST'])
+def public_key_algorithms(): 
+    form = Input_Public_key_Form()
+    if form.validate_on_submit():
+        cypher_mode = form.cypher_mode.data
+        input_text = form.input_text.data
+        input_text_decrypt = form.input_text.data
+        input_text_encrypt = processInput(form.input_text.data)
+        input_key = form.input_key.data
+        input_g = form.input_generator.data
+        input_primes = form.input_primes.data
+        p,q,g = "","",3
+        k = input_key
+        try:
+            input_primes = (input_primes).split()
+            p = int(input_primes[0])
+            q = int(input_primes[1])
+
+        except:
+            pass
+        try:
+            g = int(input_g)
+        except:
+            pass
+        try:
+            k = int(input_g)
+        except:
+            pass
+        
+
+        if form.encrypt.data:
+            session["encrypted_or_decrypted"] = "encrypted"
+            if input_primes != '':
+                try:
+                    match cypher_mode:
+                        case "Rsa cipher":
+                            session["output_text"], session["output_key"] = rsaEncrypt(input_text_encrypt, p,q) 
+                        case "Rabin cipher":
+                            session["output_text"], session["output_key"] = rabinEncrypt(input_text_encrypt,p,q) 
+                        case "Elgammal cipher":
+                            session["output_text"], session["output_key"] = elgammalEncrypt(input_text_encrypt, p, g) 
+                    return redirect(url_for('publickeyoutput')) 
+
+                except InputKeyError as e:
+                    flash(e.message)     
+                         
+            else:
+                match cypher_mode:
+                        case "Rsa cipher":
+                            session["output_text"], session["output_key"] = rsaEncrypt(input_text_encrypt, "","") 
+                        case "Rabin cipher":
+                            session["output_text"], session["output_key"] = rabinEncrypt(input_text_encrypt,"","") 
+                        case "Elgammal cipher":
+                            session["output_text"], session["output_key"] = elgammalEncrypt(input_text_encrypt, "")  
+                return redirect(url_for('publickeyoutput')) 
+    
+                
+        elif form.decrypt.data:
+            input_text_decrypt = [int(binario[1:-1]) for binario in input_text_decrypt[1:-1].replace(" ","").split(',')]
+
+            if input_primes != '':
+                try:
+                    session["encrypted_or_decrypted"] = "decrypted"
+                    match cypher_mode:
+                        case "Rsa cipher":
+                            session["output_text"], session["output_key"] = rsaDecrypt(input_text_decrypt,p,q,k) 
+                        case "Rabin cipher":
+                            session["output_text"], session["output_key"] = rabinDecrypt(input_text,p,q) 
+                        case "Elgammal cipher":
+                            session["output_text"], session["output_key"] = elgammalDecrypt(input_text_decrypt,p,k,g)  
+                    return redirect(url_for('publickeyoutput')) 
+                except InputKeyError :
+                   raise InputKeyError(f"Can not decrypt without a key{ rabinDecrypt(input_text,p,q) } :)") 
+                
+    return render_template('public_key.html', form=form)
+
+@app.route('/encrypted', methods=['GET'])
+def publickeyoutput():
+    output_text = session.get("output_text", None)
+    output_key = session.get("output_key", None)
+    encrypted_or_decrypted = session.get("encrypted_or_decrypted", None)
+    return render_template(
+        'publickeyoutput.html', 
+        encrypted_or_decrypted=encrypted_or_decrypted, 
+        output_text=output_text, 
+        output_key=output_key)
+    
 
 @app.route('/encrypted', methods=['GET'])
 def outputTextAndKey():

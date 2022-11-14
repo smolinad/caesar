@@ -1,7 +1,6 @@
 from algorithms.goodies import processInput
 
-text = "['10100110', '10001110', '11100011', '00101110']"
-#text = [binario[1:-1] for binario in text[1:-1].replace(" ","").split(',') ]
+text = "['41976', '90343', '99287', '6042', '7439', '72893', '4341', '6042', '72893', '76303', '21075', '26862', '6042', '21075']"
+text = [int(binario[1:-1]) for binario in text[1:-1].replace(" ","").split(',')]
 
-key = '0110111011'
-print([isinstance(item, int) for item in key])
+print(text)

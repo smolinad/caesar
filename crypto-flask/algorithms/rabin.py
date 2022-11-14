@@ -76,8 +76,8 @@ primos = [100003,100019,100043,100103,100151,100183,100207,100267,100271,100279,
 106163,106187,106207,106219,106243,106279,106291,106303,106307,106319,
 106331,106363,106367,106391,106411,106427,106451,106487,106531,106543]
 
-
-from goodies import InputKeyError, ALPHABET
+from algorithms.goodies import InputKeyError, ALPHABET
+#from goodies import InputKeyError, ALPHABET
 import random
 
 
@@ -98,6 +98,9 @@ def rabinEncrypt(message, p = "",q=""):
     return((encrypt_text,[p,q,0,0]))
 
 def rabinDecrypt(message,p,q):
+    print(message)
+    message = [int(binario) for binario in message[1:-1].replace(" ","").split(',')]
+    print(message)
     decrypt_list=[] #guarda los decifrados en números
     decrypt_text = ""   #se guarda el decifrado letra por letra
     decrypt_textlist=[] # guarda el decifrado de los 4 residuos
@@ -145,9 +148,10 @@ def rabinDecrypt(message,p,q):
                 if len(j)==3:
                     posibleText=posibleText+j
         text=posibleText
-    return((decrypt_end,[p,q,0,0]))
+
+    return((text,[p,q,0,0]))
 
 # mensaje = "Hola leo lindo"
 # text,p1,p2 =rabinEncrypt(mensaje)
 # print(text,rabinDecrypt(text,p1,p2))
-print(rabinDecrypt([246552804, 11155600, 227135041, 210917529],102071 ,106363  ))
+#print(rabinDecrypt("[35748441, 84217329]",100931 ,105071))
