@@ -45,11 +45,11 @@ app.config['SECRET_KEY'] = SECRET_KEY
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 list_dir = [
-    os.path.join(app.config['UPLOAD_FOLDER'], img_dir),
-    os.path.join(app.config['UPLOAD_FOLDER'], key_dir),
-    os.path.join(app.config['UPLOAD_FOLDER'], enc_dir),
-    os.path.join(app.config['UPLOAD_FOLDER'], dec_dir),
-    os.path.join(app.config['UPLOAD_FOLDER'], upkey_dir)
+    os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'], img_dir),
+    os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'], key_dir),
+    os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'], enc_dir),
+    os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'], dec_dir),
+    os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'], upkey_dir)
 ]
 
 @app.route('/', methods=['GET', 'POST'])
