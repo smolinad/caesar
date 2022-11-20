@@ -55,6 +55,8 @@ list_dir = [
 @app.route('/', methods=['GET', 'POST'])
 def home():
 
+    print(os.getcwd())
+    
     for dir in list_dir:
         if os.path.exists(dir)==False:
             os.mkdir(dir)
