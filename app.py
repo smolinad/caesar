@@ -3,7 +3,7 @@ from algorithms.vigenere import vigenereEncrypt, vigenereDecrypt
 from algorithms.affine import affineEncrypt, affineDecrypt
 from algorithms.substitution import substitutionEncrypt, substitutionDecrypt, substitutionCryptanalysis
 from algorithms.permutation import permutationDecrypt, permutationEncrypt
-from algorithms.hillText import hillCryptoAnalysis, hillEncrypt, hillDecrypt
+# from algorithms.hillText import hillCryptoAnalysis, hillEncrypt, hillDecrypt
 from algorithms.hillImage import hillImgEncrypt, hillImgDecrypt
 from algorithms.des3 import des3Decrypt, des3Encrypt
 from algorithms.des import desEncrypt, desDecrypt
