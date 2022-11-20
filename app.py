@@ -63,7 +63,7 @@ def home():
     #     if os.path.exists(dir)==False:
     #         os.mkdir(dir)
 
-    # deleteImages(list_dir)
+    
     form = InputForm()
     if form.validate_on_submit():
         cypher_mode = form.cypher_mode.data
@@ -300,105 +300,105 @@ def substitutionAnalysis():
     frequency, digraphs = session.get("analysis_output", None)
     return render_template('subsanalysis.html', frequency=frequency, digraphs=digraphs)
 
-# @app.route('/image-ciphers', methods=['GET', 'POST'])
-# def imgAlgorithms():
-#     deleteImages(list_dir)
-#     form = ImageForm()
-#     if form.validate_on_submit():
-#         cypher_mode = form.cypher_mode.data
+@app.route('/image-ciphers', methods=['GET', 'POST'])
+def imgAlgorithms():
+    deleteImages(list_dir)
+    form = ImageForm()
+    if form.validate_on_submit():
+        cypher_mode = form.cypher_mode.data
 
-#         input_key = processInput(form.input_key.data)
-#         input_ivk = processInput(form.input_ivk.data)
+        input_key = processInput(form.input_key.data)
+        input_ivk = processInput(form.input_ivk.data)
 
-#         if input_key != '':
-#             input_key = input_key.encode()
-#         if input_ivk != '':
-#             input_ivk = input_ivk.encode()
+        if input_key != '':
+            input_key = input_key.encode()
+        if input_ivk != '':
+            input_ivk = input_ivk.encode()
 
-#         input_img = form.input_img.data
-#         input_mode = form.block_mode.data
+        input_img = form.input_img.data
+        input_mode = form.block_mode.data
 
-#         filename = secure_filename(input_img.filename)
-#         path_ = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded', filename)
-#         input_img.save(path_)
+        filename = secure_filename(input_img.filename)
+        path_ = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded', filename)
+        input_img.save(path_)
 
-#         session["input_img_folder"] = 'uploads/uploaded/'
-#         session["input_img_filename"] = filename
+        session["input_img_folder"] = 'uploads/uploaded/'
+        session["input_img_filename"] = filename
 
-#         if form.encrypt_img.data:
-#             session["encrypted_or_decrypted"] = "encrypted"
-#             session["hill"] = False
-#             try:
-#                 match cypher_mode:
-#                     case "Hill (Image) cipher":
-#                         session["hill"] = True
-#                         if form.input_key_as_img.data:
-#                             input_key_img = form.input_key_as_img.data
-#                             key_filename = secure_filename(input_key_img.filename)
-#                             session["key_img_folder"] = upkey_dir + "/"
-#                             session["key_img_filename"] = key_filename
-#                             path_to_save = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded_key', key_filename)
-#                             input_key_img.save(path_to_save)
-#                         else:
-#                             key_filename = ""
-#                             session["key_img_folder"] = key_dir + "/"
-#                             session["key_img_filename"] = filename
-#                         hillImgEncrypt(filename, key_filename)
-#                         return redirect(url_for('outputImgAndKey')) 
-#                     case "3DES cipher":
-#                         session["result_dict"] = des3Encrypt(filename, input_mode, input_key, input_ivk)
-#                         session["result_dict"]["mode"] = input_mode
-#                         return redirect(url_for('outputImgAndKey'))
-#                     case "DES cipher":
-#                         session["result_dict"] = desEncrypt(filename, input_mode, input_key, input_ivk)
-#                         session["result_dict"]["mode"] = input_mode
-#                         return redirect(url_for('outputImgAndKey')) 
-#                     case "AES cipher":
-#                         session["result_dict"] = aesEncrypt(filename, input_mode, input_key, input_ivk)
-#                         session["result_dict"]["mode"] = input_mode
-#                         return redirect(url_for('outputImgAndKey')) 
+        if form.encrypt_img.data:
+            session["encrypted_or_decrypted"] = "encrypted"
+            session["hill"] = False
+            try:
+                match cypher_mode:
+                    case "Hill (Image) cipher":
+                        session["hill"] = True
+                        if form.input_key_as_img.data:
+                            input_key_img = form.input_key_as_img.data
+                            key_filename = secure_filename(input_key_img.filename)
+                            session["key_img_folder"] = upkey_dir + "/"
+                            session["key_img_filename"] = key_filename
+                            path_to_save = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded_key', key_filename)
+                            input_key_img.save(path_to_save)
+                        else:
+                            key_filename = ""
+                            session["key_img_folder"] = key_dir + "/"
+                            session["key_img_filename"] = filename
+                        hillImgEncrypt(filename, key_filename)
+                        return redirect(url_for('outputImgAndKey')) 
+                    case "3DES cipher":
+                        session["result_dict"] = des3Encrypt(filename, input_mode, input_key, input_ivk)
+                        session["result_dict"]["mode"] = input_mode
+                        return redirect(url_for('outputImgAndKey'))
+                    case "DES cipher":
+                        session["result_dict"] = desEncrypt(filename, input_mode, input_key, input_ivk)
+                        session["result_dict"]["mode"] = input_mode
+                        return redirect(url_for('outputImgAndKey')) 
+                    case "AES cipher":
+                        session["result_dict"] = aesEncrypt(filename, input_mode, input_key, input_ivk)
+                        session["result_dict"]["mode"] = input_mode
+                        return redirect(url_for('outputImgAndKey')) 
 
-#             except InputKeyError as e:
-#                 flash(e.message)                          
+            except InputKeyError as e:
+                flash(e.message)                          
                 
-#         elif form.decrypt_img.data:
-#             try:
-#                 session["encrypted_or_decrypted"] = "decrypted"
-#                 session["hill"] = False
-#                 match cypher_mode:
-#                     case "Hill (Image) cipher":
-#                         session["hill"] = True
-#                         if form.input_key_as_img.data:
-#                             input_key_img = form.input_key_as_img.data
-#                             key_filename = secure_filename(input_key_img.filename)
-#                             session["key_img_folder"] = upkey_dir + "/"
-#                             session["key_img_filename"] = key_filename
-#                             path_to_save = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded_key', key_filename)
-#                             input_key_img.save(path_to_save)
-#                         else:
-#                             key_filename = ""
-#                         hillImgDecrypt(filename, key_filename)
-#                     case "3DES cipher":
-#                         session["result_dict"] = des3Decrypt(filename, input_mode, input_key, input_ivk)
-#                         session["result_dict"]["mode"] = input_mode
-#                         return redirect(url_for('outputImgAndKey'))
-#                     case "DES cipher":
-#                         session["result_dict"] = desDecrypt(filename, input_mode, input_key, input_ivk)
-#                         session["result_dict"]["mode"] = input_mode
-#                         return redirect(url_for('outputImgAndKey'))
-#                     case "AES cipher":
-#                         session["result_dict"] = aesDecrypt(filename, input_mode, input_key, input_ivk)
-#                         session["result_dict"]["mode"] = input_mode
-#                         return redirect(url_for('outputImgAndKey'))
+        elif form.decrypt_img.data:
+            try:
+                session["encrypted_or_decrypted"] = "decrypted"
+                session["hill"] = False
+                match cypher_mode:
+                    case "Hill (Image) cipher":
+                        session["hill"] = True
+                        if form.input_key_as_img.data:
+                            input_key_img = form.input_key_as_img.data
+                            key_filename = secure_filename(input_key_img.filename)
+                            session["key_img_folder"] = upkey_dir + "/"
+                            session["key_img_filename"] = key_filename
+                            path_to_save = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded_key', key_filename)
+                            input_key_img.save(path_to_save)
+                        else:
+                            key_filename = ""
+                        hillImgDecrypt(filename, key_filename)
+                    case "3DES cipher":
+                        session["result_dict"] = des3Decrypt(filename, input_mode, input_key, input_ivk)
+                        session["result_dict"]["mode"] = input_mode
+                        return redirect(url_for('outputImgAndKey'))
+                    case "DES cipher":
+                        session["result_dict"] = desDecrypt(filename, input_mode, input_key, input_ivk)
+                        session["result_dict"]["mode"] = input_mode
+                        return redirect(url_for('outputImgAndKey'))
+                    case "AES cipher":
+                        session["result_dict"] = aesDecrypt(filename, input_mode, input_key, input_ivk)
+                        session["result_dict"]["mode"] = input_mode
+                        return redirect(url_for('outputImgAndKey'))
 
-#                 return redirect(url_for('outputImgAndKey'))  
+                return redirect(url_for('outputImgAndKey'))  
 
-#             except InputKeyError as e:
-#                 flash(e.message)           
-#     return render_template('imgalg.html', form=form)
+            except InputKeyError as e:
+                flash(e.message)           
+    return render_template('imgalg.html', form=form)
 
-# @app.route('/encrypted-img', methods=['POST', 'GET'])
-# def outputImgAndKey():
+@app.route('/encrypted-img', methods=['POST', 'GET'])
+def outputImgAndKey():
     encrypted_or_decrypted = session.get("encrypted_or_decrypted", None) 
 
     input_img_folder = session.get("input_img_folder", None)
