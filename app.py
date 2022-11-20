@@ -154,6 +154,17 @@ def home():
 
     return render_template('textalg.html', form=form)
 
+@app.route('/encrypted', methods=['GET'])
+def outputTextAndKey():
+    output_text = session.get("output_text", None)
+    output_key = session.get("output_key", None)
+    encrypted_or_decrypted = session.get("encrypted_or_decrypted", None)
+    return render_template(
+        'output.html', 
+        encrypted_or_decrypted=encrypted_or_decrypted, 
+        output_text=output_text, 
+        output_key=output_key)
+
 @app.route('/public-key-ciphers', methods=['GET', 'POST'])
 def public_key_algorithms(): 
     form = Input_Public_key_Form()
@@ -259,25 +270,13 @@ def public_key_algorithms():
                 
     return render_template('public_key.html', form=form)
 
-@app.route('/encrypted', methods=['GET'])
+@app.route('/encrypted-pk', methods=['GET'])
 def publickeyoutput():
     output_text = session.get("output_text", None)
     output_key = session.get("output_key", None)
     encrypted_or_decrypted = session.get("encrypted_or_decrypted", None)
     return render_template(
         'publickeyoutput.html', 
-        encrypted_or_decrypted=encrypted_or_decrypted, 
-        output_text=output_text, 
-        output_key=output_key)
-    
-
-@app.route('/encrypted', methods=['GET'])
-def outputTextAndKey():
-    output_text = session.get("output_text", None)
-    output_key = session.get("output_key", None)
-    encrypted_or_decrypted = session.get("encrypted_or_decrypted", None)
-    return render_template(
-        'output.html', 
         encrypted_or_decrypted=encrypted_or_decrypted, 
         output_text=output_text, 
         output_key=output_key)
@@ -429,4 +428,4 @@ def gammaPentagonal():
     return render_template("gamma.html")
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    app.run(debug=False)
