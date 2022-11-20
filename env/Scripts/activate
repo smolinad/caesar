@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\user\Documents\crypto_app\crypto-flask\env"
+VIRTUAL_ENV="C:\Users\anapa\OneDrive\Documentos\Universidad\Intro_cripto\crypto_app\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
