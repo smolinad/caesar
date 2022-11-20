@@ -1,7 +1,7 @@
 from sympy import randprime, isprime
 import random
 import math
-#from algorithms.goodies import InputKeyError, ALPHABET
+from algorithms.goodies import InputKeyError, ALPHABET
 
 #Elgamal
 #For key generation i.e. large random number
@@ -69,9 +69,29 @@ def exp_modular(a,b,c):
     return x%c
 
 #For asymetric encryption
-def elgammalEncrypt(msg,p="",g = 3):
+def elgammalEncrypt(msg,p="",g = ""):
+    try:
+        p = int(p)
+    except:
+        pass
+    try:
+        g = int(g)
+    except:
+        pass
+
     if p == "" :
-        p = generatePrime(10)
+        p = generatePrime(50)
+    elif type(p) != int  or not isprime(p) :
+        raise InputKeyError("p must be prime number")
+    
+    if g == "":
+       g = random.randint(1,p-1)
+    elif type(g) != int or not( 1 <= g and g <= p-1 ):
+        raise InputKeyError(f"generator must be an integer between 1 and {p-1}")
+    
+   
+
+    
     ct=[]
     key=gen_key(p)
     a_k=exp_modular(g,key,p)
@@ -84,7 +104,39 @@ def elgammalEncrypt(msg,p="",g = 3):
         ct[i]=str(a_k_k*ord(ct[i]))
     return ((ct,[p,0,key,g])) #tal vez sea a_k_k
 #For decryption
-def elgammalDecrypt(ct,p,key,g = 3):
+def elgammalDecrypt(ct,p,key,g = ""):
+    if ct == "":
+        raise InputKeyError("The message is not a encrypted text")
+    try:
+        p = int(p)
+    except:
+        pass
+    try:
+        g = int(g)
+    except:
+        pass
+    try:
+        key = int(key)
+    except:
+        pass
+
+
+    if p == "":
+        raise InputKeyError("For decrypt must have p")
+    if type(p) != int or not isprime(p):
+        raise InputKeyError("p must be prime number")
+
+    if key == "":
+        raise InputKeyError("For decrypt must have the prived key")
+    elif type(key) != int or not( 1 <= key and key <= p-1 ):
+        raise InputKeyError(f"prived key must be an integer between 1 and {p-1}")
+
+    if g == "":
+       raise InputKeyError("For decrypt must have the generator")
+    elif type(g) != int or not( 1 <= g and g <= p-1 ):
+        raise InputKeyError(f"generator must be an integer between 1 and {p-1}")
+
+
     a_k = exp_modular(g,key,p)
     pt=[]
     h=exp_modular(a_k,key,p)

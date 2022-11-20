@@ -79,12 +79,24 @@ primos = [100003,100019,100043,100103,100151,100183,100207,100267,100271,100279,
 from algorithms.goodies import InputKeyError, ALPHABET
 #from goodies import InputKeyError, ALPHABET
 import random
-
+from sympy import randprime, isprime
 
 
 def rabinEncrypt(message, p = "",q=""):
+
+    try:
+        p = int(p)
+        q = int(q)
+    except:
+        pass
+    
     if p == "" or q == "":
         p,q = random.sample(primos, 2)
+    elif type(p) != int or type(q) != int or not isprime(p) or not isprime(q):
+        raise InputKeyError("p and q must be primes numbers")
+
+
+
     n = p*q
     message=message.upper()
     message=message.replace(" ", "")
@@ -98,9 +110,23 @@ def rabinEncrypt(message, p = "",q=""):
     return((encrypt_text,[p,q,0,0]))
 
 def rabinDecrypt(message,p,q):
-    print(message)
-    message = [int(binario) for binario in message[1:-1].replace(" ","").split(',')]
-    print(message)
+    try:
+        message = [int(binario) for binario in message[1:-1].replace(" ","").split(',')]
+    except:
+        raise InputKeyError("The message is not a encrypted text")
+    try:
+        p = int(p)
+        q = int(q)
+    except:
+        pass 
+    if p == "" or q == "" :
+        raise InputKeyError("For decrypt must have p and q ")
+    elif type(p) != int or type(q) != int or not isprime(p) or not isprime(q):
+        raise InputKeyError("p and q must be primes numbers")
+
+    
+
+
     decrypt_list=[] #guarda los decifrados en números
     decrypt_text = ""   #se guarda el decifrado letra por letra
     decrypt_textlist=[] # guarda el decifrado de los 4 residuos

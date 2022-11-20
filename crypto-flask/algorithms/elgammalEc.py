@@ -183,13 +183,30 @@ def primitivo(a,b,p):
 			return(x,int(res))
 
 
+def generatePrime(a=0):
+    if a!=0:
+        return randprime(2**(a-2),2**(a-1))
+    return randprime(2**(256),2**(512))
+
+
 import random
-from sympy import N, randprime
+from sympy import randprime, isprime
 import random
 import math
-
+from algorithms.goodies import InputKeyError, ALPHABET,primos
 
 def elgammalEcEncrypt(text,p = ""):
+    try:
+        p = int(p)
+    except:
+        pass
+
+    if p == "" :
+        p = generatePrime(10)
+    elif type(p) != int  or not isprime(p) :
+        raise InputKeyError("p must be prime number")
+
+
     a,b,p,gx, gy, Nb, Ka = generateMvData(p)
     cifrado=[]
     generator=(gx,gy)
@@ -213,7 +230,39 @@ def elgammalEcEncrypt(text,p = ""):
 def elgammalEcDecrypt(tcifrado,p,a,b,Nb):
 
     text = tcifrado
-    text = [eval(binario) for binario in text[1:-1].replace(" ","").split(', ((')]
+    try:
+        text = [eval(binario) for binario in text[1:-1].replace(" ","").split(', ((')]
+    except:
+        raise InputKeyError("The message is not a encrypted text")
+
+    try:
+        p = int(p)
+    except:
+        pass
+    try:
+        Nb = int(Nb)
+    except:
+        pass
+    
+
+
+    if p == "":
+        raise InputKeyError("For decrypt must have p")
+    if type(p) != int or not isprime(p):
+        raise InputKeyError("p must be prime number")
+
+    if Nb == "":
+        raise InputKeyError("For decrypt must have the prived key")
+    elif type(Nb) != int or not( 100 <= Nb and Nb <= 1000 ):
+        raise InputKeyError(f"Generetor mus be an integer between 100 and 1000")
+
+    if a == "" or b == "":
+       raise InputKeyError("points a,b must be numbers between 1 and 100")
+    elif type(a) != int or type(b) != int or not( 1 <= a and a <= 100 ) or not( 1 <= b and b <= 100 ):
+        raise InputKeyError("points a,b must be numbers between 1 and 100")
+
+
+    
     tcifrado = [text[0][i] for i in range(len(text[0]))]
     print(tcifrado)
     TextoDecifrado=""

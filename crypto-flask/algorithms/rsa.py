@@ -29,9 +29,17 @@ def generateRsaData(p,q):
     return ({'public_key' : str(pub_key), 'private_key':str(priv_key)})
 
 def rsaEncrypt(message, p="", q=""): # rsaEncrypt
+    try:
+        p = int(p)
+        q = int(q)
+    except:
+        pass
     
     if p == "" or q == "":
-        p,q = generatePrime(10),generatePrime(10) 
+        p,q = generatePrime(50),generatePrime(50)
+    elif type(p) != int or type(q) != int or not isprime(p) or not isprime(q):
+        raise InputKeyError("p and q must be primes numbers")
+
     n=p*q
     keys = generateRsaData(p,q)
     pub_key = int(keys['public_key'])
@@ -45,10 +53,22 @@ def rsaEncrypt(message, p="", q=""): # rsaEncrypt
     return((encrypt_text,[p,q,priv_key,0]))
 
 def rsaDecrypt(message, p="", q="",priv_key=""):
-    
+    if message == "":
+        raise InputKeyError("The message is not a encrypted text")
+    try:
+        p = int(p)
+        q = int(q)
+    except:
+        pass 
     if p == "" or q == "" or priv_key=="":
-        print(message)
-        raise InputKeyError(message)
+        raise InputKeyError("For decrypt must have p,q and the prived key")
+    elif type(p) != int or type(q) != int or not isprime(p) or not isprime(q):
+        raise InputKeyError("p and q must be primes numbers")
+
+    if type(priv_key) != int:
+        raise InputKeyError(f"prived key must be a number be an integer \n between 1 and  {(p-1)*(q-1)}")
+
+    
     n=p*q
  #   keys = generateRsaData(p,q)
   #  priv_key = int(keys['private_key'])

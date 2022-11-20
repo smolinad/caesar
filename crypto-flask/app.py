@@ -165,17 +165,23 @@ def public_key_algorithms():
         input_key = form.input_key.data
         input_g = form.input_generator.data
         input_primes = form.input_primes.data
-        p,q,g = "","",3
+        p,q,g = "","",""
         k = input_key
         try:
             input_primes = (input_primes).split()
-            p = int(input_primes[0])
-            q = int(input_primes[1])
-
+            p = input_primes[0]
+            q = input_primes[1]
         except:
             pass
         try:
-            g = int(input_g)
+            input_primes = (input_primes).split()
+            p = input_primes[0]
+            q = ""
+        except:
+            pass
+        try:
+            generator = input_g.split()
+            g = generator[0]
         except:
             pass
         try:
@@ -187,7 +193,8 @@ def public_key_algorithms():
             a = int(k[0])
             b = int(k[1])
         except:
-            pass
+            a = ""
+            b = ""
         
 
         if form.encrypt.data:
@@ -229,19 +236,26 @@ def public_key_algorithms():
                     session["encrypted_or_decrypted"] = "decrypted"
                     match cypher_mode:
                         case "Rsa cipher":
-                            input_text_decrypt = [int(binario[1:-1]) for binario in input_text_decrypt[1:-1].replace(" ","").split(',')]
+                            try:
+                                input_text_decrypt = [int(binario[1:-1]) for binario in input_text_decrypt[1:-1].replace(" ","").split(',')]
+                            except:
+                                input_text_decrypt = ""
                             session["output_text"], session["output_key"] = rsaDecrypt(input_text_decrypt,p,q,k) 
                         case "Rabin cipher":
                             session["output_text"], session["output_key"] = rabinDecrypt(input_text,p,q) 
+
                         case "Elgammal cipher":
-                            input_text_decrypt = [int(binario[1:-1]) for binario in input_text_decrypt[1:-1].replace(" ","").split(',')]
+                            try:
+                                input_text_decrypt = [int(binario[1:-1]) for binario in input_text_decrypt[1:-1].replace(" ","").split(',')]
+                            except:
+                                input_text_decrypt = ""
                             session["output_text"], session["output_key"] = elgammalDecrypt(input_text_decrypt,p,k,g) 
                         case "Elgammal Eliptic Curve cipher":
                             session["output_text"], session["output_key"] = elgammalEcDecrypt(input_text_decrypt,p,a,b,g)
 
                     return redirect(url_for('publickeyoutput')) 
-                except InputKeyError :
-                   raise InputKeyError(f"Can not decrypt without a key{ rabinDecrypt(input_text,p,q) } :)") 
+                except InputKeyError as e:
+                    flash(e.message)
                 
     return render_template('public_key.html', form=form)
 
