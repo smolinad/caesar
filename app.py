@@ -54,6 +54,11 @@ list_dir = [
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
+
+    for dir in list_dir:
+        if os.path.exists(dir)==False:
+            os.mkdir(dir)
+
     deleteImages(list_dir)
     form = InputForm()
     if form.validate_on_submit():
