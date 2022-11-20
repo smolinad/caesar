@@ -4,7 +4,7 @@ from algorithms.affine import affineEncrypt, affineDecrypt
 from algorithms.substitution import substitutionEncrypt, substitutionDecrypt, substitutionCryptanalysis
 from algorithms.permutation import permutationDecrypt, permutationEncrypt
 from algorithms.hillText import hillCryptoAnalysis, hillEncrypt, hillDecrypt
-#from algorithms.hillImage import hillImgEncrypt, hillImgDecrypt
+from algorithms.hillImage import hillImgEncrypt, hillImgDecrypt
 from algorithms.des3 import des3Decrypt, des3Encrypt
 from algorithms.des import desEncrypt, desDecrypt
 from algorithms.sdes import sdesEncrypt,sdesDecrypt
@@ -324,21 +324,21 @@ def imgAlgorithms():
             session["hill"] = False
             try:
                 match cypher_mode:
-                    # case "Hill (Image) cipher":
-                    #     session["hill"] = True
-                    #     if form.input_key_as_img.data:
-                    #         input_key_img = form.input_key_as_img.data
-                    #         key_filename = secure_filename(input_key_img.filename)
-                    #         session["key_img_folder"] = upkey_dir + "/"
-                    #         session["key_img_filename"] = key_filename
-                    #         path_to_save = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded_key', key_filename)
-                    #         input_key_img.save(path_to_save)
-                    #     else:
-                    #         key_filename = ""
-                    #         session["key_img_folder"] = key_dir + "/"
-                    #         session["key_img_filename"] = filename
-                    #     hillImgEncrypt(filename, key_filename)
-                    #     return redirect(url_for('outputImgAndKey')) 
+                    case "Hill (Image) cipher":
+                        session["hill"] = True
+                        if form.input_key_as_img.data:
+                            input_key_img = form.input_key_as_img.data
+                            key_filename = secure_filename(input_key_img.filename)
+                            session["key_img_folder"] = upkey_dir + "/"
+                            session["key_img_filename"] = key_filename
+                            path_to_save = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded_key', key_filename)
+                            input_key_img.save(path_to_save)
+                        else:
+                            key_filename = ""
+                            session["key_img_folder"] = key_dir + "/"
+                            session["key_img_filename"] = filename
+                        hillImgEncrypt(filename, key_filename)
+                        return redirect(url_for('outputImgAndKey')) 
                     case "3DES cipher":
                         session["result_dict"] = des3Encrypt(filename, input_mode, input_key, input_ivk)
                         session["result_dict"]["mode"] = input_mode
@@ -360,18 +360,18 @@ def imgAlgorithms():
                 session["encrypted_or_decrypted"] = "decrypted"
                 session["hill"] = False
                 match cypher_mode:
-                    # case "Hill (Image) cipher":
-                    #     session["hill"] = True
-                    #     if form.input_key_as_img.data:
-                    #         input_key_img = form.input_key_as_img.data
-                    #         key_filename = secure_filename(input_key_img.filename)
-                    #         session["key_img_folder"] = upkey_dir + "/"
-                    #         session["key_img_filename"] = key_filename
-                    #         path_to_save = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded_key', key_filename)
-                    #         input_key_img.save(path_to_save)
-                    #     else:
-                    #         key_filename = ""
-                    #     hillImgDecrypt(filename, key_filename)
+                    case "Hill (Image) cipher":
+                        session["hill"] = True
+                        if form.input_key_as_img.data:
+                            input_key_img = form.input_key_as_img.data
+                            key_filename = secure_filename(input_key_img.filename)
+                            session["key_img_folder"] = upkey_dir + "/"
+                            session["key_img_filename"] = key_filename
+                            path_to_save = os.path.join(app.config['UPLOAD_FOLDER'], 'uploaded_key', key_filename)
+                            input_key_img.save(path_to_save)
+                        else:
+                            key_filename = ""
+                        hillImgDecrypt(filename, key_filename)
                     case "3DES cipher":
                         session["result_dict"] = des3Decrypt(filename, input_mode, input_key, input_ivk)
                         session["result_dict"]["mode"] = input_mode
