@@ -20,6 +20,7 @@ from flask import Flask, redirect, url_for, session, flash
 from flask.templating import render_template
 from werkzeug.utils import secure_filename
 import cv2 as cv
+import sys
 
 from algorithms.form import InputForm, ImageForm, Input_Public_key_Form
 #
@@ -45,16 +46,24 @@ app.config['SECRET_KEY'] = SECRET_KEY
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 list_dir = [
-    os.path.join(app.config['UPLOAD_FOLDER'], img_dir),
-    os.path.join(app.config['UPLOAD_FOLDER'], key_dir),
-    os.path.join(app.config['UPLOAD_FOLDER'], enc_dir),
-    os.path.join(app.config['UPLOAD_FOLDER'], dec_dir),
-    os.path.join(app.config['UPLOAD_FOLDER'], upkey_dir)
+    os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'], img_dir),
+    os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'], key_dir),
+    os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'], enc_dir),
+    os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'], dec_dir),
+    os.path.join(os.getcwd(), app.config['UPLOAD_FOLDER'], upkey_dir)
 ]
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    deleteImages(list_dir)
+
+    # print(os.getcwd())
+    # sys.stdout.flush()
+
+    # for dir in list_dir:
+    #     if os.path.exists(dir)==False:
+    #         os.mkdir(dir)
+
+    
     form = InputForm()
     if form.validate_on_submit():
         cypher_mode = form.cypher_mode.data
@@ -153,6 +162,17 @@ def home():
                         raise InputKeyError("No cryptanalysis mode for DES cipher")
 
     return render_template('textalg.html', form=form)
+
+@app.route('/encrypted', methods=['GET'])
+def outputTextAndKey():
+    output_text = session.get("output_text", None)
+    output_key = session.get("output_key", None)
+    encrypted_or_decrypted = session.get("encrypted_or_decrypted", None)
+    return render_template(
+        'output.html', 
+        encrypted_or_decrypted=encrypted_or_decrypted, 
+        output_text=output_text, 
+        output_key=output_key)
 
 @app.route('/public-key-ciphers', methods=['GET', 'POST'])
 def public_key_algorithms(): 
@@ -270,30 +290,15 @@ def publickeyoutput():
         output_text=output_text, 
         output_key=output_key)
     
-
-@app.route('/encrypted', methods=['GET'])
-def outputTextAndKey():
-    output_text = session.get("output_text", None)
-    output_key = session.get("output_key", None)
-    encrypted_or_decrypted = session.get("encrypted_or_decrypted", None)
-    return render_template(
-        'output.html', 
-        encrypted_or_decrypted=encrypted_or_decrypted, 
-        output_text=output_text, 
-        output_key=output_key)
-    
-
 @app.route('/decrypted', methods=['GET'])
 def bruteForceAnalysis():
     output = session.get("analysis_output", None)
     return render_template('bruteforce.html', output=output)
 
-
 @app.route('/decrypted-', methods=['GET'])
 def substitutionAnalysis():
     frequency, digraphs = session.get("analysis_output", None)
     return render_template('subsanalysis.html', frequency=frequency, digraphs=digraphs)
-
 
 @app.route('/image-ciphers', methods=['GET', 'POST'])
 def imgAlgorithms():
@@ -392,7 +397,6 @@ def imgAlgorithms():
                 flash(e.message)           
     return render_template('imgalg.html', form=form)
 
-
 @app.route('/encrypted-img', methods=['POST', 'GET'])
 def outputImgAndKey():
     encrypted_or_decrypted = session.get("encrypted_or_decrypted", None) 
@@ -423,10 +427,9 @@ def outputImgAndKey():
         result_dict=result_dict
     )
 
-
 @app.route('/gamma-pentagonal', methods=['POST', 'GET'])
 def gammaPentagonal():
     return render_template("gamma.html")
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    app.run(debug=False)
