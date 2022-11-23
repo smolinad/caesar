@@ -102,8 +102,8 @@ def rabinEncrypt(message, p = "",q=""):
     message=message.replace(" ", "")
     encrypt_text = []
     while(len(message)%3!=0):
-      message=message+"X"
-    for i in range(0,len(message),3):#CIFRAMOS EN BLOQUES DE 3 
+      message=message+"C"
+    for i in range(0,len(message),3):
           c=(ord(message[i])-64)*(27**2)+(ord(message[i+1])-64)*27+(ord(message[i+2])-64)
           cipher_text = pow(c,2,n)
           encrypt_text.append(cipher_text)

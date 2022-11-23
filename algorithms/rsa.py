@@ -36,7 +36,7 @@ def rsaEncrypt(message, p="", q=""): # rsaEncrypt
         pass
     
     if p == "" or q == "":
-        p,q = generatePrime(50),generatePrime(50)
+        p,q = generatePrime(15),generatePrime(15)
     elif type(p) != int or type(q) != int or not isprime(p) or not isprime(q):
         raise InputKeyError("p and q must be primes numbers")
 

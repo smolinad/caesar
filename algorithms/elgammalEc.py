@@ -30,13 +30,14 @@ def tonelli(n, p):
         m = i
     return r
 
+
 def ec_gen_points_set(a, b, p):
     ec_points_on_curve = []
     for x in range(p):
-        y2 = x ** 3 + a * x + b
+        y2 = x ** 3 + 486662 * x**2 + x
         lengdre_val = legendre(y2, p)
         if lengdre_val != 0:
-            if lengdre_val != 1:  # (y2 | p) must be ≡ 1 to have a square if not continue to next num
+            if lengdre_val != 1:  
                 continue
         elif lengdre_val == 0:
             y_root1 = 0
@@ -67,7 +68,6 @@ def extended_gcd(aa, bb):
     return lastremainder, lastx * (-1 if aa < 0 else 1), lasty * (-1 if bb < 0 else 1)
 
 
-# calculate `modular inverse`
 def modinv(a, m):
     g, x, y = extended_gcd(a, m)
     if g == 1:
@@ -75,8 +75,7 @@ def modinv(a, m):
     else:
         return None
 
-#OPERACIONES ECC
-# double function
+
 def ecc_double(x1, y1, p, a):
     if modinv(2 * y1, p) is None: return None
 
@@ -85,8 +84,6 @@ def ecc_double(x1, y1, p, a):
     y3 = (s * (x1 - x3) - y1) % p
     return (x3, y3)
 
-
-# add function
 def ecc_add(x1, y1, x2, y2, p, a):
     s = 0
     if (x1 == x2):
@@ -98,7 +95,6 @@ def ecc_add(x1, y1, x2, y2, p, a):
     x3 = (s ** 2 - x1 - x2) % p
     y3 = (s * (x1 - x3) - y1) % p
     return (x3, y3)
-
 
 def double_and_add(multi, generator, p, a):
     (x3, y3) = (0, 0)
@@ -281,7 +277,9 @@ def generateMvData(p):
     else:
         p=int(p)
     a=random.randint(0,100)
+    #a = 2**255 - 19
     b=random.randint(0,100)
+    #b = 1
     gx,gy=primitivo(a,b,p)
     ca=random.randint(10**2,10**3)
     while(ca>p):

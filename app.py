@@ -259,7 +259,7 @@ def public_key_algorithms():
                 
     return render_template('public_key.html', form=form)
 
-@app.route('/encrypted', methods=['GET'])
+@app.route('/encrypted-pk', methods=['GET'])
 def publickeyoutput():
     output_text = session.get("output_text", None)
     output_key = session.get("output_key", None)
