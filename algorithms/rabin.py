@@ -93,7 +93,11 @@ def rabinEncrypt(message, p = "",q=""):
     if p == "" or q == "":
         p,q = random.sample(primos, 2)
     elif type(p) != int or type(q) != int or not isprime(p) or not isprime(q):
-        raise InputKeyError("p and q must be primes numbers")
+        raise InputKeyError("p and q must be primes numbers.")
+    elif p<1000 or q<1000:
+        raise InputKeyError("p and q must be greater than 1000.")
+    elif p%4!=3 or q%4!=3:
+        raise InputKeyError("p and q must be congruent to 3 mod 4.")
 
 
 
