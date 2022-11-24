@@ -1,8 +1,6 @@
 from Cryptodome.PublicKey import RSA
-from Cryptodome import Random
 from Cryptodome.Cipher import PKCS1_OAEP
-from algorithms.goodies import InputKeyError, ALPHABET, primos
-import random
+from algorithms.goodies import InputKeyError
 import base64
 
 def rsaEncrypt(text, p="", q=""):
