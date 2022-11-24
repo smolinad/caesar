@@ -31,6 +31,12 @@ def rsaDecrypt(text, public_key, private_key):
         raise InputKeyError("The message is not valid.")
     if private_key == "":
         raise InputKeyError("You should enter the private key.")
+    
+    try: 
+        private_key = int(private_key)
+    except:
+        raise InputKeyError("The private key must be a number.")
+    
     rsa_private_key = RSA.importKey(private_key.encode())
     rsa_private_key = PKCS1_OAEP.new(rsa_private_key)
     decrypted_text = rsa_private_key.decrypt(base64.b64decode(text.encode()))

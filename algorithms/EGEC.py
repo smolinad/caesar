@@ -29,6 +29,8 @@ def EGECEncrypt(text, k, a):
         k = random.randint(0, 10000)
     if a == "":
         a = random.randint(2, p-1)
+    elif int(a)>p:
+        raise InputKeyError("a must be a number between 0 and (2**255) - 19.")
 
     a = int(a)
     k = int(k)
