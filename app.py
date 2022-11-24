@@ -277,7 +277,7 @@ def public_key_algorithms():
                                 input_text_decrypt = ""
                             session["output_text"], session["output_key"] = elgammalDecrypt(input_text_decrypt,p,k,g) 
                         case "Elgamal Eliptic Curve cipher":
-                            session["output_text"], session["output_key"] = EGECDecrypt(input_text_decrypt, k , input_g)
+                            session["output_text"], session["output_key"] = EGECDecrypt(input_text_decrypt, input_g, k)
 
                     return redirect(url_for('publickeyoutput')) 
                 except InputKeyError as e:

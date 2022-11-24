@@ -52,7 +52,7 @@ def EGECEncrypt(text, k, a):
         y2 = k * beta_y * x2
         encrypted.append((y1, y2))
 
-    return (encrypted, [0, 0, (y0_x, y0_y), a])
+    return (encrypted, [0, 0, a, (y0_x, y0_y)])
 # {"a": a,
 #             "y0": (y0_x, y0_y),
 #             "encrypted": encrypted
@@ -89,5 +89,5 @@ def EGECDecrypt(text, y0, a):
         s = str((y1 * c1_inv) % p) + str((y2 * c2_inv) % p)
         decrypted += chr(int(s))
         
-    return (decrypted, [0, 0, y0, a])
+    return (decrypted, [0, 0, a, y0])
 
