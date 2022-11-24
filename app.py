@@ -60,9 +60,9 @@ def home():
     # print(os.getcwd())
     # sys.stdout.flush()
 
-    # for dir in list_dir:
-    #     if os.path.exists(dir)==False:
-    #         os.mkdir(dir)
+    for dir in list_dir:
+        if not os.path.exists(dir):
+            os.makedirs(dir)
 
     
     form = InputForm()
