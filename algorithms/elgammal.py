@@ -102,7 +102,7 @@ def elgammalEncrypt(msg,p="",g = ""):
         ct.append(msg[i])
     for i in range(0,len(ct)):
         ct[i]=str(a_k_k*ord(ct[i]))
-    return ((ct,[p,0,key,g])) #tal vez sea a_k_k
+    return ((ct,[p,"",key,g])) #tal vez sea a_k_k
 #For decryption
 def elgammalDecrypt(ct,p,key,g = ""):
     if ct == "":
@@ -146,7 +146,7 @@ def elgammalDecrypt(ct,p,key,g = ""):
     text = ""
     for let in pt:
         text += let
-    return ((text,[p,0,key,g]))
+    return ((text,[p,"",key,g]))
 
 
 def generateGamalData(p, alpha=0):

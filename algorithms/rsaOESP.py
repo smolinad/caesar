@@ -23,7 +23,7 @@ def rsaEncrypt(text, p="", q=""):
     rsa_public_key = PKCS1_OAEP.new(rsa_public_key)
     encrypted_text = rsa_public_key.encrypt(text)
 
-    return (base64.b64encode(encrypted_text).decode(), [public_key.decode(), 0, private_key.decode(), 0])
+    return (base64.b64encode(encrypted_text).decode(), [public_key.decode(), "", private_key.decode(), ""])
 
 
 def rsaDecrypt(text, public_key, private_key):
@@ -37,5 +37,5 @@ def rsaDecrypt(text, public_key, private_key):
     rsa_private_key = PKCS1_OAEP.new(rsa_private_key)
     decrypted_text = rsa_private_key.decrypt(base64.b64decode(text.encode()))
 
-    return (decrypted_text.decode(), [public_key, 0, private_key, 0])
+    return (decrypted_text.decode(), [public_key, "", private_key, ""])
 

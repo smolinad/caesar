@@ -111,7 +111,7 @@ def rabinEncrypt(message, p = "",q=""):
           c=(ord(message[i])-64)*(27**2)+(ord(message[i+1])-64)*27+(ord(message[i+2])-64)
           cipher_text = pow(c,2,n)
           encrypt_text.append(cipher_text)
-    return((encrypt_text,[p,q,0,0]))
+    return((encrypt_text,[p,q,"",""]))
 
 def rabinDecrypt(message,p,q):
     try:
@@ -179,7 +179,7 @@ def rabinDecrypt(message,p,q):
                     posibleText=posibleText+j
         text=posibleText
 
-    return((text,[p,q,0,0]))
+    return((text,[p,q,"",""]))
 
 # mensaje = "Hola leo lindo"
 # text,p1,p2 =rabinEncrypt(mensaje)
