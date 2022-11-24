@@ -10,9 +10,10 @@ from algorithms.des import desEncrypt, desDecrypt
 from algorithms.sdes import sdesEncrypt,sdesDecrypt
 from algorithms.aes import aesEncrypt, aesDecrypt
 from algorithms.rsaOESP import rsaEncrypt, rsaDecrypt
+from algorithms.EGEC import EGECEncrypt, EGECDecrypt
 from algorithms.rabin import rabinEncrypt, rabinDecrypt
 from algorithms.elgammal import elgammalEncrypt, elgammalDecrypt
-from algorithms.elgammalEc import elgammalEcEncrypt, elgammalEcDecrypt
+# from algorithms.elgammalEc import elgammalEcEncrypt, elgammalEcDecrypt
 from algorithms.goodies import processInput, InputKeyError, deleteImages
 
 from flask import Flask, redirect, url_for, session, flash
@@ -206,13 +207,13 @@ def public_key_algorithms():
         except:
             pass
 
-        try:
-            k = eval(k)
-            a = int(k[0])
-            b = int(k[1])
-        except:
-            a = ""
-            b = ""
+        # try:
+        #     k = eval(k)
+        #     a = int(k[0])
+        #     b = int(k[1])
+        # except:
+        #     a = ""
+        #     b = ""
         
         if form.encrypt.data:
             session["encrypted_or_decrypted"] = "encrypted"
@@ -233,7 +234,7 @@ def public_key_algorithms():
                                 q = ""
                             except:
                                 pass
-                            session["output_text"], session["output_key"] = elgammalEcEncrypt(input_text_encrypt, p)  
+                            session["output_text"], session["output_key"] = EGECEncrypt(input_text_encrypt, p, q)  
                     return redirect(url_for('publickeyoutput')) 
 
                 except InputKeyError as e:
@@ -248,7 +249,7 @@ def public_key_algorithms():
                         case "Elgamal cipher":
                             session["output_text"], session["output_key"] = elgammalEncrypt(input_text_encrypt, "")
                         case "Elgamal Eliptic Curve cipher":
-                            session["output_text"], session["output_key"] = elgammalEcEncrypt(input_text_encrypt, "")  
+                            session["output_text"], session["output_key"] = EGECEncrypt(input_text_encrypt, "", "")  
                 return redirect(url_for('publickeyoutput')) 
     
                 
@@ -276,7 +277,7 @@ def public_key_algorithms():
                                 input_text_decrypt = ""
                             session["output_text"], session["output_key"] = elgammalDecrypt(input_text_decrypt,p,k,g) 
                         case "Elgamal Eliptic Curve cipher":
-                            session["output_text"], session["output_key"] = elgammalEcDecrypt(input_text_decrypt,p,a,b,g)
+                            session["output_text"], session["output_key"] = EGECDecrypt(input_text_decrypt, k , input_g)
 
                     return redirect(url_for('publickeyoutput')) 
                 except InputKeyError as e:

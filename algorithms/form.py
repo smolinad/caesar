@@ -24,7 +24,7 @@ class Input_Public_key_Form(FlaskForm):
     cypher_mode = SelectField(label='State', choices=[mode + " cipher"  for mode in PUBLIC_KEY_MODES])
     input_primes = TextAreaField("input_primes")
     input_generator = TextAreaField("input_generator")
-    input_text = TextAreaField("input_text", validators=[DataRequired(), Length(max=1000)], default=None)
+    input_text = TextAreaField("input_text", validators=[DataRequired(), Length(max=5000)], default=None)
     input_key = TextAreaField("input_key", default=None)
     encrypt = SubmitField("Encrypt")
     decrypt = SubmitField("Decrypt")
