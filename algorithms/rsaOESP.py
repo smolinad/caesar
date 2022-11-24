@@ -30,8 +30,10 @@ def rsaDecrypt(text, public_key, private_key):
     if private_key == "":
         raise InputKeyError("You should enter the private key.")
     
-    
-    rsa_private_key = RSA.importKey(private_key.encode())
+    try:
+        rsa_private_key = RSA.importKey(private_key.encode())
+    except:
+        raise InputKeyError("Private key is not in the correct format.")
     rsa_private_key = PKCS1_OAEP.new(rsa_private_key)
     decrypted_text = rsa_private_key.decrypt(base64.b64decode(text.encode()))
 

@@ -23,22 +23,28 @@
             {{ form.cypher_mode(class="form-select form-select-sm") }}
 
 
-            <div class="input" style="margin-top: 1rem;">
+            <div class="input d-flex justify-content-center" style="margin-top: 1rem;">
                 {{ form.input_text(placeholder="Input your text here...") }}
             </div>
 
-            <div class="input" style="margin-top: 1rem;">
-                <p style="margin-bottom: 0.1rem;">Keys: </p>
-                {{ form.input_primes(placeholder="Input your prime(s) here (optional)",class_="key") }}
-            </div> 
-
-            <div class="input">
-                {{ form.input_key(placeholder="Input your key 🗝️ here (optional)", class_="key") }}
+            <div class="card border-light text-bg-dark d-flex w-80" style="padding: 1rem; margin-top: 2rem; margin-bottom: 1rem;">
+                <p>Public key algorithms settings</p>
+                <div class="input" style="margin-top: 1rem;">
+                    <p style="margin-bottom: 0.1rem;">Input your prime numbers, separated by space: </p>
+                    {{ form.input_primes(placeholder="Input your prime(s) here (optional)",class_="key") }}
+                </div> 
+    
+                <div class="input">
+                    <p style="margin-bottom: 0.1rem;">Input your (private) key: </p>
+                    {{ form.input_key(placeholder="Input your key 🗝️ here (optional)", class_="key") }}
+                </div>
+                
+                <div class="input">
+                    <p style="margin-bottom: 0.1rem;">Input your generator: </p>
+                    {{ form.input_generator(placeholder="Input your generator here (optional)", class_="key") }}
+                </div>
             </div>
             
-            <div class="input">
-                {{ form.input_generator(placeholder="Input your generator here (optional)", class_="key") }}
-            </div>
 
             
             {% with messages = get_flashed_messages() %}
